@@ -1,6 +1,6 @@
 using EnglishWordsRecognizer.Jobs;
 using TelegramBotCommands.Services;
-using TelegramBotManager;
+using TelegramBotManager.Configs;
 using TelegramBotStorage;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +12,13 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
 
-// Add services to the container.
-builder.Services.Configure<BotConfig>(options => builder.Configuration.GetSection("BotConfig").Bind(options));
+// Add services to the container
+
+// configs
+builder.Services.Configure<BotMenuConfig>(options => builder.Configuration.GetSection("BotMenu").Bind(options));
+builder.Services.Configure<BotCredentialsConfig>(options => builder.Configuration.GetSection("BotConfig").Bind(options));
+
+// services
 builder.Services.AddSingleton<CommandsHandlerService>();
 builder.Services.AddSingleton<MemoryStorage>();
 builder.Services.AddScoped<FacadTelegramBotService>();

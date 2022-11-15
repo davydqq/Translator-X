@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Telegram.Bot;
+using TelegramBotManager.Configs;
 
 namespace TelegramBotManager;
 
@@ -7,7 +8,7 @@ public static class BotManager
 {
     private static TelegramBotClient? botClient = null;
 
-    public static async Task<TelegramBotClient> GetBotClientAsync(IOptions<BotConfig> config, bool reInit = false)
+    public static async Task<TelegramBotClient> GetBotClientAsync(IOptions<BotCredentialsConfig> config, bool reInit = false)
     {
         if (botClient != null && !reInit)
         {

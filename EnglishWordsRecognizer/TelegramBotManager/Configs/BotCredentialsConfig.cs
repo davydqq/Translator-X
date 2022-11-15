@@ -1,6 +1,6 @@
-﻿namespace TelegramBotManager;
+﻿namespace TelegramBotManager.Configs;
 
-public class BotConfig
+public class BotCredentialsConfig
 {
     public string? Token { set; get; }
 

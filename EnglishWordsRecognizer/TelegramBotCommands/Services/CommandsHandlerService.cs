@@ -1,4 +1,7 @@
-﻿using Telegram.Bot.Types;
+﻿using System.Runtime.InteropServices;
+using Telegram.Bot;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Commands;
 using TelegramBotManager;
 

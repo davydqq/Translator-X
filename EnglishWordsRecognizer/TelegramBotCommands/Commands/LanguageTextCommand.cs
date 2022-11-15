@@ -23,8 +23,8 @@ public class LanguageTextCommand : BaseTextCommand
 
         await botClient.SendTextMessageAsync(
             message.Chat.Id,
-            $"Hi, {message.Chat.FirstName} \n<h1>Choose your native language</h1>",
-            parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown,
+            $"Hi, {message.Chat.FirstName} \nChoose your native language",
+            parseMode: Telegram.Bot.Types.Enums.ParseMode.Html,
             replyMarkup: inlineKeyboard
         );
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using TelegramBotManager;
+using TelegramBotManager.Configs;
 using TelegramBotStorage;
 using TelegramBotStorage.Languages;
 
@@ -10,9 +11,9 @@ public class FacadTelegramBotService
 {
 	private readonly MemoryStorage memoryStorage;
 
-	private readonly IOptions<BotConfig> config;
+	private readonly IOptions<BotCredentialsConfig> config;
 
-	public FacadTelegramBotService(MemoryStorage memoryStorage, IOptions<BotConfig> config)
+	public FacadTelegramBotService(MemoryStorage memoryStorage, IOptions<BotCredentialsConfig> config)
 	{
 		this.memoryStorage = memoryStorage;
 		this.config = config;
@@ -22,7 +23,6 @@ public class FacadTelegramBotService
 	{
 		memoryStorage.Storage.AddOrUpdate(userId, languageId, (key, oldValue) => languageId);
     }
-
 
 	public Task<TelegramBotClient> GetBotClientAsync()
 	{

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\TelegramBotStorage\TelegramBotStorage.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
 </Project>
