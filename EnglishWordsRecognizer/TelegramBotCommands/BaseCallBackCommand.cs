@@ -15,10 +15,10 @@ public abstract class BaseCallBackCommand : BaseCommand
         return false;
     }
 
-    public async override Task Execute(Update update, FacadTelegramBotService service)
+    public async override Task ExecuteAsync(Update update, FacadTelegramBotService service)
     {
-        await HandleIternalCommand(update.CallbackQuery!, service);
+        await HandleIternalCommand(update, service);
     }
 
-    public abstract Task HandleIternalCommand(CallbackQuery query, FacadTelegramBotService service);
+    public abstract Task HandleIternalCommand(Update update, FacadTelegramBotService service);
 }

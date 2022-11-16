@@ -5,6 +5,8 @@ namespace TelegramBotStorage;
 
 public class MemoryStorage
 {
-    // user id, language id
-    public ConcurrentDictionary<long, LanguageENUM> Storage { get; set; } = new(); 
+    public ConcurrentDictionary<long, LanguageENUM> UserId_NativeLanguage { get; set; } = new();
+
+    public ConcurrentDictionary<long, LanguageENUM> UserId_TargetLanguage { get; set; } = new();
+
 }

@@ -24,10 +24,10 @@ public abstract class BaseTextCommand : BaseCommand
         return message.Text.Contains(this.Name);
     }
 
-    public async override Task Execute(Update update, FacadTelegramBotService service)
+    public async override Task ExecuteAsync(Update update, FacadTelegramBotService service)
     {
-        await HandleTextCommand(update.Message!, service);
+        await HandleTextCommandAsync(update!, service);
     }
 
-    public abstract Task HandleTextCommand(Message message, FacadTelegramBotService service);
+    public abstract Task HandleTextCommandAsync(Update update, FacadTelegramBotService service);
 }

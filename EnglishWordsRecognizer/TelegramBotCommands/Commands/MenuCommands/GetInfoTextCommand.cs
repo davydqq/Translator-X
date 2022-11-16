@@ -1,0 +1,30 @@
+﻿using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types;
+using TelegramBotCommands.Services;
+using Telegram.Bot;
+
+namespace TelegramBotCommands.Commands.MenuCommands;
+
+public class GetInfoTextCommand : BaseTextCommand
+{
+    public override string Name => CommandsNames.Info;
+
+    public override bool CanHandle(Update update)
+    {
+        if (update.Message == null || update.Message.Chat == null)
+            return false;
+
+        return true;
+    }
+
+    public override async Task HandleTextCommandAsync(Update update, FacadTelegramBotService service)
+    {
+        var message = update.Message;
+        var botClient = await service.GetBotClientAsync();
+        await botClient.SendTextMessageAsync(
+           message!.Chat.Id,
+           $"Info",
+           parseMode: ParseMode.Html
+       );
+    }
+}

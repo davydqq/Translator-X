@@ -3,6 +3,8 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Commands;
+using TelegramBotCommands.Commands.CallbackCommands;
+using TelegramBotCommands.Commands.MenuCommands;
 using TelegramBotManager;
 
 namespace TelegramBotCommands.Services;
@@ -24,7 +26,7 @@ public class CommandsHandlerService
         {
             if (command.CanHandle(update))
             {
-                await command.Execute(update, service);
+                await command.ExecuteAsync(update, service);
                 return true;
             }
         }
@@ -35,8 +37,14 @@ public class CommandsHandlerService
     public void InitCommands()
     {
         commands.Add(new StartTextCommand());
-        commands.Add(new LanguageTextCommand());
-        commands.Add(new ChangeLanguageCommand());
+        commands.Add(new GetInfoTextCommand());
+
+        commands.Add(new ChangeTargetLanguageTextCommand());
+        commands.Add(new ChangeNativeLanguageTextCommand());
+
+        commands.Add(new ChangeNativeLanguageCallbackCommand());
+        commands.Add(new ChangeTargetLanguageCallbackCommand());
+
         commands.Add(new OtherCommand());
     }
 }

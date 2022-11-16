@@ -16,7 +16,7 @@ namespace TelegramBotCommands.Commands
             return true;
         }
 
-        public override async Task Execute(Update update, FacadTelegramBotService service)
+        public override async Task ExecuteAsync(Update update, FacadTelegramBotService service)
         {
             var message = update.Message;
             var botClient = await service.GetBotClientAsync();

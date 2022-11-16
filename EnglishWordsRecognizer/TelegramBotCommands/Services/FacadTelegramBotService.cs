@@ -19,12 +19,17 @@ public class FacadTelegramBotService
 		this.config = config;
 	}
 
-	public void AddOrUpdateUserLanguage(long userId, LanguageENUM languageId)
+	public void AddOrUpdateUserNativeLanguage(long userId, LanguageENUM languageId)
 	{
-		memoryStorage.Storage.AddOrUpdate(userId, languageId, (key, oldValue) => languageId);
+		memoryStorage.UserId_NativeLanguage.AddOrUpdate(userId, languageId, (key, oldValue) => languageId);
     }
 
-	public Task<TelegramBotClient> GetBotClientAsync()
+    public void AddOrUpdateUserTargetLanguage(long userId, LanguageENUM languageId)
+    {
+        memoryStorage.UserId_TargetLanguage.AddOrUpdate(userId, languageId, (key, oldValue) => languageId);
+    }
+
+    public Task<TelegramBotClient> GetBotClientAsync()
 	{
         return BotManager.GetBotClientAsync(config);
     }
