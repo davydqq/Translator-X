@@ -8,5 +8,13 @@ namespace TelegramBotCommands.Commands;
 
 public class BaseCommandOptions
 {
-    public List<Action> CallBacksOnExecute { set; get; }
+    public List<FuncWrapper> CallBacksOnExecute { set; get; }
+}
+
+
+public class FuncWrapper
+{
+    public Func<bool> Func;
+
+    public bool canRun;
 }

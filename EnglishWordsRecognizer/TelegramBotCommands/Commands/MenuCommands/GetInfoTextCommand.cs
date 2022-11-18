@@ -2,6 +2,7 @@
 using Telegram.Bot.Types;
 using TelegramBotCommands.Services;
 using Telegram.Bot;
+using TelegramBotCommands.Entities;
 
 namespace TelegramBotCommands.Commands.MenuCommands;
 
@@ -17,7 +18,7 @@ public class GetInfoTextCommand : BaseTextCommand
         return true;
     }
 
-    public override async Task HandleTextCommandAsync(Update update, FacadTelegramBotService service)
+    public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
     {
         var message = update.Message;
         var botClient = await service.GetBotClientAsync();
@@ -26,5 +27,7 @@ public class GetInfoTextCommand : BaseTextCommand
            $"Info",
            parseMode: ParseMode.Html
        );
+
+        return new TextInternalCommandResult { IsExecuted = true };
     }
 }

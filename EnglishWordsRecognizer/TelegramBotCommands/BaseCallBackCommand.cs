@@ -2,6 +2,7 @@
 using Telegram.Bot.Types;
 using TelegramBotManager;
 using TelegramBotCommands.Services;
+using TelegramBotCommands.Entities;
 
 namespace TelegramBotCommands;
 
@@ -15,10 +16,13 @@ public abstract class BaseCallBackCommand : BaseCommand
         return false;
     }
 
-    public async override Task ExecuteAsync(Update update, FacadTelegramBotService service)
+
+    public async override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
     {
-        await HandleIternalCommand(update, service);
+       var res = await HandleIternalCommand(update, service);
+
+        return new BaseCommandResult() { IsExecuted = true };
     }
 
-    public abstract Task HandleIternalCommand(Update update, FacadTelegramBotService service);
+    public abstract Task<CallbackInternalCommandResult> HandleIternalCommand(Update update, FacadTelegramBotService service);
 }

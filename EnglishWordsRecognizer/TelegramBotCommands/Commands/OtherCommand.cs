@@ -1,6 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
 using TelegramBotManager;
 
@@ -16,7 +17,7 @@ namespace TelegramBotCommands.Commands
             return true;
         }
 
-        public override async Task ExecuteAsync(Update update, FacadTelegramBotService service)
+        public override async Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
         {
             var message = update.Message;
             var botClient = await service.GetBotClientAsync();
@@ -27,6 +28,8 @@ namespace TelegramBotCommands.Commands
                $"/language - change language",
                parseMode: ParseMode.Html
            );
+
+            return new BaseCommandResult() { IsExecuted = true };
         }
     }
 }

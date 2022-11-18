@@ -5,15 +5,16 @@ using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Commands;
 using TelegramBotCommands.Commands.CallbackCommands;
 using TelegramBotCommands.Commands.MenuCommands;
+using TelegramBotCommands.Entities;
 using TelegramBotManager;
 
 namespace TelegramBotCommands.Services;
 
 public class CommandsHandlerService
 {
-    private List<BaseCommand> commands = new List<BaseCommand>();
+    private List<IBaseCommand> commands = new List<IBaseCommand>();
 
-    public IReadOnlyList<BaseCommand> Commands => commands.AsReadOnly();
+    public IReadOnlyList<IBaseCommand> Commands => commands.AsReadOnly();
 
     public CommandsHandlerService()
     {

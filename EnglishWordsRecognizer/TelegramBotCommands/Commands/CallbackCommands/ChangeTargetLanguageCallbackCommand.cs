@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot.Types;
 using TelegramBotCommands.Commands.MenuCommands;
+using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
 using TelegramBotStorage.Languages;
 
@@ -7,8 +8,10 @@ namespace TelegramBotCommands.Commands.CallbackCommands;
 
 public class ChangeTargetLanguageCallbackCommand : BaseCallBackCommand
 {
-    public override Task HandleIternalCommand(Update update, FacadTelegramBotService service)
+    public override Task<CallbackInternalCommandResult> HandleIternalCommand(Update update, FacadTelegramBotService service)
     {
+        var res = new CallbackInternalCommandResult();
+
         var query = update.CallbackQuery;
 
         if (IsCanHandle(query.Data))
@@ -18,9 +21,10 @@ public class ChangeTargetLanguageCallbackCommand : BaseCallBackCommand
             {
                 service.AddOrUpdateUserTargetLanguage(query.From.Id, language.Value);
             }
+            res.IsExecuted = true;
         }
 
-        return Task.CompletedTask;
+        return Task.FromResult(res);
     }
 
     public bool IsCanHandle(string data)
