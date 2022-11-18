@@ -15,6 +15,13 @@ public class StartTextCommand : BaseTextCommand
         var changeNativeLanguageCommand = new ChangeNativeLanguageTextCommand();
         await changeNativeLanguageCommand.ExecuteAsync(update, service);
 
+        InitLanguageSetuping(update, service);
+
         return res;
+    }
+
+    private void InitLanguageSetuping(Update update, FacadTelegramBotService service)
+    {
+        service.AddOrUpdateUserSettedLanguage(update.Message!.From!.Id, false);
     }
 }

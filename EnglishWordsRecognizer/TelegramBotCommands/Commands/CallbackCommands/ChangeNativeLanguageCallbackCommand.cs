@@ -16,7 +16,7 @@ public class ChangeNativeLanguageCallbackCommand : BaseCallBackCommand
 {
     private ChangeNativeLanguageCommandOptions options;
 
-    public override Task<CallbackInternalCommandResult> HandleIternalCommand(Update update, FacadTelegramBotService service)
+    public override async Task<CallbackInternalCommandResult> HandleIternalCommand(Update update, FacadTelegramBotService service)
     {
         var res = new CallbackInternalCommandResult();
 
@@ -29,10 +29,17 @@ public class ChangeNativeLanguageCallbackCommand : BaseCallBackCommand
             {
                 service.AddOrUpdateUserNativeLanguage(query.From.Id, language.Value);
             }
+
+            if(!service.IsLanguageSetted(query.From.Id))
+            {
+                var command = new ChangeTargetLanguageTextCommand();
+                await command.ExecuteAsync(update, service);
+            }
+
             res.IsExecuted = true;
         }
 
-        return Task.FromResult(res);
+        return res;
     }
 
     public void AddOptions(ChangeNativeLanguageCommandOptions options)

@@ -21,6 +21,12 @@ public class ChangeTargetLanguageCallbackCommand : BaseCallBackCommand
             {
                 service.AddOrUpdateUserTargetLanguage(query.From.Id, language.Value);
             }
+
+            if (service.LanguagesInited(query.From.Id))
+            {
+                service.AddOrUpdateUserSettedLanguage(query.From.Id, true);
+            }
+
             res.IsExecuted = true;
         }
 

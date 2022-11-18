@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
@@ -7,9 +8,19 @@ using TelegramBotStorage;
 
 namespace TelegramBotCommands.Commands.MenuCommands;
 
+
+public class ChangeTargetLanguageTextCommandOptions : BaseCommandOptions
+{
+}
+
+
 public class ChangeTargetLanguageTextCommand : BaseTextCommand
 {
     public const string callBackId = "target_L-";
+
+    public const string message = $"Choose target language";
+
+    public ChangeTargetLanguageTextCommandOptions options;
 
     public override string Name => CommandsNames.LanguageTarget;
 
@@ -18,20 +29,19 @@ public class ChangeTargetLanguageTextCommand : BaseTextCommand
         var res = new TextInternalCommandResult();
 
         var buttons = GetLanguagesButtons();
-
         InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
-        var botClient = await service.GetBotClientAsync();
+        var chatId = options?.ChatId ?? update.Message.Chat.Id;
 
-        await botClient.SendTextMessageAsync(
-            update.Message.Chat.Id,
-            $"Choose target language",
-            parseMode: Telegram.Bot.Types.Enums.ParseMode.Html,
-            replyMarkup: inlineKeyboard
-        );
+        await service.SendMessageAsync(chatId, message, ParseMode.Html, inlineKeyboard);
 
         res.IsExecuted = true;
         return res;
+    }
+
+    public void AddOptions(ChangeTargetLanguageTextCommandOptions options)
+    {
+        this.options = options;
     }
 
     public static IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons()
