@@ -10,4 +10,6 @@ public abstract class BaseCommand : IBaseCommand
     public abstract Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service);
 
     public abstract bool CanHandle(Update update);
+
+    public abstract int Order { get; }
 }

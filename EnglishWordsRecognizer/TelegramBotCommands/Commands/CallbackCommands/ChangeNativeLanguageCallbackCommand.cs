@@ -18,6 +18,8 @@ public class ChangeNativeLanguageCallbackCommand : BaseCallBackCommand
 
     public override string CallBackId => ChangeNativeLanguageTextCommand.callBackId;
 
+    public override int Order => 1;
+
     public ChangeNativeLanguageCallbackCommand(ChangeNativeLanguageCommandOptions options)
     {
         this.options = options;
@@ -29,6 +31,11 @@ public class ChangeNativeLanguageCallbackCommand : BaseCallBackCommand
 
         var query = update.CallbackQuery;
 
+        if (options.IsDeleteCurrentMessage)
+        {
+            await service.DeleteMessageAsync(query.Message.Chat.Id, query.Message.MessageId);
+        }
+
         var language = GetLanguage(query.Data!);
         if (language.HasValue)
         {
@@ -37,7 +44,7 @@ public class ChangeNativeLanguageCallbackCommand : BaseCallBackCommand
 
         if (!service.IsLanguageSetted(query.From.Id))
         {
-            var options = new ChangeTargetLanguageTextCommandOptions { ChatId = query.Message.Chat.Id, MessageId = query.Message.MessageId, IsDeleteCurrentMessage = true };
+            var options = new ChangeTargetLanguageTextCommandOptions { ChatId = query.Message.Chat.Id, MessageId = query.Message.MessageId };
             var command = new ChangeTargetLanguageTextCommand(options);
 
             await command.ExecuteAsync(update, service);

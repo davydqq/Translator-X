@@ -9,4 +9,6 @@ public interface IBaseCommand
     public Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service);
 
     public bool CanHandle(Update update);
+
+    public int Order { get; }
 }

@@ -1,12 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Types;
 using TelegramBotCommands.Commands;
 using TelegramBotCommands.Commands.CallbackCommands;
 using TelegramBotCommands.Commands.MenuCommands;
-using TelegramBotCommands.Entities;
-using TelegramBotManager;
 
 namespace TelegramBotCommands.Services;
 
@@ -14,7 +9,7 @@ public class CommandsHandlerService
 {
     private List<IBaseCommand> commands = new List<IBaseCommand>();
 
-    public IReadOnlyList<IBaseCommand> Commands => commands.AsReadOnly();
+    public IReadOnlyList<IBaseCommand> Commands => commands.OrderBy(x => x.Order).ToList().AsReadOnly();
 
     public CommandsHandlerService()
     {
@@ -37,14 +32,14 @@ public class CommandsHandlerService
 
     public void InitCommands()
     {
-        commands.Add(new StartTextCommand());
-        commands.Add(new GetInfoTextCommand());
+        commands.Add(new StartTextCommand(new StartTextCommandOptions { IsDeleteCurrentMessage = true }));
+        commands.Add(new GetInfoTextCommand(new GetInfoTextCommandOptions()));
 
-        commands.Add(new ChangeTargetLanguageTextCommand(new ChangeTargetLanguageTextCommandOptions()));
-        commands.Add(new ChangeNativeLanguageTextCommand(new ChangeNativeLanguageTextCommandOptions()));
+        commands.Add(new ChangeTargetLanguageTextCommand(new ChangeTargetLanguageTextCommandOptions() { IsDeleteCurrentMessage = true }));
+        commands.Add(new ChangeNativeLanguageTextCommand(new ChangeNativeLanguageTextCommandOptions() {  IsDeleteCurrentMessage = true }));
 
-        commands.Add(new ChangeNativeLanguageCallbackCommand(new ChangeNativeLanguageCommandOptions()));
-        commands.Add(new ChangeTargetLanguageCallbackCommand(new ChangeTargetLanguageCallbackCommandOptions()));
+        commands.Add(new ChangeNativeLanguageCallbackCommand(new ChangeNativeLanguageCommandOptions() { IsDeleteCurrentMessage = true }));
+        commands.Add(new ChangeTargetLanguageCallbackCommand(new ChangeTargetLanguageCallbackCommandOptions() { IsDeleteCurrentMessage = true }));
 
         commands.Add(new OtherCommand());
     }

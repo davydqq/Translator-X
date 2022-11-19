@@ -6,9 +6,23 @@ using TelegramBotCommands.Entities;
 
 namespace TelegramBotCommands.Commands.MenuCommands;
 
+public class GetInfoTextCommandOptions : BaseCommandOptions
+{
+
+}
+
 public class GetInfoTextCommand : BaseTextCommand
 {
     public override string Name => CommandsNames.Info;
+
+    public override int Order => 4;
+
+    public GetInfoTextCommandOptions options;
+
+    public GetInfoTextCommand(GetInfoTextCommandOptions options)
+    {
+        this.options = options;
+    }
 
     public override bool CanHandle(Update update)
     {

@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
@@ -18,7 +19,11 @@ public class ChangeNativeLanguageTextCommand : BaseTextCommand
 
     public override string Name => CommandsNames.LanguageNative;
 
+    public override int Order => 2;
+
     public ChangeNativeLanguageTextCommandOptions options;
+
+    const string message = $"Choose your native language";
 
     public ChangeNativeLanguageTextCommand(ChangeNativeLanguageTextCommandOptions options)
     {
@@ -29,25 +34,16 @@ public class ChangeNativeLanguageTextCommand : BaseTextCommand
     {
         var res = new TextInternalCommandResult();
 
-        var message = update.Message;
+        if (options.IsDeleteCurrentMessage)
+        {
+            await service.DeleteMessageAsync(update.Message.Chat.Id, update.Message.MessageId);
+        }
 
+        var incomeMessage = update.Message;
         var buttons = GetLanguagesButtons();
 
         InlineKeyboardMarkup inlineKeyboard = new(buttons);
-
-        var botClient = await service.GetBotClientAsync();
-
-        await botClient.SendTextMessageAsync(
-            message.Chat.Id,
-            $"Choose your native language",
-            parseMode: Telegram.Bot.Types.Enums.ParseMode.Html,
-            replyMarkup: inlineKeyboard
-        );
-
-        if (options.IsDeleteCurrentMessage)
-        {
-            await service.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-        }
+        await service.SendMessageAsync(incomeMessage!.Chat.Id, message, ParseMode.Html, inlineKeyboard);
 
         res.IsExecuted = true;
         return res;

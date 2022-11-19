@@ -14,7 +14,6 @@ public class ChangeTargetLanguageTextCommandOptions : BaseCommandOptions
 
 }
 
-
 public class ChangeTargetLanguageTextCommand : BaseTextCommand
 {
     public const string callBackId = "target_L-";
@@ -25,6 +24,8 @@ public class ChangeTargetLanguageTextCommand : BaseTextCommand
 
     public override string Name => CommandsNames.LanguageTarget;
 
+    public override int Order => 3;
+
     public ChangeTargetLanguageTextCommand(ChangeTargetLanguageTextCommandOptions options)
     {
         this.options = options;
@@ -34,18 +35,17 @@ public class ChangeTargetLanguageTextCommand : BaseTextCommand
     {
         var res = new TextInternalCommandResult();
 
-        var buttons = GetLanguagesButtons();
-        InlineKeyboardMarkup inlineKeyboard = new(buttons);
-
         var chatId = options?.ChatId ?? update.Message.Chat.Id;
         var messageId = options?.MessageId ?? update.Message.MessageId;
-
-        await service.SendMessageAsync(chatId, message, ParseMode.Html, inlineKeyboard);
 
         if (options.IsDeleteCurrentMessage)
         {
             await service.DeleteMessageAsync(chatId, messageId);
         }
+
+        var buttons = GetLanguagesButtons();
+        InlineKeyboardMarkup inlineKeyboard = new(buttons);
+        await service.SendMessageAsync(chatId, message, ParseMode.Html, inlineKeyboard);
 
         res.IsExecuted = true;
         return res;

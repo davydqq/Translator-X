@@ -9,6 +9,8 @@ namespace TelegramBotCommands.Commands
 {
     public class OtherCommand : BaseCommand
     {
+        public override int Order => int.MaxValue;
+
         public override bool CanHandle(Update update)
         {
             if (update.Message == null || update.Message.Chat == null)
