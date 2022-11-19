@@ -3,15 +3,19 @@ using Telegram.Bot.Types;
 using TelegramBotManager;
 using TelegramBotCommands.Services;
 using TelegramBotCommands.Entities;
-
 namespace TelegramBotCommands;
 
 public abstract class BaseCallBackCommand : BaseCommand
 {
     public override bool CanHandle(Update update)
     {
-        if (update != null && update.Type == UpdateType.CallbackQuery)
+        if (update == null) return false;
+
+        var data = update.CallbackQuery?.Data;
+        if (!string.IsNullOrEmpty(data) && update.Type == UpdateType.CallbackQuery && data.StartsWith(CallBackId))
+        {
             return true;
+        }
 
         return false;
     }
@@ -25,4 +29,6 @@ public abstract class BaseCallBackCommand : BaseCommand
     }
 
     public abstract Task<CallbackInternalCommandResult> HandleIternalCommand(Update update, FacadTelegramBotService service);
+
+    public abstract string CallBackId { get; }
 }

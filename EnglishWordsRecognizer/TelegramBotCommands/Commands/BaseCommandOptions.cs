@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TelegramBotCommands.Commands;
+﻿namespace TelegramBotCommands.Commands;
 
 public class BaseCommandOptions
 {
     public long ChatId { set; get; }
+
+    public int MessageId { set; get; }
+
+    public bool IsDeleteCurrentMessage { set; get; }
 }

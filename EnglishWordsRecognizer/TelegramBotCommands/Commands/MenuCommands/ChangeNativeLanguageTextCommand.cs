@@ -7,11 +7,23 @@ using TelegramBotStorage;
 
 namespace TelegramBotCommands.Commands.MenuCommands;
 
+public class ChangeNativeLanguageTextCommandOptions : BaseCommandOptions
+{
+
+}
+
 public class ChangeNativeLanguageTextCommand : BaseTextCommand
 {
     public const string callBackId = "native_L-";
 
     public override string Name => CommandsNames.LanguageNative;
+
+    public ChangeNativeLanguageTextCommandOptions options;
+
+    public ChangeNativeLanguageTextCommand(ChangeNativeLanguageTextCommandOptions options)
+    {
+        this.options = options;
+    }
 
     public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
     {
@@ -31,6 +43,11 @@ public class ChangeNativeLanguageTextCommand : BaseTextCommand
             parseMode: Telegram.Bot.Types.Enums.ParseMode.Html,
             replyMarkup: inlineKeyboard
         );
+
+        if (options.IsDeleteCurrentMessage)
+        {
+            await service.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+        }
 
         res.IsExecuted = true;
         return res;

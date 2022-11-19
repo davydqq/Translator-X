@@ -40,11 +40,11 @@ public class CommandsHandlerService
         commands.Add(new StartTextCommand());
         commands.Add(new GetInfoTextCommand());
 
-        commands.Add(new ChangeTargetLanguageTextCommand());
-        commands.Add(new ChangeNativeLanguageTextCommand());
+        commands.Add(new ChangeTargetLanguageTextCommand(new ChangeTargetLanguageTextCommandOptions()));
+        commands.Add(new ChangeNativeLanguageTextCommand(new ChangeNativeLanguageTextCommandOptions()));
 
-        commands.Add(new ChangeNativeLanguageCallbackCommand());
-        commands.Add(new ChangeTargetLanguageCallbackCommand());
+        commands.Add(new ChangeNativeLanguageCallbackCommand(new ChangeNativeLanguageCommandOptions()));
+        commands.Add(new ChangeTargetLanguageCallbackCommand(new ChangeTargetLanguageCallbackCommandOptions()));
 
         commands.Add(new OtherCommand());
     }

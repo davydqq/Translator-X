@@ -12,7 +12,8 @@ public class StartTextCommand : BaseTextCommand
     {
         var res = new TextInternalCommandResult() { IsExecuted = true };
 
-        var changeNativeLanguageCommand = new ChangeNativeLanguageTextCommand();
+        var options = new ChangeNativeLanguageTextCommandOptions() { IsDeleteCurrentMessage = true };
+        var changeNativeLanguageCommand = new ChangeNativeLanguageTextCommand(options);
         await changeNativeLanguageCommand.ExecuteAsync(update, service);
 
         InitLanguageSetuping(update, service);

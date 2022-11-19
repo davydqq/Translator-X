@@ -11,6 +11,7 @@ namespace TelegramBotCommands.Commands.MenuCommands;
 
 public class ChangeTargetLanguageTextCommandOptions : BaseCommandOptions
 {
+
 }
 
 
@@ -24,6 +25,11 @@ public class ChangeTargetLanguageTextCommand : BaseTextCommand
 
     public override string Name => CommandsNames.LanguageTarget;
 
+    public ChangeTargetLanguageTextCommand(ChangeTargetLanguageTextCommandOptions options)
+    {
+        this.options = options;
+    }
+
     public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
     {
         var res = new TextInternalCommandResult();
@@ -32,16 +38,17 @@ public class ChangeTargetLanguageTextCommand : BaseTextCommand
         InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
         var chatId = options?.ChatId ?? update.Message.Chat.Id;
+        var messageId = options?.MessageId ?? update.Message.MessageId;
 
         await service.SendMessageAsync(chatId, message, ParseMode.Html, inlineKeyboard);
 
+        if (options.IsDeleteCurrentMessage)
+        {
+            await service.DeleteMessageAsync(chatId, messageId);
+        }
+
         res.IsExecuted = true;
         return res;
-    }
-
-    public void AddOptions(ChangeTargetLanguageTextCommandOptions options)
-    {
-        this.options = options;
     }
 
     public static IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons()

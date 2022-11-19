@@ -1,4 +1,5 @@
 ﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Commands.MenuCommands;
 using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
@@ -6,41 +7,43 @@ using TelegramBotStorage.Languages;
 
 namespace TelegramBotCommands.Commands.CallbackCommands;
 
+public class ChangeTargetLanguageCallbackCommandOptions : BaseCommandOptions
+{
+
+}
+
 public class ChangeTargetLanguageCallbackCommand : BaseCallBackCommand
 {
-    public override Task<CallbackInternalCommandResult> HandleIternalCommand(Update update, FacadTelegramBotService service)
+    private readonly ChangeTargetLanguageCallbackCommandOptions options;
+
+    public override string CallBackId => ChangeTargetLanguageTextCommand.callBackId;
+
+    public ChangeTargetLanguageCallbackCommand(ChangeTargetLanguageCallbackCommandOptions options)
+    {
+        this.options = options;
+    }
+
+    public async override Task<CallbackInternalCommandResult> HandleIternalCommand(Update update, FacadTelegramBotService service)
     {
         var res = new CallbackInternalCommandResult();
 
         var query = update.CallbackQuery;
 
-        if (IsCanHandle(query.Data))
+        var language = GetLanguage(query.Data!);
+        if (language.HasValue)
         {
-            var language = GetLanguage(query.Data!);
-            if (language.HasValue)
-            {
-                service.AddOrUpdateUserTargetLanguage(query.From.Id, language.Value);
-            }
-
-            if (service.LanguagesInited(query.From.Id))
-            {
-                service.AddOrUpdateUserSettedLanguage(query.From.Id, true);
-            }
-
-            res.IsExecuted = true;
+            service.AddOrUpdateUserTargetLanguage(query.From.Id, language.Value);
         }
 
-        return Task.FromResult(res);
-    }
-
-    public bool IsCanHandle(string data)
-    {
-        if (!string.IsNullOrEmpty(data) && data.StartsWith(ChangeTargetLanguageTextCommand.callBackId))
+        if (service.LanguagesInited(query.From.Id))
         {
-            return true;
+            service.AddOrUpdateUserSettedLanguage(query.From.Id, true);
+            await service.SendMessageAsync(query.Message.Chat.Id, $"The languages was established.\nYou can send text, photo, audio for translating.", ParseMode.Html);
         }
 
-        return false;
+        res.IsExecuted = true;
+
+        return res;
     }
 
     public LanguageENUM? GetLanguage(string data)

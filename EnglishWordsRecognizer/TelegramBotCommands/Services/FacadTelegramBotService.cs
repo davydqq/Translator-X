@@ -58,6 +58,12 @@ public class FacadTelegramBotService
         await botClient.SendTextMessageAsync(chatId, message, parseMode: parseMode, replyMarkup: replyMarkup);
     }
 
+    public async Task DeleteMessageAsync(long chatId, int messageId)
+    {
+        var botClient = await GetBotClientAsync();
+        await botClient.DeleteMessageAsync(chatId, messageId);
+    }
+
     public Task<TelegramBotClient> GetBotClientAsync()
 	{
         return BotManager.GetBotClientAsync(config);
