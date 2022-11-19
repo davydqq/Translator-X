@@ -1,6 +1,7 @@
 ﻿using Telegram.Bot.Types;
 using TelegramBotCommands.Commands;
 using TelegramBotCommands.Commands.CallbackCommands;
+using TelegramBotCommands.Commands.CoreCommands;
 using TelegramBotCommands.Commands.MenuCommands;
 
 namespace TelegramBotCommands.Services;
@@ -40,6 +41,14 @@ public class CommandsHandlerService
 
         commands.Add(new ChangeNativeLanguageCallbackCommand(new ChangeNativeLanguageCommandOptions() { IsDeleteCurrentMessage = true }));
         commands.Add(new ChangeTargetLanguageCallbackCommand(new ChangeTargetLanguageCallbackCommandOptions() { IsDeleteCurrentMessage = true }));
+
+        // Recognize Commands
+        commands.Add(new HandleImagesCommand());
+        commands.Add(new HandleDocumentsCommand());
+        commands.Add(new HandleAudiosCommand());
+        commands.Add(new HandleVideosCommand());
+        commands.Add(new HandleReplyCommand());
+        commands.Add(new HandleTextCommand());
 
         commands.Add(new OtherCommand());
     }

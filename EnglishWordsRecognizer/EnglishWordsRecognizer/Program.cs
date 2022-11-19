@@ -1,5 +1,7 @@
 using EnglishWordsRecognizer.Jobs;
 using TelegramBotCommands.Services;
+using TelegramBotImages;
+using TelegramBotImages.Entities;
 using TelegramBotManager.Configs;
 using TelegramBotStorage;
 
@@ -16,12 +18,15 @@ builder.Configuration
 
 // configs
 builder.Services.Configure<BotMenuConfig>(options => builder.Configuration.GetSection("BotMenu").Bind(options));
+builder.Services.Configure<AzureVisionConfig>(options => builder.Configuration.GetSection("AzureVisionConfig").Bind(options));
 builder.Services.Configure<BotCredentialsConfig>(options => builder.Configuration.GetSection("BotConfig").Bind(options));
 
 // services
 builder.Services.AddSingleton<CommandsHandlerService>();
 builder.Services.AddSingleton<MemoryStorage>();
 builder.Services.AddScoped<FacadTelegramBotService>();
+
+builder.Services.AddScoped<ImageProcessService>();
 
 // Add Hosted
 builder.Services.AddHostedService<RunAppJob>();
