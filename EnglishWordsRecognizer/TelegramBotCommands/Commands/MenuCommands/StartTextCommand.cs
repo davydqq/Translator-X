@@ -32,17 +32,14 @@ public class StartTextCommand : BaseTextCommand
             await service.DeleteMessageAsync(update.Message.Chat.Id, update.Message.MessageId);
         }
 
-        InitLanguageSetuping(update, service);
+        var userId = update.Message!.From!.Id;
+        service.DeleteUserNativeLanguage(userId);
+        service.DeleteUserTargetLanguage(userId);
 
         var options2 = new ChangeNativeLanguageTextCommandOptions();
         var changeNativeLanguageCommand = new ChangeNativeLanguageTextCommand(options2);
         await changeNativeLanguageCommand.ExecuteAsync(update, service);
 
         return res;
-    }
-
-    private void InitLanguageSetuping(Update update, FacadTelegramBotService service)
-    {
-        service.AddOrUpdateUserSettedLanguage(update.Message!.From!.Id, false);
     }
 }

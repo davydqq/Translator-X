@@ -1,4 +1,5 @@
 ﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Commands.MenuCommands;
 using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
@@ -30,21 +31,28 @@ public class ChangeNativeLanguageCallbackCommand : BaseCallBackCommand
         var res = new CallbackInternalCommandResult();
 
         var query = update.CallbackQuery;
+        var chatId = query.Message.Chat.Id;
+        var userId = query.From.Id;
 
         if (options.IsDeleteCurrentMessage)
         {
-            await service.DeleteMessageAsync(query.Message.Chat.Id, query.Message.MessageId);
+            await service.DeleteMessageAsync(chatId, query.Message.MessageId);
         }
 
         var language = GetLanguage(query.Data!);
         if (language.HasValue)
         {
-            service.AddOrUpdateUserNativeLanguage(query.From.Id, language.Value);
+            service.AddOrUpdateUserNativeLanguage(userId, language.Value);
         }
 
-        if (!service.IsLanguageSetted(query.From.Id))
+        if (service.LanguagesInited(userId))
         {
-            var options = new ChangeTargetLanguageTextCommandOptions { ChatId = query.Message.Chat.Id, MessageId = query.Message.MessageId };
+            await service.SendLanguagesWereEstablished(chatId, userId);
+        }
+
+        if (!service.IsTargetLanguageSetted(userId))
+        {
+            var options = new ChangeTargetLanguageTextCommandOptions { ChatId = chatId, MessageId = query.Message.MessageId };
             var command = new ChangeTargetLanguageTextCommand(options);
 
             await command.ExecuteAsync(update, service);

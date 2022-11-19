@@ -30,22 +30,31 @@ public class ChangeTargetLanguageCallbackCommand : BaseCallBackCommand
         var res = new CallbackInternalCommandResult();
 
         var query = update.CallbackQuery;
+        var chatId = query.Message.Chat.Id;
+        var userId = query.From.Id;
 
         if (options.IsDeleteCurrentMessage)
         {
-            await service.DeleteMessageAsync(query.Message.Chat.Id, query.Message.MessageId);
+            await service.DeleteMessageAsync(chatId, query.Message.MessageId);
         }
 
         var language = GetLanguage(query.Data!);
         if (language.HasValue)
         {
-            service.AddOrUpdateUserTargetLanguage(query.From.Id, language.Value);
+            service.AddOrUpdateUserTargetLanguage(userId, language.Value);
         }
 
-        if (service.LanguagesInited(query.From.Id))
+        if (service.LanguagesInited(userId))
         {
-            service.AddOrUpdateUserSettedLanguage(query.From.Id, true);
-            await service.SendMessageAsync(query.Message.Chat.Id, $"The languages was established.\nYou can send text, photo, audio for translating.", ParseMode.Html);
+            await service.SendLanguagesWereEstablished(chatId, userId);
+        }
+
+        if (!service.IsNativeLanguageSetted(userId))
+        {
+            var options = new ChangeNativeLanguageTextCommandOptions { ChatId = chatId, MessageId = query.Message.MessageId };
+            var command = new ChangeNativeLanguageTextCommand(options);
+
+            await command.ExecuteAsync(update, service);
         }
 
         res.IsExecuted = true;

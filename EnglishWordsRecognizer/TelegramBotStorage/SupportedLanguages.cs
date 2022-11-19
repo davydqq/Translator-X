@@ -36,6 +36,8 @@ public static class SupportedLanguages
 
     public static List<Language> languages = null;
 
+    public static Dictionary<LanguageENUM, Language> languagesDict = null;
+
     public static List<Language> GetLanguages()
     {
         if (languages == null)
@@ -58,6 +60,8 @@ public static class SupportedLanguages
                 new Language(LanguageENUM.Polish, Polish),
                 new Language(LanguageENUM.Turkish, Turkish),
             };
+
+            languagesDict = languages.ToDictionary(X => X.Id);
         }
 
         return languages;

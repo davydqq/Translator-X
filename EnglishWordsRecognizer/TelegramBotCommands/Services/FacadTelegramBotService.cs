@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -16,11 +17,14 @@ public class FacadTelegramBotService
 
 	private readonly IOptions<BotCredentialsConfig> config;
 
-	public FacadTelegramBotService(MemoryStorage memoryStorage, IOptions<BotCredentialsConfig> config)
+    private readonly ILogger<FacadTelegramBotService> logger;
+
+    public FacadTelegramBotService(MemoryStorage memoryStorage, IOptions<BotCredentialsConfig> config, ILogger<FacadTelegramBotService> logger)
 	{
 		this.memoryStorage = memoryStorage;
 		this.config = config;
-	}
+        this.logger = logger;
+    }
 
 	public void AddOrUpdateUserNativeLanguage(long userId, LanguageENUM languageId)
 	{
@@ -32,18 +36,33 @@ public class FacadTelegramBotService
         memoryStorage.UserId_TargetLanguage.AddOrUpdate(userId, languageId, (key, oldValue) => languageId);
     }
 
-    public void AddOrUpdateUserSettedLanguage(long userId, bool setted)
+    public void DeleteUserNativeLanguage(long userId)
     {
-        memoryStorage.UserId_LangugageSetted.AddOrUpdate(userId, setted, (key, oldValue) => setted);
+        memoryStorage.UserId_NativeLanguage.Remove(userId, out var language);
     }
 
-    public bool IsLanguageSetted(long userId) => this.memoryStorage.UserId_LangugageSetted.GetValueOrDefault(userId);
+    public void DeleteUserTargetLanguage(long userId)
+    {
+        memoryStorage.UserId_TargetLanguage.Remove(userId, out var language);
+    }
+
+    public LanguageENUM GetUserNativeLanguage(long userId)
+    {
+        return memoryStorage.UserId_NativeLanguage.GetValueOrDefault(userId);
+    }
+
+    public LanguageENUM GetUserTargetLanguage(long userId)
+    {
+        return memoryStorage.UserId_TargetLanguage.GetValueOrDefault(userId);
+    }
+
+    public bool IsNativeLanguageSetted(long userId) => memoryStorage.UserId_NativeLanguage.ContainsKey(userId);
+
+    public bool IsTargetLanguageSetted(long userId) => memoryStorage.UserId_TargetLanguage.ContainsKey(userId);
 
     public bool LanguagesInited(long userId)
     {
-        var nativeLang = memoryStorage.UserId_NativeLanguage.ContainsKey(userId);
-        var targetLang = memoryStorage.UserId_TargetLanguage.ContainsKey(userId);
-        return nativeLang && targetLang;
+        return IsNativeLanguageSetted(userId) && IsTargetLanguageSetted(userId);
     }
 
     public async Task SendMessageAsync(long chatId, string message, ParseMode parseMode)
@@ -60,8 +79,14 @@ public class FacadTelegramBotService
 
     public async Task DeleteMessageAsync(long chatId, int messageId)
     {
-        var botClient = await GetBotClientAsync();
-        await botClient.DeleteMessageAsync(chatId, messageId);
+        try
+        {
+            var botClient = await GetBotClientAsync();
+            await botClient.DeleteMessageAsync(chatId, messageId);
+        } catch (Exception e)
+        {
+            logger.LogWarning("Message wasn`t been deleted");
+        }
     }
 
     public Task<TelegramBotClient> GetBotClientAsync()
@@ -69,5 +94,15 @@ public class FacadTelegramBotService
         return BotManager.GetBotClientAsync(config);
     }
 
+    //
 
+    public async Task SendLanguagesWereEstablished(long chatId, long userId)
+    {
+        await SendMessageAsync(chatId, $"The languages was established.\n" +
+                                       $"You can send text, photo, audio for translating.\n" +
+                                       $"Your languages \n" +
+                                       $"Native Language: { SupportedLanguages.languagesDict[GetUserNativeLanguage(userId)].Name }\n" +
+                                       $"Target Language: { SupportedLanguages.languagesDict[GetUserTargetLanguage(userId)].Name }"
+                                , ParseMode.Html);
+    }
 }
