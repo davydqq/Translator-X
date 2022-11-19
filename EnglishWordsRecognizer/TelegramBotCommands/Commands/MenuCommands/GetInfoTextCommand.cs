@@ -35,6 +35,12 @@ public class GetInfoTextCommand : BaseTextCommand
     public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
     {
         var message = update.Message;
+
+        if (options.IsDeleteCurrentMessage)
+        {
+            await service.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+        }
+
         var botClient = await service.GetBotClientAsync();
         await botClient.SendTextMessageAsync(
            message!.Chat.Id,

@@ -33,7 +33,7 @@ public class CommandsHandlerService
     public void InitCommands()
     {
         commands.Add(new StartTextCommand(new StartTextCommandOptions { IsDeleteCurrentMessage = true }));
-        commands.Add(new GetInfoTextCommand(new GetInfoTextCommandOptions()));
+        commands.Add(new GetInfoTextCommand(new GetInfoTextCommandOptions() {  IsDeleteCurrentMessage = true }));
 
         commands.Add(new ChangeTargetLanguageTextCommand(new ChangeTargetLanguageTextCommandOptions() { IsDeleteCurrentMessage = true }));
         commands.Add(new ChangeNativeLanguageTextCommand(new ChangeNativeLanguageTextCommandOptions() {  IsDeleteCurrentMessage = true }));
