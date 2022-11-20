@@ -6,9 +6,12 @@ public class Language
 
     public string Name { set; get; }
 
-    public Language(LanguageENUM id, string name)
+    public string Code { set; get; }
+
+    public Language(LanguageENUM id, string name, string code)
     {
         Id = id;
         Name = name;
+        Code = code;
     }
 }

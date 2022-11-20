@@ -44,21 +44,21 @@ public static class SupportedLanguages
         {
             languages = new List<Language>
             {
-                new Language(LanguageENUM.Ukrainian, Ukrainian),
-                new Language(LanguageENUM.Russian, Russian),
-                new Language(LanguageENUM.English, English),
-                new Language(LanguageENUM.Spanish, Spanish),
-                new Language(LanguageENUM.French, French),
-                new Language(LanguageENUM.Japanese, Japanese),
-                new Language(LanguageENUM.Chinese, Chinese),
-                new Language(LanguageENUM.Czech, Czech),
-                new Language(LanguageENUM.Danish, Danish),
-                new Language(LanguageENUM.Hindi, Hindi),
-                new Language(LanguageENUM.Italian, Italian),
-                new Language(LanguageENUM.Swedish, Swedish),
-                new Language(LanguageENUM.German, German),
-                new Language(LanguageENUM.Polish, Polish),
-                new Language(LanguageENUM.Turkish, Turkish),
+                new Language(LanguageENUM.Ukrainian, Ukrainian, "uk"),
+                new Language(LanguageENUM.Russian, Russian, "ru"),
+                new Language(LanguageENUM.English, English, "en"),
+                new Language(LanguageENUM.Spanish, Spanish, "es"),
+                new Language(LanguageENUM.French, French, "fr"),
+                new Language(LanguageENUM.Japanese, Japanese, "ja"),
+                new Language(LanguageENUM.Chinese, Chinese, "zh-Hans"),
+                new Language(LanguageENUM.Czech, Czech, "cs"),
+                new Language(LanguageENUM.Danish, Danish, "da"),
+                new Language(LanguageENUM.Hindi, Hindi, "hi"),
+                new Language(LanguageENUM.Italian, Italian, "it"),
+                new Language(LanguageENUM.Swedish, Swedish, "sv"),
+                new Language(LanguageENUM.German, German, "de"),
+                new Language(LanguageENUM.Polish, Polish, "pl"),
+                new Language(LanguageENUM.Turkish, Turkish, "tr"),
             };
 
             languagesDict = languages.ToDictionary(X => X.Id);

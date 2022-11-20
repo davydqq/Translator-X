@@ -24,6 +24,7 @@
     <ProjectReference Include="..\TelegramBotCommands\TelegramBotCommands.csproj" />
     <ProjectReference Include="..\TelegramBotImages\TelegramBotImages.csproj" />
     <ProjectReference Include="..\TelegramBotManager\TelegramBotManager.csproj" />
+    <ProjectReference Include="..\TelegramBotTranslator\TelegramBotTranslator.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://download.stackhawk.com/hawk/jsonschema/hawkconfig.json" /></VisualStudio></ProjectExtensions>

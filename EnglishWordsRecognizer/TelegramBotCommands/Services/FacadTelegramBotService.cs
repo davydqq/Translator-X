@@ -9,6 +9,7 @@ using TelegramBotManager;
 using TelegramBotManager.Configs;
 using TelegramBotStorage;
 using TelegramBotStorage.Languages;
+using TelegramBotTranslator;
 
 namespace TelegramBotCommands.Services;
 
@@ -20,17 +21,21 @@ public class FacadTelegramBotService
 
     public readonly ImageProcessService imageProcessService;
 
+    public readonly TextProcessService textProcessService;
+
     private readonly ILogger<FacadTelegramBotService> logger;
 
     public FacadTelegramBotService(
         MemoryStorage memoryStorage, 
         IOptions<BotCredentialsConfig> config,
         ImageProcessService imageProcessService,
+        TextProcessService textProcessService,
         ILogger<FacadTelegramBotService> logger)
 	{
 		this.memoryStorage = memoryStorage;
 		this.config = config;
         this.imageProcessService = imageProcessService;
+        this.textProcessService = textProcessService;
         this.logger = logger;
     }
 

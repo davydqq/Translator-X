@@ -4,6 +4,8 @@ using TelegramBotImages;
 using TelegramBotImages.Entities;
 using TelegramBotManager.Configs;
 using TelegramBotStorage;
+using TelegramBotTranslator;
+using TelegramBotTranslator.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ builder.Configuration
 // configs
 builder.Services.Configure<BotMenuConfig>(options => builder.Configuration.GetSection("BotMenu").Bind(options));
 builder.Services.Configure<AzureVisionConfig>(options => builder.Configuration.GetSection("AzureVisionConfig").Bind(options));
+builder.Services.Configure<AzureTranslatorConfig>(options => builder.Configuration.GetSection("AzureTranslatorConfig").Bind(options));
 builder.Services.Configure<BotCredentialsConfig>(options => builder.Configuration.GetSection("BotConfig").Bind(options));
 
 // services
@@ -26,7 +29,11 @@ builder.Services.AddSingleton<CommandsHandlerService>();
 builder.Services.AddSingleton<MemoryStorage>();
 builder.Services.AddScoped<FacadTelegramBotService>();
 
+// Cognitive Services
+builder.Services.AddScoped<TextProcessService>();
 builder.Services.AddScoped<ImageProcessService>();
+
+builder.Services.AddHttpClient();
 
 // Add Hosted
 builder.Services.AddHostedService<RunAppJob>();

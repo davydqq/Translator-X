@@ -34,16 +34,18 @@ public class ChangeNativeLanguageTextCommand : BaseTextCommand
     {
         var res = new TextInternalCommandResult();
 
+        var chatId = options?.ChatId ?? update.Message.Chat.Id;
+        var messageId = options?.MessageId ?? update.Message.MessageId;
+
         if (options.IsDeleteCurrentMessage)
         {
-            await service.DeleteMessageAsync(update.Message.Chat.Id, update.Message.MessageId);
+            await service.DeleteMessageAsync(chatId, messageId);
         }
 
-        var incomeMessage = update.Message;
         var buttons = GetLanguagesButtons();
 
         InlineKeyboardMarkup inlineKeyboard = new(buttons);
-        await service.SendMessageAsync(incomeMessage!.Chat.Id, message, ParseMode.Html, inlineKeyboard);
+        await service.SendMessageAsync(chatId, message, ParseMode.Html, inlineKeyboard);
 
         res.IsExecuted = true;
         return res;

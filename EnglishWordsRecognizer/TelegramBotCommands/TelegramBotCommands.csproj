@@ -16,6 +16,7 @@
     <ProjectReference Include="..\TelegramBotImages\TelegramBotImages.csproj" />
     <ProjectReference Include="..\TelegramBotManager\TelegramBotManager.csproj" />
     <ProjectReference Include="..\TelegramBotStorage\TelegramBotStorage.csproj" />
+    <ProjectReference Include="..\TelegramBotTranslator\TelegramBotTranslator.csproj" />
   </ItemGroup>
 
 </Project>

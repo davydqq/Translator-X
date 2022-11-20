@@ -25,9 +25,7 @@ namespace TelegramBotCommands.Commands
             var botClient = await service.GetBotClientAsync();
             await botClient.SendTextMessageAsync(
                message!.Chat.Id,
-               $"<Avaliable commands \n" +
-               $"/start - start bot \n" +
-               $"/language - change language",
+               $"Avaliable commands \n",
                parseMode: ParseMode.MarkdownV2
            );
 
