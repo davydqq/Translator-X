@@ -102,7 +102,16 @@ public class FacadTelegramBotService
         return BotManager.GetBotClientAsync(config);
     }
 
-    //
+    public async Task<byte[]> DownloadFileAsync(string fileId)
+    {
+        var bot = await GetBotClientAsync();
+        var file = await bot.GetFileAsync(fileId);
+
+        using var saveImageStream = new MemoryStream();
+        await bot.DownloadFileAsync(file.FilePath, saveImageStream);
+
+        return saveImageStream.ToArray();
+    }
 
     public async Task SendLanguagesWereEstablished(long chatId, long userId)
     {

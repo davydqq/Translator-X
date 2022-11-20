@@ -31,11 +31,13 @@ public class HandleStickersCommand : BaseCommand
 
     public async override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
     {
-        var bot = await service.GetBotClientAsync();
-        var file = await bot.GetFileAsync(update.Message.Sticker.FileId);
-        using var ms = new MemoryStream();
-        await bot.DownloadFileAsync(file.FilePath, ms);
-        var res = await service.imageProcessService.AnalyzeImage(ms);
+        // TODO add validation accepted types;
+
+        var bytes = await service.DownloadFileAsync(update.Message.Sticker.FileId);
+
+        var resAnalys = await service.imageProcessService.AnalyzeImage(bytes);
+        var resOCR = await service.imageProcessService.OCRImage(bytes);
+
         return new BaseCommandResult();
     }
 }

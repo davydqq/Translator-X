@@ -19,34 +19,25 @@ public class ImageProcessService
         client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(this.options.Value.Key)) { Endpoint = this.options.Value.Endpoint };
     }
 
-    public async Task<ImageAnalysis> AnalyzeImage(MemoryStream imageSteam)
-    {
-        // Creating a list that defines the features to be extracted from the image. 
-
-        List<VisualFeatureTypes?> features = new List<VisualFeatureTypes?>()
-        {
-            VisualFeatureTypes.Tags
-        };
-
-        var results = await AnalyzeImage(imageSteam, features);
-
-        if (results == null) return null;
-
-        Console.WriteLine("Tags:");
-        foreach (var tag in results.Tags)
-        {
-            Console.WriteLine($"{tag.Name} {tag.Confidence}");
-        }
-        Console.WriteLine();
-
-        return results;
-    }
-
-    private async Task<ImageAnalysis> AnalyzeImage(MemoryStream imageSteam, List<VisualFeatureTypes?> features)
+    public async Task<ImageAnalysis> AnalyzeImage(byte[] bytes)
     {
         try
         {
+            List<VisualFeatureTypes?> features = new List<VisualFeatureTypes?>()
+            {
+                VisualFeatureTypes.Tags,
+                VisualFeatureTypes.Description,
+            };
+
+            using Stream imageSteam = new MemoryStream(bytes);
             ImageAnalysis results = await client.AnalyzeImageInStreamAsync(imageSteam, visualFeatures: features);
+
+            Console.WriteLine("Tags:");
+            foreach (var tag in results.Tags)
+            {
+                Console.WriteLine($"{tag.Name} {tag.Confidence}");
+            }
+
             return results;
         } catch(Exception e)
         {
@@ -55,4 +46,51 @@ public class ImageProcessService
 
         return null;
     }
+
+    public async Task<List<ReadResult>> OCRImage(byte[] bytes)
+    {
+        try
+        {
+            using Stream imageSteam = new MemoryStream(bytes);
+
+            // Read text from URL
+            var textHeaders = await client.ReadInStreamAsync(imageSteam);
+            // After the request, get the operation location (operation ID)
+            string operationLocation = textHeaders.OperationLocation;
+
+            // Retrieve the URI where the extracted text will be stored from the Operation-Location header.
+            // We only need the ID and not the full URL
+            const int numberOfCharsInOperationId = 36;
+            string operationId = operationLocation.Substring(operationLocation.Length - numberOfCharsInOperationId);
+
+            // Extract the text
+            ReadOperationResult results;
+
+            do
+            {
+                await Task.Delay(500);
+                results = await client.GetReadResultAsync(Guid.Parse(operationId));
+            }
+            while (results.Status == OperationStatusCodes.Running || results.Status == OperationStatusCodes.NotStarted);
+
+            // Display the found text.
+            var textUrlFileResults = results.AnalyzeResult.ReadResults;
+            foreach (ReadResult page in textUrlFileResults)
+            {
+                foreach (Line line in page.Lines)
+                {
+                    Console.WriteLine(line.Text);
+                }
+            }
+
+            return results.AnalyzeResult.ReadResults.ToList();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+        }
+
+        return null;
+    }
+
 }

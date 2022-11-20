@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
+using System.IO;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
 using TelegramBotManager;
+using File = System.IO.File;
 
 namespace TelegramBotCommands.Commands.CoreCommands;
 
@@ -36,14 +34,18 @@ public class HandlePhotosCommand : BaseCommand
 
 	public async override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
 	{
+        // TODO add validation accepted types;
+
         var bot = await service.GetBotClientAsync();
         var photos = update.Message.Photo;
         var maxPhoto = photos.MaxBy(x => x.FileSize);
-        var file = await bot.GetFileAsync(maxPhoto.FileId);
-        using var ms = new MemoryStream();
-        await bot.DownloadFileAsync(file.FilePath, ms);
-        var res = await service.imageProcessService.AnalyzeImage(ms);
+
+        var bytes = await service.DownloadFileAsync(maxPhoto.FileId);
+
+        var resAnalys = await service.imageProcessService.AnalyzeImage(bytes);
+        var resOCR = await service.imageProcessService.OCRImage(bytes);
 
         return new BaseCommandResult();
 	}
+
 }
