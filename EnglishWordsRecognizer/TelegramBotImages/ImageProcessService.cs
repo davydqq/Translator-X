@@ -1,12 +1,7 @@
 ﻿using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using TelegramBotImages.Entities;
 
 namespace TelegramBotImages;
@@ -14,39 +9,50 @@ namespace TelegramBotImages;
 public class ImageProcessService
 {
     private readonly IOptions<AzureVisionConfig> options;
-
+    private readonly ILogger<ImageProcessService> logger;
     private readonly ComputerVisionClient client;
 
-    public ImageProcessService(IOptions<AzureVisionConfig> options)
+    public ImageProcessService(IOptions<AzureVisionConfig> options, ILogger<ImageProcessService> logger)
 	{
         this.options = options;
+        this.logger = logger;
         client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(this.options.Value.Key)) { Endpoint = this.options.Value.Endpoint };
     }
 
-    public async Task AnalyzeImageUrl(string imageUrl)
+    public async Task<ImageAnalysis> AnalyzeImage(MemoryStream imageSteam)
     {
-        Console.WriteLine("----------------------------------------------------------");
-        Console.WriteLine("ANALYZE IMAGE - URL");
-        Console.WriteLine();
-
         // Creating a list that defines the features to be extracted from the image. 
 
         List<VisualFeatureTypes?> features = new List<VisualFeatureTypes?>()
-            {
-                VisualFeatureTypes.Tags
-            };
+        {
+            VisualFeatureTypes.Tags
+        };
 
-        Console.WriteLine($"Analyzing the image {Path.GetFileName(imageUrl)}...");
-        Console.WriteLine();
-        // Analyze the URL image 
-        ImageAnalysis results = await client.AnalyzeImageAsync(imageUrl, visualFeatures: features);
+        var results = await AnalyzeImage(imageSteam, features);
 
-        // Image tags and their confidence score
+        if (results == null) return null;
+
         Console.WriteLine("Tags:");
         foreach (var tag in results.Tags)
         {
             Console.WriteLine($"{tag.Name} {tag.Confidence}");
         }
         Console.WriteLine();
+
+        return results;
+    }
+
+    private async Task<ImageAnalysis> AnalyzeImage(MemoryStream imageSteam, List<VisualFeatureTypes?> features)
+    {
+        try
+        {
+            ImageAnalysis results = await client.AnalyzeImageInStreamAsync(imageSteam, visualFeatures: features);
+            return results;
+        } catch(Exception e)
+        {
+            logger.LogError(e.Message);
+        }
+
+        return null;
     }
 }

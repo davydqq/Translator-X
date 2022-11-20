@@ -25,10 +25,10 @@ namespace TelegramBotCommands.Commands
             var botClient = await service.GetBotClientAsync();
             await botClient.SendTextMessageAsync(
                message!.Chat.Id,
-               $"<h1>Avaliable commands</h1> \n" +
+               $"<Avaliable commands \n" +
                $"/start - start bot \n" +
                $"/language - change language",
-               parseMode: ParseMode.Html
+               parseMode: ParseMode.MarkdownV2
            );
 
             return new BaseCommandResult() { IsExecuted = true };

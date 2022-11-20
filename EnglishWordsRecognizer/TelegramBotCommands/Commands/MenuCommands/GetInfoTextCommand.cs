@@ -24,14 +24,6 @@ public class GetInfoTextCommand : BaseTextCommand
         this.options = options;
     }
 
-    public override bool CanHandle(Update update)
-    {
-        if (update.Message == null || update.Message.Chat == null)
-            return false;
-
-        return true;
-    }
-
     public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
     {
         var message = update.Message;

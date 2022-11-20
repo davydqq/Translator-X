@@ -4,6 +4,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBotImages;
 using TelegramBotManager;
 using TelegramBotManager.Configs;
 using TelegramBotStorage;
@@ -17,12 +18,19 @@ public class FacadTelegramBotService
 
 	private readonly IOptions<BotCredentialsConfig> config;
 
+    public readonly ImageProcessService imageProcessService;
+
     private readonly ILogger<FacadTelegramBotService> logger;
 
-    public FacadTelegramBotService(MemoryStorage memoryStorage, IOptions<BotCredentialsConfig> config, ILogger<FacadTelegramBotService> logger)
+    public FacadTelegramBotService(
+        MemoryStorage memoryStorage, 
+        IOptions<BotCredentialsConfig> config,
+        ImageProcessService imageProcessService,
+        ILogger<FacadTelegramBotService> logger)
 	{
 		this.memoryStorage = memoryStorage;
 		this.config = config;
+        this.imageProcessService = imageProcessService;
         this.logger = logger;
     }
 

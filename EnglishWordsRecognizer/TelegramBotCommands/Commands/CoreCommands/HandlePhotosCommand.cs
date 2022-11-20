@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Entities;
@@ -11,9 +12,9 @@ using TelegramBotManager;
 
 namespace TelegramBotCommands.Commands.CoreCommands;
 
-public class HandleImagesCommand : BaseCommand
+public class HandlePhotosCommand : BaseCommand
 {
-	public HandleImagesCommand()
+	public HandlePhotosCommand()
 	{
 
 	}
@@ -33,9 +34,16 @@ public class HandleImagesCommand : BaseCommand
         return true;
     }
 
-	public override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
+	public async override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
 	{
-		Console.WriteLine(5);
-		return Task.FromResult(new BaseCommandResult());
+        var bot = await service.GetBotClientAsync();
+        var photos = update.Message.Photo;
+        var maxPhoto = photos.MaxBy(x => x.FileSize);
+        var file = await bot.GetFileAsync(maxPhoto.FileId);
+        using var ms = new MemoryStream();
+        await bot.DownloadFileAsync(file.FilePath, ms);
+        var res = await service.imageProcessService.AnalyzeImage(ms);
+
+        return new BaseCommandResult();
 	}
 }

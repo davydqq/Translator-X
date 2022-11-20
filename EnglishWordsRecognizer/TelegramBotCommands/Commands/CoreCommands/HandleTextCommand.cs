@@ -16,11 +16,11 @@ public class HandleTextCommand : BaseCommand
 
     public override bool CanHandle(Update update)
     {
-        throw new NotImplementedException();
+        return false;
     }
 
     public override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(new BaseCommandResult());
     }
 }
