@@ -61,7 +61,9 @@ public class HandleTextCommand : BaseCommand
         var languageToId = service.GetUserTargetLanguage(userId);
         var languageTo = SupportedLanguages.languagesDict[languageToId];
 
+        // PROCESSING
         var text = update.Message.Text;
+
         var resDetect = await service.textProcessService.DetectLanguagesAsync(text);
 
         if(resDetect.Count > 0 && languageTo.Code == resDetect.First().Language)
