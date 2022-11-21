@@ -77,6 +77,7 @@ public class ImageProcessService
             var textUrlFileResults = results.AnalyzeResult.ReadResults;
             foreach (ReadResult page in textUrlFileResults)
             {
+                Console.WriteLine("Page: " + page.Page);
                 foreach (Line line in page.Lines)
                 {
                     Console.WriteLine(line.Text);

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -23,6 +24,16 @@ public class TextProcessService
         this.httpClientFactory = httpClientFactory;
     }
 
+    public async Task<List<AzureDetectLanguageResponse>> DetectLanguagesAsync(string textToDetect)
+    {
+        // Input and output languages are defined as parameters.
+        string route = "/detect?api-version=3.0";
+        object[] body = new object[] { new { Text = textToDetect } };
+        var requestBody = JsonConvert.SerializeObject(body);
+
+        return await SendRequestAsync<List<AzureDetectLanguageResponse>>(requestBody, route);
+    }
+
     public async Task<List<AzureTranslateResponse>> ProcessTextAsync(string textToTranslate, params string[] languages)
     {
         // Input and output languages are defined as parameters.
@@ -30,9 +41,14 @@ public class TextProcessService
         object[] body = new object[] { new { Text = textToTranslate } };
         var requestBody = JsonConvert.SerializeObject(body);
 
+        return await SendRequestAsync<List<AzureTranslateResponse>>(requestBody, route);
+    }
+
+    private async Task<T> SendRequestAsync<T>(string? requestBody, string route)
+    {
         using var httpClient = httpClientFactory.CreateClient();
         using var request = new HttpRequestMessage();
-        
+
         // Build the request.
         request.Method = HttpMethod.Post;
         request.RequestUri = new Uri(options.Value.Endpoint + route);
@@ -46,7 +62,7 @@ public class TextProcessService
         // Read response as a string.
         string result = await response.Content.ReadAsStringAsync();
 
-        var res = JsonConvert.DeserializeObject<List<AzureTranslateResponse>>(result);
+        var res = JsonConvert.DeserializeObject<T>(result);
 
         return res;
     }
