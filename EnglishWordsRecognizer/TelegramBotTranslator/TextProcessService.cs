@@ -34,7 +34,7 @@ public class TextProcessService
         return await SendRequestAsync<List<AzureDetectLanguageResponse>>(requestBody, route);
     }
 
-    public async Task<List<AzureTranslateResponse>> ProcessTextAsync(string textToTranslate, params string[] languages)
+    public async Task<List<AzureTranslateResponse>> ProcessTextAsync(string[] textToTranslate, params string[] languages)
     {
         // Input and output languages are defined as parameters.
         string route = "/translate?api-version=3.0" + string.Join("", languages.Select(lang => $"&to={lang}"));

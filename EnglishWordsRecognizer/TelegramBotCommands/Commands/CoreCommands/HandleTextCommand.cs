@@ -5,8 +5,6 @@ using TelegramBotCommands.Entities;
 using TelegramBotCommands.Services;
 using TelegramBotManager;
 using TelegramBotStorage;
-using static System.Net.Mime.MediaTypeNames;
-using TelegramBotStorage.Languages;
 
 namespace TelegramBotCommands.Commands.CoreCommands;
 
@@ -29,8 +27,8 @@ public class HandleTextCommand : BaseCommand
 
     public async override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
     {
-        if(!string.IsNullOrEmpty(update.Message?.From?.Id.ToString()) ||
-            !string.IsNullOrEmpty(update.Message?.Chat?.Id.ToString()))
+        if(string.IsNullOrEmpty(update.Message?.From?.Id.ToString()) ||
+            string.IsNullOrEmpty(update.Message?.Chat?.Id.ToString()))
         {
             return new BaseCommandResult { IsExecuted = false };
         }
@@ -68,7 +66,7 @@ public class HandleTextCommand : BaseCommand
 
         if(resDetect.Count > 0 && languageTo.Code == resDetect.First().Language)
         {
-            var languageFromId = service.GetUserTargetLanguage(userId);
+            var languageFromId = service.GetUserNativeLanguage(userId);
             var languageFrom = SupportedLanguages.languagesDict[languageFromId];
 
             var resTextFrom = await GetTranslationsAsync(service, text, languageFrom.Code);
@@ -93,7 +91,7 @@ public class HandleTextCommand : BaseCommand
 
     private async Task<string> GetTranslationsAsync(FacadTelegramBotService service, string text, string langCode)
     {
-        var res = await service.textProcessService.ProcessTextAsync(text, langCode);
+        var res = await service.textProcessService.ProcessTextAsync(new[] { text }, langCode);
         var resText = string.Join("\n", res.SelectMany(x => x.Translations).Select(x => x.Text));
         return resText;
     }

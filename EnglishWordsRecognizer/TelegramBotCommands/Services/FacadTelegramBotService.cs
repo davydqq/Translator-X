@@ -69,6 +69,25 @@ public class FacadTelegramBotService
         return memoryStorage.UserId_TargetLanguage.GetValueOrDefault(userId);
     }
 
+    public List<Language> GetUserLanguages(long userId)
+    {
+        var languages = new List<Language>();
+
+        if (memoryStorage.UserId_NativeLanguage.ContainsKey(userId))
+        {
+            var languageId = memoryStorage.UserId_NativeLanguage[userId];
+            languages.Add(SupportedLanguages.languagesDict[languageId]);
+        }
+
+        if (memoryStorage.UserId_TargetLanguage.ContainsKey(userId))
+        {
+            var languageId = memoryStorage.UserId_TargetLanguage[userId];
+            languages.Add(SupportedLanguages.languagesDict[languageId]);
+        }
+
+        return languages;
+    }
+
     public bool IsNativeLanguageSetted(long userId) => memoryStorage.UserId_NativeLanguage.ContainsKey(userId);
 
     public bool IsTargetLanguageSetted(long userId) => memoryStorage.UserId_TargetLanguage.ContainsKey(userId);
