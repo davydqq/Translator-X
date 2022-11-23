@@ -1,4 +1,4 @@
-﻿namespace TelegramBotManager.Configs;
+﻿namespace TB.Core.Configs;
 
 public class BotMenuCommand
 {

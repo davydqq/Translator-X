@@ -1,12 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Telegram.Bot;
-using Telegram.Bot.Types;
+using TB.Core.Configs;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotImages;
-using TelegramBotManager;
-using TelegramBotManager.Configs;
 using TelegramBotStorage;
 using TelegramBotStorage.Languages;
 using TelegramBotTranslator;
@@ -95,46 +91,6 @@ public class FacadTelegramBotService
     public bool LanguagesInited(long userId)
     {
         return IsNativeLanguageSetted(userId) && IsTargetLanguageSetted(userId);
-    }
-
-    public async Task SendMessageAsync(long chatId, string message, ParseMode parseMode)
-    {
-        var botClient = await GetBotClientAsync();
-        await botClient.SendTextMessageAsync(chatId, message, parseMode: parseMode);
-    }
-
-    public async Task SendMessageAsync(long chatId, string message, ParseMode parseMode, IReplyMarkup replyMarkup)
-    {
-        var botClient = await GetBotClientAsync();
-        await botClient.SendTextMessageAsync(chatId, message, parseMode: parseMode, replyMarkup: replyMarkup);
-    }
-
-    public async Task DeleteMessageAsync(long chatId, int messageId)
-    {
-        try
-        {
-            var botClient = await GetBotClientAsync();
-            await botClient.DeleteMessageAsync(chatId, messageId);
-        } catch (Exception e)
-        {
-            logger.LogWarning("Message wasn`t been deleted");
-        }
-    }
-
-    public Task<TelegramBotClient> GetBotClientAsync()
-	{
-        return BotManager.GetBotClientAsync(config);
-    }
-
-    public async Task<byte[]> DownloadFileAsync(string fileId)
-    {
-        var bot = await GetBotClientAsync();
-        var file = await bot.GetFileAsync(fileId);
-
-        using var saveImageStream = new MemoryStream();
-        await bot.DownloadFileAsync(file.FilePath, saveImageStream);
-
-        return saveImageStream.ToArray();
     }
 
     public async Task SendLanguagesWereEstablished(long chatId, long userId)

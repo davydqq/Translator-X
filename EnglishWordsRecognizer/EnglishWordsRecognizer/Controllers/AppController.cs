@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CQRS.Commands;
+using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
-using TelegramBotCommands.Services;
+using TelegramBotCommands;
 
 namespace EnglishWordsRecognizer.Controllers
 {
@@ -8,14 +9,11 @@ namespace EnglishWordsRecognizer.Controllers
     [ApiController]
     public class AppController : ControllerBase
     {
-        private readonly FacadTelegramBotService facadTelegramBotService;
+        private readonly ICommandDispatcher dispatcher;
 
-        private readonly CommandsHandlerService commandsHandler;
-
-        public AppController(FacadTelegramBotService facadTelegramBotService, CommandsHandlerService commandsHandler)
+        public AppController(ICommandDispatcher dispatcher)
         {
-            this.facadTelegramBotService = facadTelegramBotService;
-            this.commandsHandler = commandsHandler;
+            this.dispatcher = dispatcher;
         }
 
         [HttpPost("updates")]
@@ -23,14 +21,9 @@ namespace EnglishWordsRecognizer.Controllers
         {
             if (update == null) return BadRequest("Update is empty");
 
-            var res = await commandsHandler.HandleCommand(update, facadTelegramBotService);
+            await dispatcher.DispatchAsync(new TelegramUpdatesCommand(update));
 
-            if (res)
-            {
-                return Ok();
-            }
-
-            return Ok("Command not found");
+            return Ok();
         }
     }
 }

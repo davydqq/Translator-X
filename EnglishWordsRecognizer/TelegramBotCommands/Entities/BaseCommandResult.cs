@@ -1,8 +1,13 @@
-﻿
+﻿using CQRS.Commands;
 
 namespace TelegramBotCommands.Entities;
 
 public class BaseCommandResult
 {
-    public bool IsExecuted { set; get; }
+    public ICommand Command { set; get; }
+
+    public BaseCommandResult(ICommand command)
+    {
+        Command = command;
+    }
 }

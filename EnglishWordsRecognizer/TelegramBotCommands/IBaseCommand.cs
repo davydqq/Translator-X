@@ -6,7 +6,7 @@ namespace TelegramBotCommands;
 
 public interface IBaseCommand 
 {
-    public Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service);
+    public Task<BaseCommandResult> ExecuteAsync(Update update);
 
     public bool CanHandle(Update update);
 

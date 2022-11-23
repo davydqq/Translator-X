@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnglishWordsRecognizer", "EnglishWordsRecognizer\EnglishWordsRecognizer.csproj", "{92CA64FA-734E-4AAF-B3BD-F61D63008F2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotManager", "TelegramBotManager\TelegramBotManager.csproj", "{657946CA-C2D3-4CBD-9B4D-9E0C89E15C18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Core", "TelegramBotManager\TB.Core.csproj", "{657946CA-C2D3-4CBD-9B4D-9E0C89E15C18}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotCommands", "TelegramBotCommands\TelegramBotCommands.csproj", "{04CACE4A-D486-4798-ACCB-AED6FCF91C6B}"
 EndProject

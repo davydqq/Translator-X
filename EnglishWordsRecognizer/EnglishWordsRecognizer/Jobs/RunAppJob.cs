@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
+using TB.Core.Configs;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using TelegramBotCommands.Services;
-using TelegramBotManager;
-using TelegramBotManager.Configs;
 
 namespace EnglishWordsRecognizer.Jobs
 {
@@ -14,6 +12,13 @@ namespace EnglishWordsRecognizer.Jobs
         private readonly ILogger<RunAppJob> logger;
 
         private readonly IOptions<BotMenuConfig> botMenuOptions;
+
+        private readonly TelegramBotClient telegramBotClient;
+
+        public RunAppJob(TelegramBotClient telegramBotClient)
+        {
+            this.telegramBotClient = telegramBotClient;
+        }
 
         public RunAppJob(
             IOptions<BotCredentialsConfig> botCredOptions, 
@@ -27,8 +32,8 @@ namespace EnglishWordsRecognizer.Jobs
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var botClient = await InitBotAsync();
-            await SendMenuAsync(botClient);
+            await InitBotAsync();
+            await SendMenuAsync(telegramBotClient);
         }
 
         public async Task SendMenuAsync(TelegramBotClient botClient)
@@ -37,23 +42,11 @@ namespace EnglishWordsRecognizer.Jobs
             await botClient.SetMyCommandsAsync(newCommands);
         }
 
-        private async Task<TelegramBotClient> InitBotAsync()
+        private async Task InitBotAsync()
         {
-            TelegramBotClient botClient = null;
-            
-            var botInited = false;
+            await telegramBotClient.SetWebhookAsync(botCredOptions.Value.Url);
 
-            while (!botInited)
-            {
-                botClient = await BotManager.GetBotClientAsync(botCredOptions);
-                botInited = botClient != null;
-
-                await Task.Delay(10 * 1000);
-            }
-
-            logger.LogInformation("Bot was inited");
-
-            return botClient!;
+            logger.LogInformation("WebHook was setted");
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
