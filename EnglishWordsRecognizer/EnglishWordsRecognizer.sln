@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotStorage", "Teleg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotImages", "TelegramBotImages\TelegramBotImages.csproj", "{4CFFC37A-823E-4B1D-A693-46B731284B5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBotTranslator", "TelegramBotTranslator\TelegramBotTranslator.csproj", "{612D1ACE-4AA6-4ADD-8914-C239E2DB42C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotTranslator", "TelegramBotTranslator\TelegramBotTranslator.csproj", "{612D1ACE-4AA6-4ADD-8914-C239E2DB42C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F1E762D0-1CBD-4C9F-9ACC-2D8DED021D3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS", "CQRS\CQRS.csproj", "{A9DA612C-C40E-49E6-8B84-071AC18B7EC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +49,16 @@ Global
 		{612D1ACE-4AA6-4ADD-8914-C239E2DB42C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{612D1ACE-4AA6-4ADD-8914-C239E2DB42C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{612D1ACE-4AA6-4ADD-8914-C239E2DB42C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9DA612C-C40E-49E6-8B84-071AC18B7EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9DA612C-C40E-49E6-8B84-071AC18B7EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9DA612C-C40E-49E6-8B84-071AC18B7EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9DA612C-C40E-49E6-8B84-071AC18B7EC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A9DA612C-C40E-49E6-8B84-071AC18B7EC3} = {F1E762D0-1CBD-4C9F-9ACC-2D8DED021D3C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07CD39E-2C9C-42BB-8BEA-67750847197E}

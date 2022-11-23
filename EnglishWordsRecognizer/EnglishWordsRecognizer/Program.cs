@@ -1,3 +1,4 @@
+using CQRS;
 using EnglishWordsRecognizer.Jobs;
 using TelegramBotCommands.Services;
 using TelegramBotImages;
@@ -19,6 +20,8 @@ builder.Configuration
 // Add services to the container
 
 // configs
+builder.Services.RegisterCQRS();
+
 builder.Services.Configure<BotMenuConfig>(options => builder.Configuration.GetSection("BotMenu").Bind(options));
 builder.Services.Configure<AzureVisionConfig>(options => builder.Configuration.GetSection("AzureVisionConfig").Bind(options));
 builder.Services.Configure<AzureTranslatorConfig>(options => builder.Configuration.GetSection("AzureTranslatorConfig").Bind(options));
