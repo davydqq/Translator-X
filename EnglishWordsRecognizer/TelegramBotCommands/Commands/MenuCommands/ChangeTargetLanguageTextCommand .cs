@@ -1,10 +1,7 @@
-﻿using Telegram.Bot;
+﻿using TB.Menu.Commands;
+using TB.Menu;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotCommands.Entities;
-using TelegramBotCommands.Services;
-using TelegramBotStorage;
 
 namespace TelegramBotCommands.Commands.MenuCommands;
 
@@ -16,10 +13,6 @@ public class ChangeTargetLanguageTextCommandOptions : BaseCommandOptions
 
 public class ChangeTargetLanguageTextCommand : BaseTextCommand
 {
-    public const string callBackId = "target_L-";
-
-    public const string message = $"Choose target language";
-
     public ChangeTargetLanguageTextCommandOptions options;
 
     public override string Name => CommandsNames.LanguageTarget;
@@ -31,37 +24,15 @@ public class ChangeTargetLanguageTextCommand : BaseTextCommand
         this.options = options;
     }
 
-    public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
+    public override TextInternalCommandResult HandleTextInternalCommand(Update update)
     {
-        var res = new TextInternalCommandResult();
+        var message = update.Message;
+        var userId = update.Message!.From!.Id;
 
-        var chatId = options?.ChatId ?? update.Message.Chat.Id;
-        var messageId = options?.MessageId ?? update.Message.MessageId;
+        var chatId = options?.ChatId ?? message.Chat.Id;
+        var messageId = options?.MessageId ?? message.MessageId;
 
-        if (options.IsDeleteCurrentMessage)
-        {
-            await service.DeleteMessageAsync(chatId, messageId);
-        }
-
-        var buttons = GetLanguagesButtons();
-        InlineKeyboardMarkup inlineKeyboard = new(buttons);
-        await service.SendMessageAsync(chatId, message, ParseMode.Html, inlineKeyboard);
-
-        res.IsExecuted = true;
-        return res;
-    }
-
-    public static IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons()
-    {
-        return SupportedLanguages.GetLanguages().Chunk(2).Select(languages =>
-        {
-            return languages.Select(language =>
-            {
-                var name = language.Name;
-                var languageCallbackData = callBackId + language.Id.ToString();
-
-                return InlineKeyboardButton.WithCallbackData(text: language.Name, callbackData: languageCallbackData);
-            });
-        });
+        var command = new SendMenuCommand(BotMenuId.TargetLanguage, chatId, messageId, userId, options.IsDeleteCurrentMessage);
+        return new TextInternalCommandResult { Command = command };
     }
 }

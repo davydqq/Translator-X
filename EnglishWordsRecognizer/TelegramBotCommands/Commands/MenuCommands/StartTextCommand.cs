@@ -1,6 +1,7 @@
-﻿using Telegram.Bot.Types;
+﻿using TB.Menu.Commands;
+using TB.Menu;
+using Telegram.Bot.Types;
 using TelegramBotCommands.Entities;
-using TelegramBotCommands.Services;
 
 namespace TelegramBotCommands.Commands.MenuCommands;
 
@@ -23,23 +24,11 @@ public class StartTextCommand : BaseTextCommand
         this.options = options;
     }
 
-    public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
+    public override TextInternalCommandResult HandleTextInternalCommand(Update update)
     {
-        var res = new TextInternalCommandResult() { IsExecuted = true };
-
-        if (options.IsDeleteCurrentMessage)
-        {
-            await service.DeleteMessageAsync(update.Message.Chat.Id, update.Message.MessageId);
-        }
-
+        var message = update.Message;
         var userId = update.Message!.From!.Id;
-        service.DeleteUserNativeLanguage(userId);
-        service.DeleteUserTargetLanguage(userId);
-
-        var options2 = new ChangeNativeLanguageTextCommandOptions();
-        var changeNativeLanguageCommand = new ChangeNativeLanguageTextCommand(options2);
-        await changeNativeLanguageCommand.ExecuteAsync(update, service);
-
-        return res;
+        var command = new SendMenuCommand(BotMenuId.Start, message!.Chat.Id, message.MessageId, userId, options.IsDeleteCurrentMessage);
+        return new TextInternalCommandResult { Command = command };
     }
 }

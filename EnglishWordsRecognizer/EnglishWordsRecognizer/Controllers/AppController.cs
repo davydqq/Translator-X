@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
 using TelegramBotCommands;
 
-namespace EnglishWordsRecognizer.Controllers
+namespace TB.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

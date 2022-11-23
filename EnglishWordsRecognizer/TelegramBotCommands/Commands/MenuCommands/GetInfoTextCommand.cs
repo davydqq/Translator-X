@@ -1,8 +1,7 @@
-﻿using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types;
-using TelegramBotCommands.Services;
-using Telegram.Bot;
+﻿using Telegram.Bot.Types;
 using TelegramBotCommands.Entities;
+using TB.Menu.Commands;
+using TB.Menu;
 
 namespace TelegramBotCommands.Commands.MenuCommands;
 
@@ -24,22 +23,11 @@ public class GetInfoTextCommand : BaseTextCommand
         this.options = options;
     }
 
-    public override async Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service)
+    public override TextInternalCommandResult HandleTextInternalCommand(Update update)
     {
         var message = update.Message;
-
-        if (options.IsDeleteCurrentMessage)
-        {
-            await service.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-        }
-
-        var botClient = await service.GetBotClientAsync();
-        await botClient.SendTextMessageAsync(
-           message!.Chat.Id,
-           $"Info",
-           parseMode: ParseMode.Html
-       );
-
-        return new TextInternalCommandResult { IsExecuted = true };
+        var userId = update.Message!.From!.Id;
+        var command = new SendMenuCommand(BotMenuId.Info, message!.Chat.Id, message.MessageId, userId, options.IsDeleteCurrentMessage);
+        return new TextInternalCommandResult { Command = command };
     }
 }

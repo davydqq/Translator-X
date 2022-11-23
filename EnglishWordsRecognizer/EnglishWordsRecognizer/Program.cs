@@ -1,7 +1,7 @@
 using CQRS;
-using EnglishWordsRecognizer.Jobs;
-using Microsoft.Extensions.DependencyInjection;
+using TB.API.Jobs;
 using TB.Core.Configs;
+using TB.Menu;
 using Telegram.Bot;
 using TelegramBotCommands.Services;
 using TelegramBotImages;

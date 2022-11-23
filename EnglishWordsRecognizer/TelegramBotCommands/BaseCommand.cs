@@ -6,7 +6,7 @@ namespace TelegramBotManager;
 
 public abstract class BaseCommand : IBaseCommand
 {
-    public abstract Task<BaseCommandResult> ExecuteAsync(Update update);
+    public abstract BaseCommandResult Execute(Update update);
 
     public abstract bool CanHandle(Update update);
 

@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using TB.Core.Configs;
+using TB.Menu;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace EnglishWordsRecognizer.Jobs
+namespace TB.API.Jobs
 {
     public class RunAppJob : IHostedService
     {
@@ -21,7 +22,7 @@ namespace EnglishWordsRecognizer.Jobs
         }
 
         public RunAppJob(
-            IOptions<BotCredentialsConfig> botCredOptions, 
+            IOptions<BotCredentialsConfig> botCredOptions,
             ILogger<RunAppJob> logger,
             IOptions<BotMenuConfig> botMenuOptions)
         {

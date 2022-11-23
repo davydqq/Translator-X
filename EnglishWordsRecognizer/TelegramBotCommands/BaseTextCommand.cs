@@ -1,7 +1,6 @@
 ﻿using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TelegramBotCommands.Entities;
-using TelegramBotCommands.Services;
 using TelegramBotManager;
 
 namespace TelegramBotCommands;
@@ -25,12 +24,10 @@ public abstract class BaseTextCommand : BaseCommand
         return message.Text.Contains(this.Name);
     }
 
-    public async override Task<BaseCommandResult> ExecuteAsync(Update update, FacadTelegramBotService service)
+    public override BaseCommandResult Execute(Update update)
     {
-        var res = await HandleTextInternalCommandAsync(update!, service);
-
-        return new BaseCommandResult() { IsExecuted = true };
+        return HandleTextInternalCommand(update);
     }
 
-    public abstract Task<TextInternalCommandResult> HandleTextInternalCommandAsync(Update update, FacadTelegramBotService service);
+    public abstract TextInternalCommandResult HandleTextInternalCommand(Update update);
 }
