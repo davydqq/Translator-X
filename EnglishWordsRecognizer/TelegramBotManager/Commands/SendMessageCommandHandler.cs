@@ -7,9 +7,9 @@ namespace TB.Core.Commands;
 public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand>
 {
     private readonly TelegramBotClient telegramBotClient;
-    private readonly ILogger logger;
+    private readonly ILogger<SendMessageCommandHandler> logger;
 
-    public SendMessageCommandHandler(TelegramBotClient telegramBotClient, ILogger logger)
+    public SendMessageCommandHandler(TelegramBotClient telegramBotClient, ILogger<SendMessageCommandHandler> logger)
     {
         this.telegramBotClient = telegramBotClient;
         this.logger = logger;

@@ -1,4 +1,5 @@
 using CQRS;
+using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.API.Jobs;
 using TB.ComputerVision;
@@ -7,10 +8,10 @@ using TB.Core.Configs;
 using TB.MemoryStorage;
 using TB.Menu.Entities;
 using TB.Routing;
+using TB.Routing.Commands;
 using TB.Translator;
 using TB.Translator.Entities.Azure;
 using Telegram.Bot;
-using TelegramBotStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,8 +49,8 @@ builder.Services.AddSingleton(x =>
 builder.Services.AddSingleton<Storage>();
 
 // Cognitive Services
-builder.Services.AddScoped<ITranslateService, AzureTranslateService>();
-builder.Services.AddScoped<IComputerVisionService, AzureComputerVisionService>();
+builder.Services.AddSingleton<ITranslateService, AzureTranslateService>();
+builder.Services.AddSingleton<IComputerVisionService, AzureComputerVisionService>();
 
 builder.Services.AddHttpClient();
 

@@ -10,7 +10,8 @@ public class QueryDispatcher : IQueryDispatcher
 
     public Task<TQueryResult> DispatchAsync<TQueryResult>(IQuery<TQueryResult> query, CancellationToken cancellation)
     {
-        var handler = _serviceProvider.GetRequiredService<IQueryHandler<IQuery<TQueryResult>, TQueryResult>>();
-        return handler.HandleAsync(query, cancellation);
+        var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TQueryResult));
+        dynamic handler = _serviceProvider.GetRequiredService(handlerType);
+        return handler.HandleAsync((dynamic)query, cancellation);
     }
 }

@@ -7,9 +7,9 @@ namespace TB.Core.Queries;
 public class DownloadFileQueryHandler : IQueryHandler<DownloadFileQuery, byte[]>
 {
     private readonly TelegramBotClient telegramBotClient;
-    private readonly ILogger logger;
+    private readonly ILogger<DownloadFileQueryHandler> logger;
 
-    public DownloadFileQueryHandler(TelegramBotClient telegramBotClient, ILogger logger)
+    public DownloadFileQueryHandler(TelegramBotClient telegramBotClient, ILogger<DownloadFileQueryHandler> logger)
     {
         this.telegramBotClient = telegramBotClient;
         this.logger = logger;

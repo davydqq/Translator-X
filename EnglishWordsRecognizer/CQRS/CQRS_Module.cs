@@ -22,9 +22,9 @@ public static class CQRS_Module
                         filter.AssignableTo(typeof(IQueryHandler<,>));
                     })
                     .AsImplementedInterfaces()
-                    .WithSingletonLifetime();
+                    .WithTransientLifetime();
         });
-
+         
         services.Scan(selector =>
         {
             selector.FromApplicationDependencies()
@@ -33,7 +33,18 @@ public static class CQRS_Module
                         filter.AssignableTo(typeof(ICommandHandler<,>));
                     })
                     .AsImplementedInterfaces()
-                    .WithSingletonLifetime();
+                    .WithTransientLifetime();
+        });
+
+        services.Scan(selector =>
+        {
+            selector.FromApplicationDependencies()
+                    .AddClasses(filter =>
+                    {
+                        filter.AssignableTo(typeof(ICommandHandler<>));
+                    })
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime();
         });
 
         services.Scan(selector =>
@@ -44,7 +55,7 @@ public static class CQRS_Module
                         filter.AssignableTo(typeof(IEventHandler<>));
                     })
                     .AsImplementedInterfaces()
-                    .WithSingletonLifetime();
+                    .WithTransientLifetime();
         });
     }
 }

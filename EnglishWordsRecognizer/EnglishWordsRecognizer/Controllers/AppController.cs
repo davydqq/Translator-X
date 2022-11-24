@@ -21,7 +21,7 @@ namespace TB.API.Controllers
         {
             if (update == null) return BadRequest("Update is empty");
 
-            await dispatcher.DispatchAsync(new TelegramUpdatesCommand(update));
+            var res = await dispatcher.DispatchAsync(new TelegramUpdatesCommand(update));
 
             return Ok();
         }

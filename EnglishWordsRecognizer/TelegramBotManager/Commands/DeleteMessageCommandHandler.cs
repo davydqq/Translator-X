@@ -7,9 +7,9 @@ namespace TB.Core.Commands;
 public class DeleteMessageCommandHandler : ICommandHandler<DeleteMessageCommand>
 {
     private readonly TelegramBotClient telegramBotClient;
-    private readonly ILogger logger;
+    private readonly ILogger<DeleteMessageCommandHandler> logger;
 
-    public DeleteMessageCommandHandler(TelegramBotClient telegramBotClient, ILogger logger)
+    public DeleteMessageCommandHandler(TelegramBotClient telegramBotClient, ILogger<DeleteMessageCommandHandler> logger)
     {
         this.telegramBotClient = telegramBotClient;
         this.logger = logger;
