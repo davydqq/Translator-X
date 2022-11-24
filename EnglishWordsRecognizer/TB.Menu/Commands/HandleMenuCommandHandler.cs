@@ -1,6 +1,7 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
+using TB.Menu.Entities;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotStorage;
 

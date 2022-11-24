@@ -22,10 +22,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
-    <ProjectReference Include="..\TelegramBotCommands\TelegramBotCommands.csproj" />
+    <ProjectReference Include="..\TelegramBotCommands\TB.Routing.csproj" />
     <ProjectReference Include="..\TelegramBotImages\TB.ComputerVision.csproj" />
     <ProjectReference Include="..\TelegramBotManager\TB.Core.csproj" />
-    <ProjectReference Include="..\TelegramBotTranslator\TelegramBotTranslator.csproj" />
+    <ProjectReference Include="..\TelegramBotTranslator\TB.Translator.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://download.stackhawk.com/hawk/jsonschema/hawkconfig.json" /></VisualStudio></ProjectExtensions>

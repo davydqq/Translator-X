@@ -1,4 +1,5 @@
 ﻿using CQRS.Commands;
+using TB.Menu.Entities;
 
 namespace TB.Menu.Commands;
 

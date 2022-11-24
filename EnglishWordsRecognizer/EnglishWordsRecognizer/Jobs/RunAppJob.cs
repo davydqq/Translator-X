@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using TB.Core.Configs;
-using TB.Menu;
+using TB.Menu.Entities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 

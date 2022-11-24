@@ -1,8 +1,8 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
-using TB.Menu;
 using TB.Menu.Commands;
+using TB.Menu.Entities;
 using Telegram.Bot.Types.Enums;
 using TelegramBotStorage;
 using TelegramBotStorage.Languages;

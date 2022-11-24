@@ -3,12 +3,12 @@ using TB.API.Jobs;
 using TB.ComputerVision;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
-using TB.Menu;
+using TB.Menu.Entities;
+using TB.Routing;
+using TB.Translator;
+using TB.Translator.Entities.Azure;
 using Telegram.Bot;
-using TelegramBotCommands.Services;
 using TelegramBotStorage;
-using TelegramBotTranslator;
-using TelegramBotTranslator.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,7 @@ builder.Configuration
 
 // configs
 builder.Services.RegisterCQRS();
+builder.Services.RoutingModules();
 
 builder.Services.Configure<BotMenuConfig>(options => builder.Configuration.GetSection("BotMenu").Bind(options));
 builder.Services.Configure<AzureVisionConfig>(options => builder.Configuration.GetSection("AzureVisionConfig").Bind(options));
@@ -43,12 +44,10 @@ builder.Services.AddSingleton(x =>
 });
 
 // services
-builder.Services.AddSingleton<CommandsHandlerService>();
 builder.Services.AddSingleton<MemoryStorage>();
-builder.Services.AddScoped<FacadTelegramBotService>();
 
 // Cognitive Services
-builder.Services.AddScoped<TextProcessService>();
+builder.Services.AddScoped<ITranslateService, AzureTranslateService>();
 builder.Services.AddScoped<IComputerVisionService, AzureComputerVisionService>();
 
 builder.Services.AddHttpClient();

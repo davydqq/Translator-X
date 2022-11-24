@@ -24,6 +24,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
     public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
     {
+        // TODO add validation accepted types;
+
         var file = command.Files.MaxBy(x => x.Size);
 
         var bytes =  await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
