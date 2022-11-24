@@ -1,9 +1,10 @@
-﻿using TB.Videos.Commands;
+﻿using TB.Routing;
+using TB.Routing.Entities;
+using TB.Videos.Commands;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TelegramBotCommands.Entities;
 
-namespace TelegramBotCommands.Commands.CoreCommands;
+namespace TB.Routing.Routes.CoreRoutes;
 
 public class ParseVideosRoute : IBaseRoute
 {
@@ -18,7 +19,7 @@ public class ParseVideosRoute : IBaseRoute
         return message.Type == MessageType.Video;
     }
 
-    public BaseRouteResult Execute(Update update)
+    public BaseRouteResult GetCommand(Update update)
     {
         return new BaseRouteResult(new HandleVideosCommand());
     }

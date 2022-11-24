@@ -1,9 +1,10 @@
-﻿using TB.Texts.Commands;
+﻿using TB.Routing;
+using TB.Routing.Entities;
+using TB.Texts.Commands;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TelegramBotCommands.Entities;
 
-namespace TelegramBotCommands.Commands.CoreCommands;
+namespace TB.Routing.Routes.CoreRoutes;
 
 public class ParseTextRoute : IBaseRoute
 {
@@ -18,7 +19,7 @@ public class ParseTextRoute : IBaseRoute
         return message.Type == MessageType.Text;
     }
 
-    public BaseRouteResult Execute(Update update)
+    public BaseRouteResult GetCommand(Update update)
     {
         var message = update.Message;
 

@@ -1,4 +1,6 @@
-﻿namespace TelegramBotStorage.Languages;
+﻿using TB.MemoryStorage.Languages;
+
+namespace TelegramBotStorage.Languages;
 
 public class Language
 {

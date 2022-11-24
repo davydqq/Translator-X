@@ -1,9 +1,10 @@
 ﻿using System.Collections.Concurrent;
+using TB.MemoryStorage.Languages;
 using TelegramBotStorage.Languages;
 
-namespace TelegramBotStorage;
+namespace TB.MemoryStorage;
 
-public class MemoryStorage
+public class Storage
 {
     public ConcurrentDictionary<long, LanguageENUM> UserId_NativeLanguage { get; set; } = new();
 
@@ -63,7 +64,7 @@ public class MemoryStorage
 
     public bool IsTargetLanguageSetted(long userId) => UserId_TargetLanguage.ContainsKey(userId);
 
-    public bool LanguagesInited(long userId)
+    public bool IsLanguagesInited(long userId)
     {
         return IsNativeLanguageSetted(userId) && IsTargetLanguageSetted(userId);
     }

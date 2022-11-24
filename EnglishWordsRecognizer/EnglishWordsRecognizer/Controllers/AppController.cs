@@ -1,7 +1,7 @@
 ﻿using CQRS.Commands;
 using Microsoft.AspNetCore.Mvc;
+using TB.Routing.Commands;
 using Telegram.Bot.Types;
-using TelegramBotCommands;
 
 namespace TB.API.Controllers
 {

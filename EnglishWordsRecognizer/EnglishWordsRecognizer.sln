@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Core", "TelegramBotManag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Routing", "TelegramBotCommands\TB.Routing.csproj", "{04CACE4A-D486-4798-ACCB-AED6FCF91C6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBotStorage", "TelegramBotStorage\TelegramBotStorage.csproj", "{82F7E39B-6D99-40D7-A479-4131EC6FAD9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.MemoryStorage", "TelegramBotStorage\TB.MemoryStorage.csproj", "{82F7E39B-6D99-40D7-A479-4131EC6FAD9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.ComputerVision", "TelegramBotImages\TB.ComputerVision.csproj", "{4CFFC37A-823E-4B1D-A693-46B731284B5C}"
 EndProject

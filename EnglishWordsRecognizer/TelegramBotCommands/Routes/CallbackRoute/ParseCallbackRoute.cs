@@ -1,9 +1,9 @@
 ﻿using TB.Callbacks.Commands;
+using TB.Routing.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TelegramBotCommands.Entities;
 
-namespace TelegramBotCommands.Commands.CallbackCommands;
+namespace TB.Routing.Routes.CallbackRoute;
 
 public class ParseCallbackRoute : IBaseRoute
 {
@@ -22,7 +22,7 @@ public class ParseCallbackRoute : IBaseRoute
         return false;
     }
 
-    public BaseRouteResult Execute(Update update)
+    public BaseRouteResult GetCommand(Update update)
     {
         var query = update.CallbackQuery;
 

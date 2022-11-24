@@ -1,11 +1,11 @@
-﻿using Telegram.Bot.Types;
-using TelegramBotCommands.Entities;
+﻿using TB.Routing.Entities;
+using Telegram.Bot.Types;
 
-namespace TelegramBotCommands;
+namespace TB.Routing;
 
-public interface IBaseRoute 
+public interface IBaseRoute
 {
-    public BaseRouteResult Execute(Update update);
+    public BaseRouteResult GetCommand(Update update);
 
     public bool CanHandle(Update update);
 

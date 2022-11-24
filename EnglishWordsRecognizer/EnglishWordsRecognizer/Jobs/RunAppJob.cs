@@ -16,19 +16,16 @@ namespace TB.API.Jobs
 
         private readonly TelegramBotClient telegramBotClient;
 
-        public RunAppJob(TelegramBotClient telegramBotClient)
-        {
-            this.telegramBotClient = telegramBotClient;
-        }
-
         public RunAppJob(
             IOptions<BotCredentialsConfig> botCredOptions,
             ILogger<RunAppJob> logger,
-            IOptions<BotMenuConfig> botMenuOptions)
+            IOptions<BotMenuConfig> botMenuOptions,
+            TelegramBotClient telegramBotClient)
         {
             this.botCredOptions = botCredOptions;
             this.logger = logger;
             this.botMenuOptions = botMenuOptions;
+            this.telegramBotClient = telegramBotClient;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

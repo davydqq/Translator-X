@@ -1,5 +1,4 @@
 ﻿using CQRS.Commands;
-using TelegramBotCommands;
 
 namespace TB.Routing.Commands;
 
@@ -20,7 +19,7 @@ public class TelegramUpdatesHandler : ICommandHandler<TelegramUpdatesCommand, bo
         {
             if (route.CanHandle(command.Update))
             {
-                var res = route.Execute(command.Update);
+                var res = route.GetCommand(command.Update);
                 if(res != null && res.Command != null)
                 {
                     await commandDispatcher.DispatchAsync(res.Command);

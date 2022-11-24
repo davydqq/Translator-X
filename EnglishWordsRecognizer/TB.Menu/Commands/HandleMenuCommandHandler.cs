@@ -1,9 +1,9 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
+using TB.MemoryStorage;
 using TB.Menu.Entities;
 using Telegram.Bot.Types.ReplyMarkups;
-using TelegramBotStorage;
 
 namespace TB.Menu.Commands;
 
@@ -11,13 +11,13 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
 {
 	private readonly ICommandDispatcher commandDispatcher;
 
-    private readonly MemoryStorage memoryStorage;
+    private readonly Storage memoryStorage;
 
     private readonly IOptions<BotMenuConfig> menuOptions;
 
     public HandleMenuCommandHandler(
-        ICommandDispatcher commandDispatcher, 
-        MemoryStorage memoryStorage,
+        ICommandDispatcher commandDispatcher,
+        Storage memoryStorage,
         IOptions<BotMenuConfig> menuOptions)
 	{
         this.commandDispatcher = commandDispatcher;

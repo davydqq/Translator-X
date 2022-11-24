@@ -1,10 +1,11 @@
 ﻿using TB.Images.Commands;
 using TB.Images.Entities;
+using TB.Routing;
+using TB.Routing.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TelegramBotCommands.Entities;
 
-namespace TelegramBotCommands.Commands.CoreCommands;
+namespace TB.Routing.Routes.CoreRoutes;
 
 public class ParseStickersRoute : IBaseRoute
 {
@@ -19,7 +20,7 @@ public class ParseStickersRoute : IBaseRoute
         return message.Type == MessageType.Sticker;
     }
 
-    public BaseRouteResult Execute(Update update)
+    public BaseRouteResult GetCommand(Update update)
     {
         var message = update.Message;
         var userId = message!.From!.Id;
@@ -32,6 +33,6 @@ public class ParseStickersRoute : IBaseRoute
         };
 
         var command = new HandleImagesCommand(chatId, userId, messageId, files);
-        return new BaseRouteResult(command) ;
+        return new BaseRouteResult(command);
     }
 }

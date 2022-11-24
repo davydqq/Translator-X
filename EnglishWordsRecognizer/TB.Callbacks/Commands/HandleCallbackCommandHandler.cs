@@ -1,11 +1,11 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
+using TB.MemoryStorage;
+using TB.MemoryStorage.Languages;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
 using Telegram.Bot.Types.Enums;
-using TelegramBotStorage;
-using TelegramBotStorage.Languages;
 
 namespace TB.Callbacks.Commands;
 
@@ -15,12 +15,12 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
     private readonly ICommandDispatcher commandDispatcher;
 
-    private readonly MemoryStorage memoryStorage;
+    private readonly Storage memoryStorage;
 
     public HandleCallbackCommandHandler(
         IOptions<BotMenuConfig> options, 
         ICommandDispatcher commandDispatcher,
-        MemoryStorage memoryStorage)
+        Storage memoryStorage)
     {
         this.options = options;
         this.commandDispatcher = commandDispatcher;
@@ -89,7 +89,7 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
     public async Task SendLanguagesWereEstablished(long chatId, long userId)
     {
-        if (memoryStorage.LanguagesInited(userId))
+        if (memoryStorage.IsLanguagesInited(userId))
         {
             var nativeLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserNativeLanguage(userId)].Name;
             var targetLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserTargetLanguage(userId)].Name;

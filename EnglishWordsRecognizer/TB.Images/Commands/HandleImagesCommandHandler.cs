@@ -1,37 +1,90 @@
 ﻿using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using TB.ComputerVision;
+using TB.Core.Commands;
 using TB.Core.Queries;
+using TB.MemoryStorage;
+using TB.MemoryStorage.Languages;
+using TB.Menu.Commands;
+using TB.Menu.Entities;
+using TB.Translator;
+using TelegramBotStorage;
 
 namespace TB.Images.Commands;
 
 public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 {
     private readonly ILogger<HandleImagesCommandHandler> logger;
+
     private readonly IComputerVisionService computerVisionService;
+
     private readonly IQueryDispatcher queryDispatcher;
+
+    private readonly Storage memoryStorage;
+
+    private readonly ICommandDispatcher commandDispatcher;
+
+    private readonly IOptions<BotMenuConfig> menuConfig;
+
+    private readonly ITranslateService translateService;
 
     public HandleImagesCommandHandler(
         ILogger<HandleImagesCommandHandler> logger, 
         IComputerVisionService computerVisionService,
-        IQueryDispatcher queryDispatcher)
+        IQueryDispatcher queryDispatcher,
+        Storage memoryStorage,
+        ICommandDispatcher commandDispatcher,
+        IOptions<BotMenuConfig> menuConfig,
+        ITranslateService translateService)
     {
         this.logger = logger;
         this.computerVisionService = computerVisionService;
         this.queryDispatcher = queryDispatcher;
+        this.memoryStorage = memoryStorage;
+        this.commandDispatcher = commandDispatcher;
+        this.menuConfig = menuConfig;
+        this.translateService = translateService;
     }
 
     public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
     {
         // TODO add validation accepted types;
 
-        var file = command.Files.MaxBy(x => x.Size);
+        var res = await ValidateThatUserSelectLanguages(command);
 
-        var bytes =  await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
+        if (res)
+        {
+            var file = command.Files.MaxBy(x => x.Size);
+            var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
 
-        await ProcessAndSendOCRResultsAsync(bytes, command.ChatId, command.UserId);
-        await ProcessAndSendPhotoAnalysisAsync(bytes, command.ChatId, command.UserId);
+            await ProcessAndSendOCRResultsAsync(bytes, command.ChatId, command.UserId);
+            await ProcessAndSendPhotoAnalysisAsync(bytes, command.ChatId, command.UserId);
+        }
+    }
+
+    private async Task<bool> ValidateThatUserSelectLanguages(HandleImagesCommand command)
+    {
+        var isTargetLangugeSetted = memoryStorage.IsTargetLanguageSetted(command.UserId);
+        if (!isTargetLangugeSetted)
+        {
+            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
+            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
+            await commandDispatcher.DispatchAsync(commandToChangeLanguage);
+            return false;
+        }
+
+        var isNativeLangugeSetted = memoryStorage.IsNativeLanguageSetted(command.UserId);
+        if (!isNativeLangugeSetted)
+        {
+            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
+            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
+            await commandDispatcher.DispatchAsync(commandToChangeLanguage);
+            return false;
+        }
+
+        return true;
     }
 
     private async Task<bool> ProcessAndSendPhotoAnalysisAsync(byte[] bytes, long chatId, long userId)
@@ -49,12 +102,11 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
             if (resTags != null && resTags.Any())
             {
-                var languagesToTranslate = service.GetUserLanguages(userId)
+                var languagesToTranslate = memoryStorage.GetUserLanguages(userId)
                                                    .Where(x => x.Id != LanguageENUM.English)
                                                    .Select(x => x.Code).ToArray();
-                // TODO 1. HANDLE WHEN NO LANGUAGES
-                // 1. output
-                var resp = await service.textProcessService.ProcessTextAsync(resTags.ToArray(), languagesToTranslate);
+                // TODO output for diff languages
+                var resp = await translateService.TranslateTextsAsync(resTags.ToArray(), languagesToTranslate);
 
                 var text = "Photo objects\n\n";
                 text += string.Join("\n", resTags);
@@ -73,7 +125,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
             if (!string.IsNullOrEmpty(resText))
             {
-                await service.SendMessageAsync(chatId, resText, ParseMode.Markdown);
+                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, resText));
             }
         }
 
@@ -92,7 +144,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             if (!string.IsNullOrEmpty(texts))
             {
                 text += texts;
-                await service.SendMessageAsync(chatId, text, ParseMode.Markdown);
+                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, text));
 
                 return true;
             }

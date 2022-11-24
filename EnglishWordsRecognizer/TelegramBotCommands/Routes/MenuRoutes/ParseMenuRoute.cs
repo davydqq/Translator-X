@@ -1,27 +1,25 @@
 ﻿using Microsoft.Extensions.Options;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
+using TB.Routing.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TelegramBotCommands.Entities;
 
-namespace TelegramBotCommands.Commands.MenuCommands;
+namespace TB.Routing.Routes.MenuRoutes;
 
 public class ParseMenuRoute : IBaseRoute
-{     
+{
     private readonly IOptions<BotMenuConfig> config;
-    private readonly BaseCommandOptions options;
 
-    public ParseMenuRoute(IOptions<BotMenuConfig> config, BaseCommandOptions options)
-	{
-		this.config = config;
-        this.options = options;
+    public ParseMenuRoute(IOptions<BotMenuConfig> config)
+    {
+        this.config = config;
     }
 
-	public int Order => 1;
+    public int Order => 1;
 
-	public bool CanHandle(Update update)
-	{
+    public bool CanHandle(Update update)
+    {
         if (update == null || update.Message == null)
             return false;
 
@@ -35,17 +33,17 @@ public class ParseMenuRoute : IBaseRoute
         return config.Value.Commands.Any(command => message.Text.Contains(command.Name));
     }
 
-	public BaseRouteResult Execute(Update update)
-	{
+    public BaseRouteResult GetCommand(Update update)
+    {
         var message = update.Message;
         var command = config.Value.Commands.First(command => message.Text.Contains(command.Name));
 
         var userId = update.Message!.From!.Id;
 
-        var chatId = options?.ChatId ?? message.Chat.Id;
-        var messageId = options?.MessageId ?? message.MessageId;
+        var chatId =  message.Chat.Id;
+        var messageId = message.MessageId;
 
-        var commandToExecute = new HandleMenuCommand(command, chatId, messageId, userId, options.IsDeleteCurrentMessage);
+        var commandToExecute = new HandleMenuCommand(command, chatId, messageId, userId, true);
 
         return new BaseRouteResult(commandToExecute);
     }

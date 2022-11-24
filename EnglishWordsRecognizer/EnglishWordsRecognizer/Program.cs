@@ -1,8 +1,10 @@
 using CQRS;
+using Microsoft.Extensions.Options;
 using TB.API.Jobs;
 using TB.ComputerVision;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
+using TB.MemoryStorage;
 using TB.Menu.Entities;
 using TB.Routing;
 using TB.Translator;
@@ -32,19 +34,18 @@ builder.Services.Configure<BotCredentialsConfig>(options => builder.Configuratio
 
 builder.Services.AddSingleton(x =>
 {
-    // TODO MAYBE OPTIONS
-    var options = x.GetRequiredService<BotCredentialsConfig>();
+    var options = x.GetRequiredService<IOptions<BotCredentialsConfig>>();
 
-    if (options.Token == null || options.Url == null)
+    if (options.Value == null || options.Value.Token == null || options.Value.Url == null)
     {
         throw new ArgumentNullException("Config is empty");
     }
 
-    return new TelegramBotClient(options.Token);
+    return new TelegramBotClient(options.Value.Token);
 });
 
 // services
-builder.Services.AddSingleton<MemoryStorage>();
+builder.Services.AddSingleton<Storage>();
 
 // Cognitive Services
 builder.Services.AddScoped<ITranslateService, AzureTranslateService>();

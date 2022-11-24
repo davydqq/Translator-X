@@ -1,9 +1,10 @@
 ﻿using TB.Audios.Commands;
+using TB.Routing;
+using TB.Routing.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TelegramBotCommands.Entities;
 
-namespace TelegramBotCommands.Commands.CoreCommands;
+namespace TB.Routing.Routes.CoreRoutes;
 
 public class ParseAudiosRoute : IBaseRoute
 {
@@ -18,7 +19,7 @@ public class ParseAudiosRoute : IBaseRoute
         return message.Type == MessageType.Audio || message.Type == MessageType.Voice;
     }
 
-    public BaseRouteResult Execute(Update update)
+    public BaseRouteResult GetCommand(Update update)
     {
         var command = new HandleAudiosCommand();
         return new BaseRouteResult(command);

@@ -1,6 +1,7 @@
-﻿using TelegramBotStorage.Languages;
+﻿using TB.MemoryStorage.Languages;
+using TelegramBotStorage.Languages;
 
-namespace TelegramBotStorage;
+namespace TB.MemoryStorage;
 
 public static class SupportedLanguages
 {

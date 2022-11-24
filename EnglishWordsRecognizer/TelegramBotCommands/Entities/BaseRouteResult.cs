@@ -1,6 +1,6 @@
 ﻿using CQRS.Commands;
 
-namespace TelegramBotCommands.Entities;
+namespace TB.Routing.Entities;
 
 public class BaseRouteResult
 {

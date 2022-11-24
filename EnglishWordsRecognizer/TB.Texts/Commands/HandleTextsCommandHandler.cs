@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
+using TB.MemoryStorage;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
 using TB.Translator;
-using TelegramBotStorage;
 
 namespace TB.Texts.Commands;
 
@@ -13,7 +13,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 {
     private readonly ILogger<HandleTextsCommandHandler> logger;
 
-    private readonly MemoryStorage memoryStorage;
+    private readonly Storage memoryStorage;
 
     private readonly IOptions<BotMenuConfig> menuConfig;
 
@@ -23,7 +23,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
     public HandleTextsCommandHandler(
         ILogger<HandleTextsCommandHandler> logger,
-        MemoryStorage memoryStorage,
+        Storage memoryStorage,
         IOptions<BotMenuConfig> menuConfig,
         ICommandDispatcher commandDispatcher,
         ITranslateService translateService)

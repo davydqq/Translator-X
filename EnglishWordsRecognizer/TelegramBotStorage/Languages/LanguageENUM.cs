@@ -1,6 +1,4 @@
-﻿
-
-namespace TelegramBotStorage.Languages;
+﻿namespace TB.MemoryStorage.Languages;
 
 public enum LanguageENUM
 {
