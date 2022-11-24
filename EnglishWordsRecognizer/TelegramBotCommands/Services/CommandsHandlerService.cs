@@ -43,13 +43,13 @@ public class CommandsHandlerService
         commands.Add(new ChangeTargetLanguageCallbackCommand(new ChangeTargetLanguageCallbackCommandOptions() { IsDeleteCurrentMessage = true }));
 
         // Recognize Commands
-        commands.Add(new HandlePhotosCommand());
+        commands.Add(new ParsePhotosCommand());
         commands.Add(new HandleDocumentsCommand());
-        commands.Add(new HandleAudiosCommand());
-        commands.Add(new HandleVideosCommand());
+        commands.Add(new ParseAudiosCommand());
+        commands.Add(new ParseVideosCommand());
         commands.Add(new HandleReplyCommand());
         commands.Add(new HandleTextCommand());
-        commands.Add(new HandleStickersCommand());
+        commands.Add(new ParseStickersCommand());
 
         commands.Add(new OtherCommand());
     }

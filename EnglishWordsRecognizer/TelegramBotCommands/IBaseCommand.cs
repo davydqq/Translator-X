@@ -8,6 +8,4 @@ public interface IBaseCommand
     public BaseCommandResult Execute(Update update);
 
     public bool CanHandle(Update update);
-
-    public int Order { get; }
 }

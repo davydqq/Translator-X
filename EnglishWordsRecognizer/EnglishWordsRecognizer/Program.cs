@@ -1,11 +1,11 @@
 using CQRS;
 using TB.API.Jobs;
+using TB.ComputerVision;
+using TB.ComputerVision.Entities;
 using TB.Core.Configs;
 using TB.Menu;
 using Telegram.Bot;
 using TelegramBotCommands.Services;
-using TelegramBotImages;
-using TelegramBotImages.Entities;
 using TelegramBotStorage;
 using TelegramBotTranslator;
 using TelegramBotTranslator.Entities;
@@ -49,7 +49,7 @@ builder.Services.AddScoped<FacadTelegramBotService>();
 
 // Cognitive Services
 builder.Services.AddScoped<TextProcessService>();
-builder.Services.AddScoped<ImageProcessService>();
+builder.Services.AddScoped<IComputerVisionService, AzureComputerVisionService>();
 
 builder.Services.AddHttpClient();
 

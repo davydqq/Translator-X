@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TelegramBotImages.Entities;
+﻿namespace TB.ComputerVision.Entities;
 
 public class AzureVisionConfig
 {

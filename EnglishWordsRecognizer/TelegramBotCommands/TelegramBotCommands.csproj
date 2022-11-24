@@ -14,8 +14,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\TB.Audios\TB.Audios.csproj" />
+    <ProjectReference Include="..\TB.Callbacks\TB.Callbacks.csproj" />
+    <ProjectReference Include="..\TB.Images\TB.Images.csproj" />
     <ProjectReference Include="..\TB.Menu\TB.Menu.csproj" />
-    <ProjectReference Include="..\TelegramBotImages\TelegramBotImages.csproj" />
+    <ProjectReference Include="..\TB.Videos\TB.Videos.csproj" />
+    <ProjectReference Include="..\TelegramBotImages\TB.ComputerVision.csproj" />
     <ProjectReference Include="..\TelegramBotManager\TB.Core.csproj" />
     <ProjectReference Include="..\TelegramBotStorage\TelegramBotStorage.csproj" />
     <ProjectReference Include="..\TelegramBotTranslator\TelegramBotTranslator.csproj" />

@@ -2,19 +2,18 @@
 
 namespace TB.Menu.Commands;
 
-public class SendMenuCommand : ICommand
+public class HandleMenuCommand : ICommand
 {
-
-	public SendMenuCommand(BotMenuId botMenuId, long chatId, int messageId, long userId, bool deleteMessage)
+	public HandleMenuCommand(BotMenuCommand command, long chatId, int messageId, long userId, bool deleteMessage)
 	{
-		BotMenuId = botMenuId;
+        MenuCommand = command;
 		ChatId = chatId;
 		MessageId = messageId;
 		UserId = userId;
 		DeleteMessage = deleteMessage;
 	}
 
-	public BotMenuId BotMenuId { get; }
+	public BotMenuCommand MenuCommand { get; }
 
 	public long ChatId { get; }
 

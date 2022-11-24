@@ -15,6 +15,8 @@ public class BotMenuCommand
     public string Name { set; get; }
 
     public string Description { set; get; }
+
+    public string? CallBackId { set; get; }
 }
 
 public class BotMenuConfig

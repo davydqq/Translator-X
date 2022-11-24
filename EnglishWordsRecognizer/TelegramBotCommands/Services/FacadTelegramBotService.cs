@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TB.ComputerVision;
 using TB.Core.Configs;
 using Telegram.Bot.Types.Enums;
-using TelegramBotImages;
 using TelegramBotStorage;
 using TelegramBotStorage.Languages;
 using TelegramBotTranslator;
@@ -13,7 +13,7 @@ public class FacadTelegramBotService
 {
 	private readonly IOptions<BotCredentialsConfig> config;
 
-    public readonly ImageProcessService imageProcessService;
+    public readonly AzureComputerVisionService imageProcessService;
 
     public readonly TextProcessService textProcessService;
 
@@ -21,7 +21,7 @@ public class FacadTelegramBotService
 
     public FacadTelegramBotService(
         IOptions<BotCredentialsConfig> config,
-        ImageProcessService imageProcessService,
+        AzureComputerVisionService imageProcessService,
         TextProcessService textProcessService,
         ILogger<FacadTelegramBotService> logger)
 	{

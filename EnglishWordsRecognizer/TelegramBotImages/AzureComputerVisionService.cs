@@ -2,24 +2,24 @@
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TelegramBotImages.Entities;
+using TB.ComputerVision.Entities;
 
-namespace TelegramBotImages;
+namespace TB.ComputerVision;
 
-public class ImageProcessService
+public class AzureComputerVisionService : IComputerVisionService
 {
     private readonly IOptions<AzureVisionConfig> options;
-    private readonly ILogger<ImageProcessService> logger;
+    private readonly ILogger<AzureComputerVisionService> logger;
     private readonly ComputerVisionClient client;
 
-    public ImageProcessService(IOptions<AzureVisionConfig> options, ILogger<ImageProcessService> logger)
-	{
+    public AzureComputerVisionService(IOptions<AzureVisionConfig> options, ILogger<AzureComputerVisionService> logger)
+    {
         this.options = options;
         this.logger = logger;
         client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(this.options.Value.Key)) { Endpoint = this.options.Value.Endpoint };
     }
 
-    public async Task<ImageAnalysis> AnalyzeImage(byte[] bytes)
+    public async Task<VisionResult> AnalyzeImageAsync(byte[] bytes)
     {
         try
         {
@@ -38,16 +38,26 @@ public class ImageProcessService
                 Console.WriteLine($"{tag.Name} {tag.Confidence}");
             }
 
-            return results;
-        } catch(Exception e)
+            return new VisionResult
+            {
+                Tags = results.Tags.Select(x => new Tag(x.Name, x.Confidence, x.Hint)).ToList(),
+                isSuccess = true,
+                Description = new Description
+                {
+                    Captions = results.Description.Captions.Select(x => new Entities.ImageCaption(x.Text, x.Confidence)).ToList(),
+                    Tags = results.Description.Tags
+                }
+            };
+        }
+        catch (Exception e)
         {
             logger.LogError(e.Message);
         }
 
-        return null;
+        return new VisionResult();
     }
 
-    public async Task<List<ReadResult>> OCRImage(byte[] bytes)
+    public async Task<OCR_Result> OCRImageAsync(byte[] bytes)
     {
         try
         {
@@ -84,14 +94,37 @@ public class ImageProcessService
                 }
             }
 
-            return results.AnalyzeResult.ReadResults.ToList();
+            return new OCR_Result 
+            {
+                IsSuccess = true,
+                TextResults = results.AnalyzeResult.ReadResults.Select(x => new TextResult
+                {
+                    Angle = x.Angle,
+                    Height = x.Height,
+                    Page = x.Page,
+                    Width = x.Width,
+                    Language = x.Language,
+                    Lines = x.Lines.Select(q => new Result_Line
+                    {
+                        BoundingBox = q.BoundingBox,
+                        Language = q.Language,
+                        Text = q.Text,
+                        Words = q.Words.Select(v => new Result_Word
+                        {
+                            BoundingBox = v.BoundingBox,
+                            Confidence = v.Confidence,
+                            Text = v.Text
+                        }).ToList()
+                    }).ToList()
+                }).ToList()
+            };
         }
         catch (Exception e)
         {
             logger.LogError(e.Message);
         }
 
-        return null;
+        return new OCR_Result();
     }
 
 }

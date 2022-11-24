@@ -1,45 +1,52 @@
 ﻿using CQRS.Commands;
+using Microsoft.Extensions.Options;
 using TB.Core.Commands;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBotStorage;
 
 namespace TB.Menu.Commands;
 
-public class SendMenuCommandHandler : ICommandHandler<SendMenuCommand>
+public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
 {
 	private readonly ICommandDispatcher commandDispatcher;
 
     private readonly MemoryStorage memoryStorage;
 
-	public SendMenuCommandHandler(ICommandDispatcher commandDispatcher, MemoryStorage memoryStorage)
+    private readonly IOptions<BotMenuConfig> menuOptions;
+
+    public HandleMenuCommandHandler(
+        ICommandDispatcher commandDispatcher, 
+        MemoryStorage memoryStorage,
+        IOptions<BotMenuConfig> menuOptions)
 	{
         this.commandDispatcher = commandDispatcher;
         this.memoryStorage = memoryStorage;
-	}
+        this.menuOptions = menuOptions;
+    }
 
-	public async Task HandleAsync(SendMenuCommand command, CancellationToken cancellation = default)
+	public async Task HandleAsync(HandleMenuCommand command, CancellationToken cancellation = default)
 	{
         if (command.DeleteMessage)
         {
 			await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, command.MessageId));
         }
 
-        switch (command.BotMenuId)
+        switch (command.MenuCommand.Id)
 		{
 			case BotMenuId.Start:
 				{
                     memoryStorage.DeleteUserNativeLanguage(command.UserId);
                     memoryStorage.DeleteUserTargetLanguage(command.UserId);
 
-                    var options = new SendMenuCommand(BotMenuId.NativeLanguage, command.ChatId, command.MessageId, command.UserId, false);
+                    var commandNL = menuOptions.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
+                    var options = new HandleMenuCommand(commandNL, command.ChatId, command.MessageId, command.UserId, false);
                     await HandleAsync(options);
                     break;
 				}
 			case BotMenuId.NativeLanguage:
 				{
-                    var callBackId = "native_L-";
                     var message = $"Choose your native language";
-                    var buttons = GetLanguagesButtons(callBackId);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId);
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
@@ -48,9 +55,8 @@ public class SendMenuCommandHandler : ICommandHandler<SendMenuCommand>
                 }
 			case BotMenuId.TargetLanguage:
 				{
-                    var callBackId = "target_L-";
                     var message = $"Choose target language";
-                    var buttons = GetLanguagesButtons(callBackId);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId);
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
