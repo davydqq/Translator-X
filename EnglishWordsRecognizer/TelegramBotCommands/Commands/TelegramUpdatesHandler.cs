@@ -7,9 +7,9 @@ public class TelegramUpdatesHandler : ICommandHandler<TelegramUpdatesCommand, bo
     private readonly IBaseRoute[] baseRoutes;
     private readonly ICommandDispatcher commandDispatcher;
 
-    public TelegramUpdatesHandler(IBaseRoute[] baseRoutes, ICommandDispatcher commandDispatcher)
+    public TelegramUpdatesHandler(IEnumerable<IBaseRoute> baseRoutes, ICommandDispatcher commandDispatcher)
     {
-        this.baseRoutes = baseRoutes;
+        this.baseRoutes = baseRoutes.OrderBy(x => x.Order).ToArray();
         this.commandDispatcher = commandDispatcher;
     }
 

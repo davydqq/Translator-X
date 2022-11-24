@@ -16,7 +16,7 @@ public static class CQRS_Module
 
         services.Scan(selector =>
         {
-            selector.FromCallingAssembly()
+            selector.FromApplicationDependencies()
                     .AddClasses(filter =>
                     {
                         filter.AssignableTo(typeof(IQueryHandler<,>));
@@ -27,7 +27,7 @@ public static class CQRS_Module
 
         services.Scan(selector =>
         {
-            selector.FromCallingAssembly()
+            selector.FromApplicationDependencies()
                     .AddClasses(filter =>
                     {
                         filter.AssignableTo(typeof(ICommandHandler<,>));
@@ -38,18 +38,7 @@ public static class CQRS_Module
 
         services.Scan(selector =>
         {
-            selector.FromCallingAssembly()
-                    .AddClasses(filter =>
-                    {
-                        filter.AssignableTo(typeof(ICommandHandler<,>));
-                    })
-                    .AsImplementedInterfaces()
-                    .WithSingletonLifetime();
-        });
-
-        services.Scan(selector =>
-        {
-            selector.FromCallingAssembly()
+            selector.FromApplicationDependencies()
                     .AddClasses(filter =>
                     {
                         filter.AssignableTo(typeof(IEventHandler<>));
