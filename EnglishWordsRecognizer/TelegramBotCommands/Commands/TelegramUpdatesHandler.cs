@@ -23,6 +23,7 @@ public class TelegramUpdatesHandler : ICommandHandler<TelegramUpdatesCommand, bo
                 if(res != null && res.Command != null)
                 {
                     await commandDispatcher.DispatchAsync(res.Command);
+                    return true;
                 }
             }
         }

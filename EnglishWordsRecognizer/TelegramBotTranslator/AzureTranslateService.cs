@@ -42,7 +42,9 @@ public class AzureTranslateService : ITranslateService
     {
         // Input and output languages are defined as parameters.
         string route = "/translate?api-version=3.0" + string.Join("", languages.Select(lang => $"&to={lang}"));
-        object[] body = new object[] { new { Text = textToTranslate } };
+
+        var texts = textToTranslate.Select(x => new AzureRequestBody { Text = x }).ToArray();
+        object[] body = texts;
         var requestBody = JsonConvert.SerializeObject(body);
 
         var resp = await SendRequestAsync<List<AzureTranslateResponse>>(requestBody, route);

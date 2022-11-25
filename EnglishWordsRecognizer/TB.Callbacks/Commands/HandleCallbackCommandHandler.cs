@@ -29,7 +29,8 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
     public async Task HandleAsync(HandleCallbackCommand command, CancellationToken cancellation = default)
     {
-        var menuCommand = options.Value.Commands.FirstOrDefault(x => x.CallBackId == command.Data);
+        var callbackId = GetCallbackId(command.Data);
+        var menuCommand = options.Value.Commands.FirstOrDefault(x => x.CallBackId == callbackId);
 
         if(menuCommand != null)
         {
@@ -104,6 +105,12 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
             await commandDispatcher.DispatchAsync(command);
         }
+    }
+
+    private string GetCallbackId(string data)
+    {
+        var id = data.Split("-").ElementAt(0);
+        return id + "-";
     }
 
     private LanguageENUM? GetLanguage(string data)

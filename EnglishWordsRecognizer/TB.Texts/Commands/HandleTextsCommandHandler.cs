@@ -37,19 +37,19 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
     public async Task HandleAsync(HandleTextsCommand command, CancellationToken cancellation = default)
     {
-        var isTargetLangugeSetted = memoryStorage.IsTargetLanguageSetted(command.UserId);
-        if (!isTargetLangugeSetted)
+        var isNativeLangugeSetted = memoryStorage.IsNativeLanguageSetted(command.UserId);
+        if (!isNativeLangugeSetted)
         {
-            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
+            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
             var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
             await commandDispatcher.DispatchAsync(commandToChangeLanguage);
             return;
         }
 
-        var isNativeLangugeSetted = memoryStorage.IsNativeLanguageSetted(command.UserId);
-        if (!isNativeLangugeSetted)
+        var isTargetLangugeSetted = memoryStorage.IsTargetLanguageSetted(command.UserId);
+        if (!isTargetLangugeSetted)
         {
-            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
+            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
             var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
             await commandDispatcher.DispatchAsync(commandToChangeLanguage);
             return;
