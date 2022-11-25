@@ -29,7 +29,7 @@ public class ParsePhotosRoute : IBaseRoute
 
         var files = message.Photo.Select(x => new ImagesInfo(x.FileId, x.FileSize)).ToList();
 
-        var command = new HandleImagesCommand(chatId, userId, messageId, files);
+        var command = new HandleImagesCommand(chatId, userId, messageId, message.Caption, files);
         return new BaseRouteResult(command);
     }
 }

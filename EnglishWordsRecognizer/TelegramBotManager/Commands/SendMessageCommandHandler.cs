@@ -23,7 +23,8 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand>
                 command.ChatId, 
                 command.Message, 
                 parseMode: command.ParseMode,
-                replyMarkup: command.ReplyMarkup
+                replyMarkup: command.ReplyMarkup,
+                replyToMessageId: command.ReplyToMessageId
             );
         }
         catch (Exception e)

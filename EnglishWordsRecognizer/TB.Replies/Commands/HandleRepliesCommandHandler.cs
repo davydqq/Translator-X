@@ -20,7 +20,7 @@ public class HandleRepliesCommandHandler : ICommandHandler<HandleRepliesCommand>
 
     public async Task HandleAsync(HandleRepliesCommand command, CancellationToken cancellation = default)
     {
-        var commandToSend = new HandleTextsCommand(command.ChatId, command.UserId, command.MessageId, command.ReplyText);
+        var commandToSend = new HandleTextsCommand(command.ChatId, command.UserId, command.MessageId, command.ReplyText, command.MessageId);
         await commandDispatcher.DispatchAsync(commandToSend);
     }
 }

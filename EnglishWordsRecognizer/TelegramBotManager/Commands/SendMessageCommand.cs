@@ -6,12 +6,18 @@ namespace TB.Core.Commands;
 
 public class SendMessageCommand : ICommand
 {
-	public SendMessageCommand(long chatId, string message, ParseMode? parseMode = null, IReplyMarkup replyMarkup = null)
+	public SendMessageCommand(
+		long chatId, 
+		string message, 
+		ParseMode? parseMode = null, 
+		IReplyMarkup replyMarkup = null,
+		int? replyToMessageId = null)
 	{
 		ChatId = chatId;
 		Message = message;
 		ParseMode = parseMode;
 		ReplyMarkup = replyMarkup;
+		ReplyToMessageId = replyToMessageId;
 	}
 
 	public long ChatId { get; }
@@ -21,4 +27,6 @@ public class SendMessageCommand : ICommand
 	public ParseMode? ParseMode { get; }
 
 	public IReplyMarkup ReplyMarkup { get; }
+
+	public int? ReplyToMessageId { get; }
 }

@@ -5,16 +5,22 @@ namespace TB.Images.Commands;
 
 public class HandleImagesCommand : ICommand
 {
-	public HandleImagesCommand(long chatId, long userId, int messageId, List<ImagesInfo> files)
+	public HandleImagesCommand(long chatId, long userId, int messageId, string caption, List<ImagesInfo> files)
 	{
 		ChatId = chatId;
 		UserId = userId;
 		MessageId = messageId;
-        Files = files;
+		Caption = caption;
+		Files = files;
 	}
 
 	public long ChatId { get; }
+
 	public long UserId { get; }
+
 	public int MessageId { get; }
+
+	public string Caption { get; }
+
 	public List<ImagesInfo> Files { get; }
 }

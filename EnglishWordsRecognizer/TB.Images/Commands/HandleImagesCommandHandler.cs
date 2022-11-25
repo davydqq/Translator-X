@@ -9,7 +9,9 @@ using TB.MemoryStorage;
 using TB.MemoryStorage.Languages;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
+using TB.Texts.Commands;
 using TB.Translator;
+using Telegram.Bot.Types.Enums;
 using TelegramBotStorage;
 
 namespace TB.Images.Commands;
@@ -59,8 +61,18 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             var file = command.Files.MaxBy(x => x.Size);
             var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
 
-            await ProcessAndSendOCRResultsAsync(bytes, command.ChatId, command.UserId);
-            await ProcessAndSendPhotoAnalysisAsync(bytes, command.ChatId, command.UserId);
+            await ProcessCaptions(command.ChatId, command.UserId, command.MessageId, command.Caption, command.MessageId);
+            await ProcessAndSendOCRResultsAsync(bytes, command.ChatId, command.UserId, command.MessageId);
+            await ProcessAndSendPhotoAnalysisAsync(bytes, command.ChatId, command.UserId, command.MessageId);
+        }
+    }
+
+    private async Task ProcessCaptions(long chatId, long userId, int messageId, string caption, int replyId)
+    {
+        if (!string.IsNullOrEmpty(caption))
+        {
+            var command = new HandleTextsCommand(chatId, userId, messageId, caption, replyId);
+            await commandDispatcher.DispatchAsync(command);
         }
     }
 
@@ -87,7 +99,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         return true;
     }
 
-    private async Task<bool> ProcessAndSendPhotoAnalysisAsync(byte[] bytes, long chatId, long userId)
+    private async Task<bool> ProcessAndSendPhotoAnalysisAsync(byte[] bytes, long chatId, long userId, int replyId)
     {
         var results = await computerVisionService.AnalyzeImageAsync(bytes);
 
@@ -118,33 +130,33 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             {
                 var captions = results.Description.Captions.Select(x => x.Text);
 
-                var text = "\nPhoto description\n\n";
+                var text = "\n<b>Photo description</b>\n";
                 text += string.Join("\n", captions);
                 resText += text;
             }
 
             if (!string.IsNullOrEmpty(resText))
             {
-                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, resText));
+                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, resText, parseMode: ParseMode.Html, replyToMessageId: replyId));
             }
         }
 
         return false;
     }
 
-    private async Task<bool> ProcessAndSendOCRResultsAsync(byte[] bytes, long chatId, long userId)
+    private async Task<bool> ProcessAndSendOCRResultsAsync(byte[] bytes, long chatId, long userId, int replyId)
     {
         var results = await computerVisionService.OCRImageAsync(bytes);
 
         if (results != null && results.TextResults.Count > 0)
         {
-            var text = "Text on photo\n\n";
+            var text = "<b>Text on photo</b>\n\n";
             var texts = string.Join("\n", results.TextResults.SelectMany(x => x.Lines).Select(x => x.Text));
 
             if (!string.IsNullOrEmpty(texts))
             {
                 text += texts;
-                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, text));
+                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, text, parseMode: ParseMode.Html, replyToMessageId: replyId));
 
                 return true;
             }

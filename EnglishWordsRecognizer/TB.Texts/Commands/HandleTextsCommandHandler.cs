@@ -75,13 +75,13 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
             var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code);
 
-            await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom));
+            await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom, replyToMessageId: command.ReplyId));
 
             return;
         }
 
         var resText = await GetTranslationsAsync(command.Text, languageTo.Code);
-        await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText));
+        await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
     }
 
 
