@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\TB.Common\TB.Common.csproj" />
   </ItemGroup>
 
 </Project>

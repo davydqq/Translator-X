@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CQRS\CQRS.csproj" />
-    <ProjectReference Include="..\TB.Common\TB.Common.csproj" />
+    <PackageReference Include="Telegram.Bot" Version="18.0.0" />
   </ItemGroup>
 
 </Project>

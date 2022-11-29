@@ -21,6 +21,12 @@ public class ParseVideosRoute : IBaseRoute
 
     public BaseRouteResult GetCommand(Update update)
     {
-        return new BaseRouteResult(new HandleVideosCommand());
+        var message = update.Message;
+
+        var userId = message.From.Id;
+        var chatId = message.Chat.Id;
+        var messageId = message.MessageId;
+         
+        return new BaseRouteResult(new HandleVideosCommand(chatId, userId, messageId));
     }
 }

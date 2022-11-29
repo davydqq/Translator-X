@@ -120,7 +120,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
                 // TODO output for diff languages
                 var resp = await translateService.TranslateTextsAsync(resTags.ToArray(), languagesToTranslate);
 
-                var text = "Photo objects\n\n";
+                var text = "<b>Photo objects</b>\n\n";
                 text += string.Join("\n", resTags);
 
                 resText += text;

@@ -21,7 +21,14 @@ public class ParseAudiosRoute : IBaseRoute
 
     public BaseRouteResult GetCommand(Update update)
     {
-        var command = new HandleAudiosCommand();
+        var message = update.Message;
+
+        var userId = message.From.Id;
+        var chatId = message.Chat.Id;
+        var messageId = message.MessageId;
+
+        var command = new HandleAudiosCommand(chatId, userId, messageId);
+
         return new BaseRouteResult(command);
     }
 }

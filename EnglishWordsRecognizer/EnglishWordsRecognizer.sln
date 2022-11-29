@@ -23,19 +23,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Menu", "TB.Menu\TB.Menu.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Callbacks", "TB.Callbacks\TB.Callbacks.csproj", "{E30A9CC8-8EC6-4225-974E-CD6E60358FF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Images", "TB.Images\TB.Images.csproj", "{9AAE72BF-A72B-4DB6-8D23-50FD89F8D9A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Images", "TB.Images\TB.Images.csproj", "{9AAE72BF-A72B-4DB6-8D23-50FD89F8D9A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Videos", "TB.Videos\TB.Videos.csproj", "{E7A60E51-5CE4-4334-8879-800ABF0A9A84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Videos", "TB.Videos\TB.Videos.csproj", "{E7A60E51-5CE4-4334-8879-800ABF0A9A84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Audios", "TB.Audios\TB.Audios.csproj", "{8B3CEA56-51F2-4C7A-A2FA-A1149ADFA60D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Audios", "TB.Audios\TB.Audios.csproj", "{8B3CEA56-51F2-4C7A-A2FA-A1149ADFA60D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Documents", "TB.Documents\TB.Documents.csproj", "{0D4A3D4F-88B3-4550-8A59-CA6569B7C04C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Documents", "TB.Documents\TB.Documents.csproj", "{0D4A3D4F-88B3-4550-8A59-CA6569B7C04C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Replies", "TB.Replies\TB.Replies.csproj", "{501FCD1D-577E-41B3-8614-5B949F5B8AC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Replies", "TB.Replies\TB.Replies.csproj", "{501FCD1D-577E-41B3-8614-5B949F5B8AC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Texts", "TB.Texts\TB.Texts.csproj", "{28157071-5B00-47E0-95E3-FB05999BE4C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Texts", "TB.Texts\TB.Texts.csproj", "{28157071-5B00-47E0-95E3-FB05999BE4C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Database", "TB.Database\TB.Database.csproj", "{7272AF87-D34A-496A-AA62-4075CF0A5C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Database", "TB.Database\TB.Database.csproj", "{7272AF87-D34A-496A-AA62-4075CF0A5C15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Common", "TB.Common\TB.Common.csproj", "{4A963FC4-023E-4AD2-A4DC-DE7A642AA5B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{7272AF87-D34A-496A-AA62-4075CF0A5C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7272AF87-D34A-496A-AA62-4075CF0A5C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7272AF87-D34A-496A-AA62-4075CF0A5C15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A963FC4-023E-4AD2-A4DC-DE7A642AA5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A963FC4-023E-4AD2-A4DC-DE7A642AA5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A963FC4-023E-4AD2-A4DC-DE7A642AA5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A963FC4-023E-4AD2-A4DC-DE7A642AA5B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

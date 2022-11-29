@@ -1,23 +1,16 @@
 ﻿using CQRS.Commands;
+using TB.Common;
 
 namespace TB.Replies.Commands;
 
-public class HandleRepliesCommand : ICommand
+public class HandleRepliesCommand : BaseTelegramMessageCommand, ICommand
 {
 	public HandleRepliesCommand(long userId, long chatId, int messageId, string originalText, string replyText)
-	{
-		UserId = userId;
-		ChatId = chatId;
-		MessageId = messageId;
+         : base(chatId, userId, messageId)
+    {
 		OriginalText = originalText;
 		ReplyText = replyText;
 	}
-
-	public long UserId { get; }
-
-	public long ChatId { get; }
-
-	public int MessageId { get; }
 
 	public string OriginalText { get; }
 
