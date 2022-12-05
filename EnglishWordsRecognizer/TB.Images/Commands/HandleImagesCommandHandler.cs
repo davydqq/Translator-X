@@ -1,18 +1,15 @@
 ﻿using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using TB.ComputerVision;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.MemoryStorage;
 using TB.MemoryStorage.Languages;
-using TB.Menu.Commands;
-using TB.Menu.Entities;
 using TB.Texts.Commands;
 using TB.Translator;
+using TB.User;
 using Telegram.Bot.Types.Enums;
-using TelegramBotStorage;
 
 namespace TB.Images.Commands;
 
@@ -28,9 +25,9 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
     private readonly ICommandDispatcher commandDispatcher;
 
-    private readonly IOptions<BotMenuConfig> menuConfig;
-
     private readonly ITranslateService translateService;
+
+    private readonly IUserService userService;
 
     public HandleImagesCommandHandler(
         ILogger<HandleImagesCommandHandler> logger, 
@@ -38,23 +35,23 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         IQueryDispatcher queryDispatcher,
         Storage memoryStorage,
         ICommandDispatcher commandDispatcher,
-        IOptions<BotMenuConfig> menuConfig,
-        ITranslateService translateService)
+        ITranslateService translateService,
+        IUserService userService)
     {
         this.logger = logger;
         this.computerVisionService = computerVisionService;
         this.queryDispatcher = queryDispatcher;
         this.memoryStorage = memoryStorage;
         this.commandDispatcher = commandDispatcher;
-        this.menuConfig = menuConfig;
         this.translateService = translateService;
+        this.userService = userService;
     }
 
     public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
     {
         // TODO add validation accepted types;
 
-        var res = await ValidateThatUserSelectLanguages(command);
+        var res = await userService.ValidateThatUserSelectLanguages(command);
 
         if (res)
         {
@@ -74,29 +71,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             var command = new HandleTextsCommand(chatId, userId, messageId, caption, replyId);
             await commandDispatcher.DispatchAsync(command);
         }
-    }
-
-    private async Task<bool> ValidateThatUserSelectLanguages(HandleImagesCommand command)
-    {
-        var isTargetLangugeSetted = memoryStorage.IsTargetLanguageSetted(command.UserId);
-        if (!isTargetLangugeSetted)
-        {
-            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
-            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
-            await commandDispatcher.DispatchAsync(commandToChangeLanguage);
-            return false;
-        }
-
-        var isNativeLangugeSetted = memoryStorage.IsNativeLanguageSetted(command.UserId);
-        if (!isNativeLangugeSetted)
-        {
-            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
-            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
-            await commandDispatcher.DispatchAsync(commandToChangeLanguage);
-            return false;
-        }
-
-        return true;
     }
 
     private async Task<bool> ProcessAndSendPhotoAnalysisAsync(byte[] bytes, long chatId, long userId, int replyId)

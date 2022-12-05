@@ -1,4 +1,5 @@
 ﻿using TB.Audios.Commands;
+using TB.Audios.Entities;
 using TB.Routing;
 using TB.Routing.Entities;
 using Telegram.Bot.Types;
@@ -27,7 +28,9 @@ public class ParseAudiosRoute : IBaseRoute
         var chatId = message.Chat.Id;
         var messageId = message.MessageId;
 
-        var command = new HandleAudiosCommand(chatId, userId, messageId);
+        var file = new AudioInfo() { FileId = message.Audio.FileId };
+
+        var command = new HandleAudiosCommand(chatId, userId, messageId, file);
 
         return new BaseRouteResult(command);
     }

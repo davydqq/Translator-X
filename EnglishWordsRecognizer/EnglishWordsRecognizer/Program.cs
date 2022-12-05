@@ -2,6 +2,7 @@ using CQRS;
 using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.API.Jobs;
+using TB.Audios.Entities;
 using TB.ComputerVision;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
@@ -11,6 +12,7 @@ using TB.Routing;
 using TB.Routing.Commands;
 using TB.Translator;
 using TB.Translator.Entities.Azure;
+using TB.User;
 using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,8 @@ builder.Services.RoutingModules();
 builder.Services.Configure<BotMenuConfig>(options => builder.Configuration.GetSection("BotMenu").Bind(options));
 builder.Services.Configure<AzureVisionConfig>(options => builder.Configuration.GetSection("AzureVisionConfig").Bind(options));
 builder.Services.Configure<AzureTranslatorConfig>(options => builder.Configuration.GetSection("AzureTranslatorConfig").Bind(options));
+builder.Services.Configure<AzureSpeechConfig>(options => builder.Configuration.GetSection("AzureSpeechConfig").Bind(options));
+
 builder.Services.Configure<BotCredentialsConfig>(options => builder.Configuration.GetSection("BotConfig").Bind(options));
 
 builder.Services.AddSingleton(x =>
@@ -51,6 +55,8 @@ builder.Services.AddSingleton<Storage>();
 // Cognitive Services
 builder.Services.AddSingleton<ITranslateService, AzureTranslateService>();
 builder.Services.AddSingleton<IComputerVisionService, AzureComputerVisionService>();
+
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddHttpClient();
 
