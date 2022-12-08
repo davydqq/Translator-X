@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "credible-acre-371009",
+  "private_key_id": "d00db645a65e7b39259ba953b9b37a13fe515c65",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCtLyuQy/dEVG84\nGYJaa9/pa3VMt77oSG/XB9UhEOz1rzyLrVoHHyBzsU72AbeQ+HpcY//5MEZzB1I9\nSSm/L2VBDfl4TTlFYm9/Qwj1hyX2xLjvEFhizxrFMvdizDmGTq5FZh1cyflDQ64R\nsMjmYCRTNmxsvdz/O+BHJshQWH707NnOLJAlSx4ceZYAbqPTTRXHFE9xhLBJbRBL\nGQ3doN+yMzcyfM7C2V3/EQDJKM7etnyt0H/qxVoS4HbwSmymn2BFlIRyeSVbNguT\nP/8k+wnJWiZfNSaruVmp0C+HZKoMoV0vx+4BP7XpOc5B65OUOL7adRFxUNuOlGDK\nhQrUhSsZAgMBAAECggEAAOufKCa+9CwctGgfGYe5CdHXFQ0yJKR9HHmMSB/OZ2N2\nIQOCI62/+ICibxh4PZSy4pQ3eb9B1WR33lKDhPwYzJBpJhrTwv4joihpi+CBf6VX\nZ3hA3mZdk1tSr3UImaGhnhKaW/IvP6Yq7sLvqZj5aHKbTE9zNSBzPMpeEys9O+Qw\ng+DT13Sxz8GQqywGXaH7U3G6AfnEmV8womTqoE+XZxDjqmY5PMo7Mw+VXgJz+iTt\ndAkSuUFFJ5+5IA+2UsIijiMT8FqLMn0fRu3y8Ohf8NU2tj8pupEozAQVtB75QmhO\nMUtfUn/l6WZb6ctxNAZgQbGE2bI/GtGLTGp8YJdFjwKBgQDbrni08fKa8lnYl3V9\nfXUSs48O9zFWpSWIxMn0G4xESJxe1Y2CBvRnRUOXFsYsvfsyRTpOr5bAa6DPJOBi\naszh+bll6+tCdKkkrUbBubIih/5DYttOB5NcJw4Tc4L8cNuXJKyeIiL74OqOiMxN\nxcFlisZOA4joLXeJBV0qfaTcEwKBgQDJ0M5NNgnkOHk+mHV72MkfNSUTa7eMjEDD\nSqnI0IwIz8KN6oDgPPuu2UXbxhF/zjAVcT2CD3RFWnUgkPRN8t4YqqV7Z/23N8Dk\nNuC2boHUgdoNkjxRO35KQ0SOu7LMtnqVUCYaraHAy8Rl51AT/26wgSqBRIzIVYmJ\nYAgOSzopowKBgEznzGwUE4l49Ekl5MS0yeptH9TuZsBdekFiGw0xI663+L4eZrax\ndpg8oEfheikprSnRIHNxdwYP57D8yOzLVMR7ZxMuPyL5skkbvByPxLPgBfxTPFEZ\nx9XH+l6G3sE/RTCpbyDA9JxXBeY2L8e+RlEk/v1KsYAOgr1eOlpot/EvAoGBAJem\nHb+LIbeqcAEHUxCy/75BkxCa2pv0MB4PlrFddDyS0aEOW7UkXgMvJP1WQoQFDcCv\nDQcUUcxjgqvsAIgqPZXPdPXcWJw6eumCCy1KsKhcwtt7zXNE/0sSbQvMIzkMzeQx\nC9D0NB3JgFUKkfPU9voOtT/ZoOhQzj66OJN1F8l9AoGAJYhTPlKK4/JfSD++Bzt5\nEGbuumNuWuIpFGRvnp7vNa5gAT9mCFv7GbfxB74VjJVo+llWRx33INVgBpSu5sVn\nEDWuDvgixllfVd9nrqd/uNde2B6efHTPwLvquFpwkM3PMBKm/6yzwclL8vVhXwks\nB/NT9kRQE7w/PR0vhaHjBLY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "telegram-bot-speech@credible-acre-371009.iam.gserviceaccount.com",
+  "client_id": "106873048526090616135",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/telegram-bot-speech%40credible-acre-371009.iam.gserviceaccount.com"
+}

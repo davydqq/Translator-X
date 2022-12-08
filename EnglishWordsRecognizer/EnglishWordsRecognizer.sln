@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Database", "TB.Database\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Common", "TB.Common\TB.Common.csproj", "{4A963FC4-023E-4AD2-A4DC-DE7A642AA5B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.User", "TB.User\TB.User.csproj", "{22E31289-B7EF-46D5-93EC-99F13F01F671}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.User", "TB.User\TB.User.csproj", "{22E31289-B7EF-46D5-93EC-99F13F01F671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

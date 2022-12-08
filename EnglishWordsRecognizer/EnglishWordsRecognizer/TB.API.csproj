@@ -29,6 +29,12 @@
     <ProjectReference Include="..\TelegramBotTranslator\TB.Translator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="google\credible-acre-371009-d00db645a65e.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://download.stackhawk.com/hawk/jsonschema/hawkconfig.json" /></VisualStudio></ProjectExtensions>
 
 </Project>
