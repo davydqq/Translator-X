@@ -10,6 +10,10 @@ public class Storage
 
     public ConcurrentDictionary<long, LanguageENUM> UserId_TargetLanguage { get; set; } = new();
 
+    public ConcurrentDictionary<long, bool> UserId_RecognizeMeaning { get; set; } = new();
+
+
+    // ADD UPDATE
     public void AddOrUpdateUserNativeLanguage(long userId, LanguageENUM languageId)
     {
         UserId_NativeLanguage.AddOrUpdate(userId, languageId, (key, oldValue) => languageId);
@@ -20,6 +24,12 @@ public class Storage
         UserId_TargetLanguage.AddOrUpdate(userId, languageId, (key, oldValue) => languageId);
     }
 
+    public void AddOrUpdateUserEnglishMeaning(long userId, bool flag)
+    {
+        UserId_RecognizeMeaning.AddOrUpdate(userId, flag, (key, oldValue) => flag);
+    }
+
+    // DELETE
     public void DeleteUserNativeLanguage(long userId)
     {
         UserId_NativeLanguage.Remove(userId, out var language);
@@ -28,6 +38,19 @@ public class Storage
     public void DeleteUserTargetLanguage(long userId)
     {
         UserId_TargetLanguage.Remove(userId, out var language);
+    }
+
+    public void DeleteUserRecognizeMeaning(long userId)
+    {
+        UserId_RecognizeMeaning.Remove(userId, out var flag);
+    }
+
+    // GET
+
+    public bool IsEnglishMeaningActive(long userId)
+    {
+        var isExist = UserId_RecognizeMeaning.TryGetValue(userId, out var value);
+        return isExist && value;
     }
 
     public LanguageENUM GetUserNativeLanguage(long userId)

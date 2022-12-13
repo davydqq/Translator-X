@@ -7,6 +7,7 @@ using TB.Audios.Entities;
 using TB.ComputerVision;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
+using TB.Meaning;
 using TB.MemoryStorage;
 using TB.Menu.Entities;
 using TB.Routing;
@@ -53,6 +54,7 @@ builder.Services.AddSingleton(x =>
 
 // services
 builder.Services.AddSingleton<Storage>();
+builder.Services.AddSingleton<CambridgeDictionaryService>();
 
 // Cognitive Services
 builder.Services.AddSingleton<ITranslateService, AzureTranslateService>();

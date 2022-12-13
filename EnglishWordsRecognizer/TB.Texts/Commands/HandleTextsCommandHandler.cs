@@ -1,9 +1,13 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Logging;
 using TB.Core.Commands;
+using TB.Meaning;
+using TB.Meaning.Entities;
 using TB.MemoryStorage;
+using TB.MemoryStorage.Languages;
 using TB.Translator;
 using TB.User;
+using TelegramBotStorage.Languages;
 
 namespace TB.Texts.Commands;
 
@@ -19,18 +23,22 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
     private readonly IUserService userService;
 
+    private readonly CambridgeDictionaryService cambridgeDictionaryService;
+
     public HandleTextsCommandHandler(
         ILogger<HandleTextsCommandHandler> logger,
         Storage memoryStorage,
         ICommandDispatcher commandDispatcher,
         ITranslateService translateService,
-        IUserService userService)
+        IUserService userService,
+        CambridgeDictionaryService cambridgeDictionaryService)
     {
         this.logger = logger;
         this.memoryStorage = memoryStorage;
         this.commandDispatcher = commandDispatcher;
         this.translateService = translateService;
         this.userService = userService;
+        this.cambridgeDictionaryService = cambridgeDictionaryService;
     }
 
     public async Task HandleAsync(HandleTextsCommand command, CancellationToken cancellation = default)
@@ -59,16 +67,71 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
                 var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code);
 
-                await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom, replyToMessageId: command.ReplyId));
+                var sentMessage = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom, replyToMessageId: command.ReplyId));
+
+                await HandleMeaning(languageTo, command.Text, command.UserId, command.ChatId, sentMessage.MessageId);
 
                 return;
             }
 
             var resText = await GetTranslationsAsync(command.Text, languageTo.Code);
             await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
+            
+            await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, command.MessageId);
         }
     }
 
+    private async Task HandleMeaning(Language language, string text, long userId, long chatId, int? replyId)
+    {
+        // todo add reverse lofic
+        switch (language.Id)
+        {
+            case LanguageENUM.English:
+                {
+                    if (memoryStorage.IsEnglishMeaningActive(userId))
+                    {
+                        var result = await cambridgeDictionaryService.GetCambridgeEnglishAsync(text);
+                        var message = GetMessageMeaning(result);
+                        if (!string.IsNullOrEmpty(message))
+                        {
+                            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, message, replyToMessageId: replyId));
+                        }
+                    }
+                    break;
+                }
+        }
+    }
+
+    private string GetMessageMeaning(MeaningResult result)
+    {
+        if (result.Results == null || !result.Results.Any())
+        {
+            return null;
+        }
+
+        string message = "";
+
+        if (result.IsMatched)
+        {
+            foreach (var item in result.Results)
+            {
+                message += item.Phrase + " - " + item.Meaning;
+                message += "\n";
+            }
+
+            return message;
+        }
+
+        message += "Maybe you mean: ";
+
+        foreach (var item in result.Results)
+        {
+            message += item.Phrase + " - " + item.Meaning;
+            message += "\n";
+        }
+
+        return message;
+    }
 
     private async Task<string> GetTranslationsAsync(string text, string langCode)
     {

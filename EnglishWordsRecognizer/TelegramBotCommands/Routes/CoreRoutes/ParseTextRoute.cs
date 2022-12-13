@@ -28,7 +28,7 @@ public class ParseTextRoute : IBaseRoute
         var messageId = message.MessageId;
         var text = message.Text;
 
-        var command = new HandleTextsCommand(chatId, userId, messageId, text);
+        var command = new HandleTextsCommand(chatId, userId, messageId, text, messageId);
         return new BaseRouteResult(command);
     }
 }

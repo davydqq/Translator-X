@@ -71,6 +71,25 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
                     await commandDispatcher.DispatchAsync(commandToSend);
                     break;
 				}
+            case BotMenuId.EnglishMeaning:
+                {
+                    var message = "English meaning has been ";
+                    var messageToSend = "";
+                    var isEnglishMeaningActive = memoryStorage.IsEnglishMeaningActive(command.UserId);
+                    if (isEnglishMeaningActive)
+                    {
+                        memoryStorage.AddOrUpdateUserEnglishMeaning(command.UserId, false);
+                        messageToSend = message + "disabled";
+                    }
+                    else
+                    {
+                        memoryStorage.AddOrUpdateUserEnglishMeaning(command.UserId, true);
+                        messageToSend = message + "activated";
+                    }
+                    var commandToSend = new SendMessageCommand(command.ChatId, messageToSend);
+                    await commandDispatcher.DispatchAsync(commandToSend);
+                    break;
+                }
 		}
 	}
 

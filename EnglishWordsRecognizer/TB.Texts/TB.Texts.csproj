@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\TB.Meaning\TB.Meaning.csproj" />
     <ProjectReference Include="..\TB.Menu\TB.Menu.csproj" />
     <ProjectReference Include="..\TB.User\TB.User.csproj" />
     <ProjectReference Include="..\TelegramBotStorage\TB.MemoryStorage.csproj" />

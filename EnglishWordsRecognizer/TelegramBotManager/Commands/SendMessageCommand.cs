@@ -1,10 +1,11 @@
 ﻿using CQRS.Commands;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TB.Core.Commands;
 
-public class SendMessageCommand : ICommand
+public class SendMessageCommand : ICommand<Message>
 {
 	public SendMessageCommand(
 		long chatId, 
