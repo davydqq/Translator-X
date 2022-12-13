@@ -10,6 +10,17 @@ public class MeaningPhraseResult
     public MeaningPhraseResult(string phrase, string meaning)
     {
         Phrase = phrase;
-        Meaning = meaning;
+        Meaning = ClearMeaning(meaning);
+    }
+
+    private string ClearMeaning(string meaning)
+    {
+        if (!string.IsNullOrEmpty(meaning) && meaning.Trim().EndsWith(":"))
+        {
+            meaning = meaning.Trim();
+            return meaning.Substring(0, meaning.Length - 1);
+        }
+
+        return meaning;
     }
 }

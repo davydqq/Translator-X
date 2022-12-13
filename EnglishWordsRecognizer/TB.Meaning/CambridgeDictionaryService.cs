@@ -60,7 +60,7 @@ public class CambridgeDictionaryService
                 }
 
                 var splitPhrase = phrase.Split(" ");
-                var otherMeanings = meanings.Skip(firstNumber);
+                var otherMeanings = meanings.Skip(firstNumber).Take(5);
 
                 if (otherMeanings.Any())
                 {

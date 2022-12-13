@@ -92,8 +92,8 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
     {
         if (memoryStorage.IsLanguagesInited(userId))
         {
-            var nativeLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserNativeLanguage(userId)].Name;
-            var targetLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserTargetLanguage(userId)].Name;
+            var nativeLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserNativeLanguage(userId).Value].Name;
+            var targetLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserTargetLanguage(userId).Value].Name;
 
             var message = $"The languages was established.\n" +
                           $"You can send text, photo, audio for translating.\n" +

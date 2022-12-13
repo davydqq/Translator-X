@@ -53,14 +53,22 @@ public class Storage
         return isExist && value;
     }
 
-    public LanguageENUM GetUserNativeLanguage(long userId)
+    public LanguageENUM? GetUserNativeLanguage(long userId)
     {
-        return UserId_NativeLanguage.GetValueOrDefault(userId);
+        if (UserId_NativeLanguage.ContainsKey(userId))
+        {
+            return UserId_NativeLanguage[userId];
+        }
+        return null;
     }
 
-    public LanguageENUM GetUserTargetLanguage(long userId)
+    public LanguageENUM? GetUserTargetLanguage(long userId)
     {
-        return UserId_TargetLanguage.GetValueOrDefault(userId);
+        if (UserId_TargetLanguage.ContainsKey(userId))
+        {
+            return UserId_TargetLanguage[userId];
+        }
+        return null;
     }
 
 

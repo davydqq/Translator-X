@@ -7,6 +7,7 @@ using TB.MemoryStorage;
 using TB.MemoryStorage.Languages;
 using TB.Translator;
 using TB.User;
+using Telegram.Bot.Types.Enums;
 using TelegramBotStorage.Languages;
 
 namespace TB.Texts.Commands;
@@ -48,7 +49,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
         if (res)
         {
             var languageToId = memoryStorage.GetUserTargetLanguage(command.UserId);
-            var languageTo = SupportedLanguages.languagesDict[languageToId];
+            var languageTo = SupportedLanguages.languagesDict[languageToId.Value];
 
             // PROCESSING
 
@@ -63,7 +64,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
             if (resDetect.Count > 0 && languageTo.Code == resDetect.First().Language)
             {
                 var languageFromId = memoryStorage.GetUserNativeLanguage(command.UserId);
-                var languageFrom = SupportedLanguages.languagesDict[languageFromId];
+                var languageFrom = SupportedLanguages.languagesDict[languageFromId.Value];
 
                 var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code);
 
@@ -94,7 +95,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
                         var message = GetMessageMeaning(result);
                         if (!string.IsNullOrEmpty(message))
                         {
-                            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, message, replyToMessageId: replyId));
+                            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, message, replyToMessageId: replyId, parseMode: ParseMode.Html));
                         }
                     }
                     break;
@@ -122,11 +123,11 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
             return message;
         }
 
-        message += "Maybe you mean: ";
+        message += "<b>Maybe you mean</b>\n";
 
         foreach (var item in result.Results)
         {
-            message += item.Phrase + " - " + item.Meaning;
+            message += "• " + item.Phrase + " - " + item.Meaning;
             message += "\n";
         }
 

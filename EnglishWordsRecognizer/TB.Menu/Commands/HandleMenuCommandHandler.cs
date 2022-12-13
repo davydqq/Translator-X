@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
 using TB.MemoryStorage;
+using TB.MemoryStorage.Languages;
 using TB.Menu.Entities;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -46,8 +47,9 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
 				}
 			case BotMenuId.NativeLanguage:
 				{
+                    var targetL = memoryStorage.GetUserTargetLanguage(command.UserId);
                     var message = $"Choose your native language";
-                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, targetL);
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
@@ -56,8 +58,9 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
                 }
 			case BotMenuId.TargetLanguage:
 				{
+                    var nativeL = memoryStorage.GetUserNativeLanguage(command.UserId);
                     var message = $"Choose target language";
-                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, nativeL);
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
@@ -93,9 +96,9 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
 		}
 	}
 
-    public static IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons(string callBackId)
+    public static IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons(string callBackId, LanguageENUM? excludeLanguage)
     {
-        return SupportedLanguages.GetLanguages().Chunk(2).Select(languages =>
+        return SupportedLanguages.GetLanguages().Where(x => x.Id != excludeLanguage).Chunk(2).Select(languages =>
         {
             return languages.Select(language =>
             {
