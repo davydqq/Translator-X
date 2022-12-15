@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 
 namespace TB.Database;
 
@@ -16,5 +17,6 @@ public static class DatabaseContextModules
         );
 
         services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddTransient<UserSettingsRepository>();
     }
 }

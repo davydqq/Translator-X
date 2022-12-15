@@ -1,8 +1,8 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
-using TB.MemoryStorage;
-using TB.MemoryStorage.Languages;
+using TB.Database.Entities;
+using TB.Database.Repositories;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
 using Telegram.Bot.Types.Enums;
@@ -15,16 +15,16 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
     private readonly ICommandDispatcher commandDispatcher;
 
-    private readonly Storage memoryStorage;
+    private readonly UserSettingsRepository userSettingsRepository;
 
     public HandleCallbackCommandHandler(
         IOptions<BotMenuConfig> options, 
         ICommandDispatcher commandDispatcher,
-        Storage memoryStorage)
+        UserSettingsRepository userSettingsRepository)
     {
         this.options = options;
         this.commandDispatcher = commandDispatcher;
-        this.memoryStorage = memoryStorage;
+        this.userSettingsRepository = userSettingsRepository;
     }
 
     public async Task HandleAsync(HandleCallbackCommand command, CancellationToken cancellation = default)
@@ -40,15 +40,18 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
                     {
                         await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, command.MessageId));
 
+                        var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
+
                         var language = GetLanguage(command.Data!);
                         if (language.HasValue)
                         {
-                            memoryStorage.AddOrUpdateUserNativeLanguage(command.UserId, language.Value);
+                            settings.NativeLanguageId = language;
+                            await userSettingsRepository.UpdateAsync(settings);
                         }
 
                         await SendLanguagesWereEstablished(command.ChatId, command.UserId);
 
-                        if (!memoryStorage.IsTargetLanguageSetted(command.UserId))
+                        if (settings.TargetLanguageId == null)
                         {
                             var nativeLanguageOption = options.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
                             var menuCommandNativeLangauge = new HandleMenuCommand(nativeLanguageOption, command.ChatId, command.MessageId, command.UserId, false);
@@ -62,15 +65,18 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
                     {
                         await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, command.MessageId));
 
+                        var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
+
                         var language = GetLanguage(command.Data!);
                         if (language.HasValue)
                         {
-                            memoryStorage.AddOrUpdateUserTargetLanguage(command.UserId, language.Value);
+                            settings.TargetLanguageId = language;
+                            await userSettingsRepository.UpdateAsync(settings);
                         }
 
                         await SendLanguagesWereEstablished(command.ChatId, command.UserId);
 
-                        if (!memoryStorage.IsNativeLanguageSetted(command.UserId))
+                        if (settings.NativeLanguageId == null)
                         {
                             var nativeLanguageOption = options.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
                             var menuCommandNativeLangauge = new HandleMenuCommand(nativeLanguageOption, command.ChatId, command.MessageId, command.UserId, false);
@@ -90,10 +96,12 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
     public async Task SendLanguagesWereEstablished(long chatId, long userId)
     {
-        if (memoryStorage.IsLanguagesInited(userId))
+        var isLanguagesInited = await userSettingsRepository.GetAnyAsync(x => x.TelegramUserId == userId && x.NativeLanguageId != null && x.TargetLanguageId != null);
+        if (isLanguagesInited)
         {
-            var nativeLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserNativeLanguage(userId).Value].Name;
-            var targetLanguage = SupportedLanguages.languagesDict[memoryStorage.GetUserTargetLanguage(userId).Value].Name;
+            var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(userId);
+            var nativeLanguage = settings.NativeLanguage;
+            var targetLanguage = settings.TargetLanguage;
 
             var message = $"The languages was established.\n" +
                           $"You can send text, photo, audio for translating.\n" +

@@ -1,22 +1,19 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Logging;
 using TB.Core.Commands;
+using TB.Database.Entities;
+using TB.Database.Repositories;
 using TB.Meaning;
 using TB.Meaning.Entities;
-using TB.MemoryStorage;
-using TB.MemoryStorage.Languages;
 using TB.Translator;
 using TB.User;
 using Telegram.Bot.Types.Enums;
-using TelegramBotStorage.Languages;
 
 namespace TB.Texts.Commands;
 
 public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 {
     private readonly ILogger<HandleTextsCommandHandler> logger;
-
-    private readonly Storage memoryStorage;
 
     private readonly ICommandDispatcher commandDispatcher;
 
@@ -26,20 +23,22 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
     private readonly CambridgeDictionaryService cambridgeDictionaryService;
 
+    private readonly UserSettingsRepository repositoryUserSettings;
+
     public HandleTextsCommandHandler(
         ILogger<HandleTextsCommandHandler> logger,
-        Storage memoryStorage,
         ICommandDispatcher commandDispatcher,
         ITranslateService translateService,
         IUserService userService,
-        CambridgeDictionaryService cambridgeDictionaryService)
+        CambridgeDictionaryService cambridgeDictionaryService,
+        UserSettingsRepository repositoryUserSettings)
     {
         this.logger = logger;
-        this.memoryStorage = memoryStorage;
         this.commandDispatcher = commandDispatcher;
         this.translateService = translateService;
         this.userService = userService;
         this.cambridgeDictionaryService = cambridgeDictionaryService;
+        this.repositoryUserSettings = repositoryUserSettings;
     }
 
     public async Task HandleAsync(HandleTextsCommand command, CancellationToken cancellation = default)
@@ -48,9 +47,9 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
         if (res)
         {
-            var languageToId = memoryStorage.GetUserTargetLanguage(command.UserId);
-            var languageTo = SupportedLanguages.languagesDict[languageToId.Value];
 
+            var userSettingsT = await repositoryUserSettings.GetSettingsIncludedLanguageTargetAsync(command.UserId);
+            var languageTo = userSettingsT.TargetLanguage;
             // PROCESSING
 
             if (string.IsNullOrEmpty(command.Text))
@@ -63,8 +62,8 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
             if (resDetect.Count > 0 && languageTo.Code == resDetect.First().Language)
             {
-                var languageFromId = memoryStorage.GetUserNativeLanguage(command.UserId);
-                var languageFrom = SupportedLanguages.languagesDict[languageFromId.Value];
+                var userSettingsN = await repositoryUserSettings.GetSettingsIncludeLanguageNativeAsync(command.UserId);
+                var languageFrom = userSettingsN.NativeLanguage;
 
                 var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code);
 
@@ -89,7 +88,8 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
         {
             case LanguageENUM.English:
                 {
-                    if (memoryStorage.IsEnglishMeaningActive(userId))
+                    var meaningActive = await repositoryUserSettings.GetAnyAsync(x => x.TelegramUserId == userId && x.RecognizeEnglishMeaning);
+                    if (meaningActive)
                     {
                         var result = await cambridgeDictionaryService.GetCambridgeEnglishAsync(text);
                         var message = GetMessageMeaning(result);

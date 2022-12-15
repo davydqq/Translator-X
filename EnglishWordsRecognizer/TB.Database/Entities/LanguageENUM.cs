@@ -1,4 +1,4 @@
-﻿namespace TB.MemoryStorage.Languages;
+﻿namespace TB.Database.Entities;
 
 public enum LanguageENUM
 {

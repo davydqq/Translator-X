@@ -1,5 +1,4 @@
 using CQRS;
-using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.API.Jobs;
 using TB.Audios;
@@ -9,10 +8,8 @@ using TB.ComputerVision.Entities;
 using TB.Core.Configs;
 using TB.Database;
 using TB.Meaning;
-using TB.MemoryStorage;
 using TB.Menu.Entities;
 using TB.Routing;
-using TB.Routing.Commands;
 using TB.Translator;
 using TB.Translator.Entities.Azure;
 using TB.User;
@@ -55,7 +52,6 @@ builder.Services.AddSingleton(x =>
 });
 
 // services
-builder.Services.AddSingleton<Storage>();
 builder.Services.AddSingleton<CambridgeDictionaryService>();
 
 // Cognitive Services

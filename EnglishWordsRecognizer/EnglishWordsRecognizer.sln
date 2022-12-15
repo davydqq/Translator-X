@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Core", "TelegramBotManag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Routing", "TelegramBotCommands\TB.Routing.csproj", "{04CACE4A-D486-4798-ACCB-AED6FCF91C6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.MemoryStorage", "TelegramBotStorage\TB.MemoryStorage.csproj", "{82F7E39B-6D99-40D7-A479-4131EC6FAD9C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.ComputerVision", "TelegramBotImages\TB.ComputerVision.csproj", "{4CFFC37A-823E-4B1D-A693-46B731284B5C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Translator", "TelegramBotTranslator\TB.Translator.csproj", "{612D1ACE-4AA6-4ADD-8914-C239E2DB42C6}"
@@ -41,9 +39,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Common", "TB.Common\TB.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.User", "TB.User\TB.User.csproj", "{22E31289-B7EF-46D5-93EC-99F13F01F671}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Meaning", "TB.Meaning\TB.Meaning.csproj", "{1D6E132F-AC24-4B60-A5C3-896D2219E6ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Meaning", "TB.Meaning\TB.Meaning.csproj", "{1D6E132F-AC24-4B60-A5C3-896D2219E6ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{154DF8CD-D120-4F5C-9B91-7791CC2F11BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{154DF8CD-D120-4F5C-9B91-7791CC2F11BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +61,6 @@ Global
 		{04CACE4A-D486-4798-ACCB-AED6FCF91C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04CACE4A-D486-4798-ACCB-AED6FCF91C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04CACE4A-D486-4798-ACCB-AED6FCF91C6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82F7E39B-6D99-40D7-A479-4131EC6FAD9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82F7E39B-6D99-40D7-A479-4131EC6FAD9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82F7E39B-6D99-40D7-A479-4131EC6FAD9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82F7E39B-6D99-40D7-A479-4131EC6FAD9C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4CFFC37A-823E-4B1D-A693-46B731284B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4CFFC37A-823E-4B1D-A693-46B731284B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CFFC37A-823E-4B1D-A693-46B731284B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU

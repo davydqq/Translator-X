@@ -6,11 +6,15 @@ namespace TB.User.Commands;
 
 public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
 {
-    private readonly IRepository<TelegramUser, int> repository;
+    private readonly IRepository<TelegramUser, int> userRepository;
+    private readonly IRepository<UserSettings, int> settingsRepository;
 
-    public RegisterUserCommandHandler(IRepository<TelegramUser, int> repository)
+    public RegisterUserCommandHandler(
+        IRepository<TelegramUser, int> userRepository,
+        IRepository<UserSettings, int> settingsRepository)
     {
-        this.repository = repository;
+        this.userRepository = userRepository;
+        this.settingsRepository = settingsRepository;
     }
 
     public async Task HandleAsync(RegisterUserCommand command, CancellationToken cancellation = default)
@@ -27,13 +31,19 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
                 LastName = user.LastName,
                 IsBot = user.IsBot,
                 LanguageCode = user.LanguageCode,
-                Username = user.Username
+                Username = user.Username,
             };
 
-            var isUserExist = await repository.GetAnyAsync(x => x.TelegramUserId == user.Id);
+            var isUserExist = await userRepository.GetAnyAsync(x => x.TelegramUserId == user.Id);
             if (!isUserExist)
             {
-                await repository.AddAsync(dbUser);
+                await userRepository.AddAsync(dbUser);
+            }
+
+            var isSettingsExist = await settingsRepository.GetAnyAsync(x => x.TelegramUserId == user.Id);
+            if (!isSettingsExist)
+            {
+                await settingsRepository.AddAsync(new UserSettings { TelegramUserId = user.Id, InterfaceLanguageId = LanguageENUM.English });
             }
         }
     }

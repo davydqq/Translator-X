@@ -19,25 +19,30 @@ namespace TB.Database.GenericRepositories
 
         public virtual Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate) => entities.FirstOrDefaultAsync(predicate);
 
-        public async Task<EntityEntry<T>> AddAsync(T entity)
-        {
-            var ent = await entities.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return ent;
-        }
-
-        public async Task UpdateAsync(T entity)
-        {
-            entities.Update(entity);
-            await context.SaveChangesAsync();
-        }
-
+        // REMOVE
         public async Task RemoveAsync(T entity)
         {
             entities.Remove(entity);
             await context.SaveChangesAsync();
         }
 
+        public async Task RemoveIfExistAsync(Expression<Func<T, bool>> predicate)
+        {
+            var ent = await entities.FirstOrDefaultAsync(predicate);
+            if(ent != null)
+            {
+                entities.Remove(ent);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<T> ents)
+        {
+            entities.RemoveRange(ents);
+            await context.SaveChangesAsync();
+        }
+
+        // GET
         public virtual Task<List<T>> GetAllAsync()
         {
             return entities.ToListAsync();
@@ -68,18 +73,20 @@ namespace TB.Database.GenericRepositories
             return entities.AnyAsync(predicate);
         }
 
+        // UPDATE
         public async Task UpdateRangeAsync(IEnumerable<T> ents)
         {
             entities.UpdateRange(ents);
             await context.SaveChangesAsync();
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<T> ents)
+        public async Task UpdateAsync(T entity)
         {
-            entities.RemoveRange(ents);
+            entities.Update(entity);
             await context.SaveChangesAsync();
         }
 
+        // ADD
         public async Task AddRangeAsync(IEnumerable<T> ents)
         {
             await entities.AddRangeAsync(ents);
@@ -90,6 +97,13 @@ namespace TB.Database.GenericRepositories
         {
             await entities.AddRangeAsync(ents);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<EntityEntry<T>> AddAsync(T entity)
+        {
+            var ent = await entities.AddAsync(entity);
+            await context.SaveChangesAsync();
+            return ent;
         }
     }
 }

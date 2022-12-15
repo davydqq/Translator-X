@@ -16,6 +16,7 @@ namespace TB.Database.GenericRepositories
         Task UpdateRangeAsync(IEnumerable<T> entities);
 
         Task RemoveAsync(T entity);
+        Task RemoveIfExistAsync(Expression<Func<T, bool>> predicate);
         Task RemoveRangeAsync(IEnumerable<T> entities);
 
         Task<List<T>> GetAllAsync();

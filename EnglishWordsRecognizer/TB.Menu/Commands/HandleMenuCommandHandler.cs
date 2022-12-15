@@ -1,8 +1,9 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Core.Commands;
-using TB.MemoryStorage;
-using TB.MemoryStorage.Languages;
+using TB.Database.Entities;
+using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 using TB.Menu.Entities;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -12,18 +13,22 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
 {
 	private readonly ICommandDispatcher commandDispatcher;
 
-    private readonly Storage memoryStorage;
-
     private readonly IOptions<BotMenuConfig> menuOptions;
+
+    private readonly UserSettingsRepository userSettingsRepository;
+
+    private readonly IRepository<Language, LanguageENUM> languageRepository;
 
     public HandleMenuCommandHandler(
         ICommandDispatcher commandDispatcher,
-        Storage memoryStorage,
-        IOptions<BotMenuConfig> menuOptions)
+        IOptions<BotMenuConfig> menuOptions,
+        UserSettingsRepository userSettingsRepository,
+        IRepository<Language, LanguageENUM> languageRepository)
 	{
         this.commandDispatcher = commandDispatcher;
-        this.memoryStorage = memoryStorage;
         this.menuOptions = menuOptions;
+        this.userSettingsRepository = userSettingsRepository;
+        this.languageRepository = languageRepository;
     }
 
 	public async Task HandleAsync(HandleMenuCommand command, CancellationToken cancellation = default)
@@ -37,8 +42,13 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
 		{
 			case BotMenuId.Start:
 				{
-                    memoryStorage.DeleteUserNativeLanguage(command.UserId);
-                    memoryStorage.DeleteUserTargetLanguage(command.UserId);
+                    var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
+                    if(settings != null)
+                    {
+                        settings.TargetLanguageId = null;
+                        settings.NativeLanguageId = null;
+                        await userSettingsRepository.UpdateAsync(settings);
+                    }
 
                     var commandNL = menuOptions.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
                     var options = new HandleMenuCommand(commandNL, command.ChatId, command.MessageId, command.UserId, false);
@@ -47,9 +57,11 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
 				}
 			case BotMenuId.NativeLanguage:
 				{
-                    var targetL = memoryStorage.GetUserTargetLanguage(command.UserId);
+                    var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
+                    var targetL = settings.TargetLanguageId;
+                    var langs = await languageRepository.GetWhereAsync(x => x.Id != targetL && x.IsSupportNativeLanguage);
                     var message = $"Choose your native language";
-                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, targetL);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, langs);
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
@@ -58,9 +70,11 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
                 }
 			case BotMenuId.TargetLanguage:
 				{
-                    var nativeL = memoryStorage.GetUserNativeLanguage(command.UserId);
+                    var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
+                    var nativeL = settings.NativeLanguageId;
                     var message = $"Choose target language";
-                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, nativeL);
+                    var langs = await languageRepository.GetWhereAsync(x => x.Id != nativeL && x.IsSupportTargetLanguage);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, langs);
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
@@ -78,27 +92,43 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
                 {
                     var message = "English meaning has been ";
                     var messageToSend = "";
-                    var isEnglishMeaningActive = memoryStorage.IsEnglishMeaningActive(command.UserId);
-                    if (isEnglishMeaningActive)
+                    var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
+                    if (settings.RecognizeEnglishMeaning)
                     {
-                        memoryStorage.AddOrUpdateUserEnglishMeaning(command.UserId, false);
+                        settings.RecognizeEnglishMeaning = false;
+                        await userSettingsRepository.UpdateAsync(settings);
                         messageToSend = message + "disabled";
                     }
                     else
                     {
-                        memoryStorage.AddOrUpdateUserEnglishMeaning(command.UserId, true);
+                        settings.RecognizeEnglishMeaning = true;
+                        await userSettingsRepository.UpdateAsync(settings);
                         messageToSend = message + "activated";
                     }
                     var commandToSend = new SendMessageCommand(command.ChatId, messageToSend);
                     await commandDispatcher.DispatchAsync(commandToSend);
                     break;
                 }
+            case BotMenuId.IntefaceLanguage:
+                {
+                    var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
+                    var interfaceLanguage = settings.InterfaceLanguageId;
+                    var message = $"Choose interface language";
+                    var langs = await languageRepository.GetWhereAsync(x => x.Id != interfaceLanguage && x.IsSupportInteface);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, langs);
+                    InlineKeyboardMarkup inlineKeyboard = new(buttons);
+
+                    var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
+                    await commandDispatcher.DispatchAsync(commandToSend);
+                    break;
+                }
 		}
 	}
 
-    public static IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons(string callBackId, LanguageENUM? excludeLanguage)
+    public IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons(
+        string callBackId, List<Language> langs)
     {
-        return SupportedLanguages.GetLanguages().Where(x => x.Id != excludeLanguage).Chunk(2).Select(languages =>
+        return langs.Chunk(2).Select(languages =>
         {
             return languages.Select(language =>
             {

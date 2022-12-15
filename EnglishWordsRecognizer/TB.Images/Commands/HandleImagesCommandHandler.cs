@@ -4,8 +4,8 @@ using Microsoft.Extensions.Logging;
 using TB.ComputerVision;
 using TB.Core.Commands;
 using TB.Core.Queries;
-using TB.MemoryStorage;
-using TB.MemoryStorage.Languages;
+using TB.Database.Entities;
+using TB.Database.GenericRepositories;
 using TB.Texts.Commands;
 using TB.Translator;
 using TB.User;
@@ -21,30 +21,30 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
     private readonly IQueryDispatcher queryDispatcher;
 
-    private readonly Storage memoryStorage;
-
     private readonly ICommandDispatcher commandDispatcher;
 
     private readonly ITranslateService translateService;
 
     private readonly IUserService userService;
 
+    private readonly IRepository<Language, LanguageENUM> langRepository;
+
     public HandleImagesCommandHandler(
         ILogger<HandleImagesCommandHandler> logger, 
         IComputerVisionService computerVisionService,
         IQueryDispatcher queryDispatcher,
-        Storage memoryStorage,
         ICommandDispatcher commandDispatcher,
         ITranslateService translateService,
-        IUserService userService)
+        IUserService userService,
+        IRepository<Language, LanguageENUM> langRepository)
     {
         this.logger = logger;
         this.computerVisionService = computerVisionService;
         this.queryDispatcher = queryDispatcher;
-        this.memoryStorage = memoryStorage;
         this.commandDispatcher = commandDispatcher;
         this.translateService = translateService;
         this.userService = userService;
+        this.langRepository = langRepository;
     }
 
     public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
@@ -88,9 +88,9 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
             if (resTags != null && resTags.Any())
             {
-                var languagesToTranslate = memoryStorage.GetUserLanguages(userId)
-                                                   .Where(x => x.Id != LanguageENUM.English)
-                                                   .Select(x => x.Code).ToArray();
+                var languages = await langRepository.GetWhereAsync(x => x.Id != LanguageENUM.English);
+                var languagesToTranslate = languages.Select(x => x.Code).ToArray();
+
                 // TODO output for diff languages
                 var resp = await translateService.TranslateTextsAsync(resTags.ToArray(), languagesToTranslate);
 

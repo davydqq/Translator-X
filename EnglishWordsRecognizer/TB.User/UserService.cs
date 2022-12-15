@@ -1,7 +1,8 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Common;
-using TB.MemoryStorage;
+using TB.Database.Entities;
+using TB.Database.GenericRepositories;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
 
@@ -9,24 +10,26 @@ namespace TB.User;
 
 public class UserService : IUserService
 {
-    private readonly Storage memoryStorage;
     private readonly ICommandDispatcher commandDispatcher;
+
     private readonly IOptions<BotMenuConfig> menuConfig;
 
+    private readonly IRepository<UserSettings, int> repositoryUserSettings;
+
     public UserService(
-        Storage memoryStorage, 
         ICommandDispatcher commandDispatcher,
-        IOptions<BotMenuConfig> menuConfig)
+        IOptions<BotMenuConfig> menuConfig,
+        IRepository<UserSettings, int> repositoryUserSettings)
     {
-        this.memoryStorage = memoryStorage;
         this.commandDispatcher = commandDispatcher;
         this.menuConfig = menuConfig;
+        this.repositoryUserSettings = repositoryUserSettings;
     }
 
 
     public async Task<bool> ValidateThatUserSelectLanguages(BaseTelegramMessageCommand command)
     {
-        var isTargetLangugeSetted = memoryStorage.IsTargetLanguageSetted(command.UserId);
+        var isTargetLangugeSetted = await repositoryUserSettings.GetAnyAsync(x => x.TelegramUserId == command.UserId && x.TargetLanguageId != null);
         if (!isTargetLangugeSetted)
         {
             var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
@@ -35,7 +38,7 @@ public class UserService : IUserService
             return false;
         }
 
-        var isNativeLangugeSetted = memoryStorage.IsNativeLanguageSetted(command.UserId);
+        var isNativeLangugeSetted = await repositoryUserSettings.GetAnyAsync(x => x.TelegramUserId == command.UserId && x.NativeLanguageId != null);
         if (!isNativeLangugeSetted)
         {
             var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);

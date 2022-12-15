@@ -6,5 +6,6 @@ public enum BotMenuId
     NativeLanguage = 2,
     TargetLanguage = 3,
     Info = 4,
-    EnglishMeaning = 5
+    EnglishMeaning = 5,
+    IntefaceLanguage = 6,
 }

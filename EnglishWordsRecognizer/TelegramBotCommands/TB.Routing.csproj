@@ -24,7 +24,6 @@
     <ProjectReference Include="..\TB.Videos\TB.Videos.csproj" />
     <ProjectReference Include="..\TelegramBotImages\TB.ComputerVision.csproj" />
     <ProjectReference Include="..\TelegramBotManager\TB.Core.csproj" />
-    <ProjectReference Include="..\TelegramBotStorage\TB.MemoryStorage.csproj" />
     <ProjectReference Include="..\TelegramBotTranslator\TB.Translator.csproj" />
   </ItemGroup>
 
