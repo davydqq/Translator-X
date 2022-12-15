@@ -7,6 +7,7 @@ using TB.Audios.Entities;
 using TB.ComputerVision;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
+using TB.Database;
 using TB.Meaning;
 using TB.MemoryStorage;
 using TB.Menu.Entities;
@@ -40,6 +41,7 @@ builder.Services.Configure<BotCredentialsConfig>(options => builder.Configuratio
 
 builder.Services.Configure<GoogleConfig>(options => builder.Configuration.GetSection("GoogleConfig").Bind(options));
 
+
 builder.Services.AddSingleton(x =>
 {
     var options = x.GetRequiredService<IOptions<BotCredentialsConfig>>();
@@ -68,6 +70,11 @@ builder.Services.AddHttpClient();
 // Add Hosted
 builder.Services.AddHostedService<RunAppJob>();
 
+// DB
+var dbConn = builder.Configuration.GetSection("Database").Value!;
+builder.Services.ApplyDataBaseDI(dbConn);
+
+//
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TB.Database\TB.Database.csproj" />
     <ProjectReference Include="..\TB.Menu\TB.Menu.csproj" />
     <ProjectReference Include="..\TelegramBotStorage\TB.MemoryStorage.csproj" />
   </ItemGroup>

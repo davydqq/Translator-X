@@ -1,6 +1,7 @@
 ﻿using CQRS.Commands;
 using Microsoft.AspNetCore.Mvc;
 using TB.Routing.Commands;
+using TB.User.Commands;
 using Telegram.Bot.Types;
 
 namespace TB.API.Controllers
@@ -20,6 +21,8 @@ namespace TB.API.Controllers
         public async Task<ActionResult> Post([FromBody] Update update)
         {
             if (update == null) return BadRequest("Update is empty");
+
+            await dispatcher.DispatchAsync(new RegisterUserCommand(update));
 
             var res = await dispatcher.DispatchAsync(new TelegramUpdatesCommand(update));
 
