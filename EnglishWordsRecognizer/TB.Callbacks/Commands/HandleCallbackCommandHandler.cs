@@ -5,7 +5,9 @@ using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TB.Callbacks.Commands;
 
@@ -86,12 +88,38 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
                         break;
                     }
+                case BotMenuId.IntefaceLanguage:
+                    {
+                        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, command.MessageId));
+
+                        var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
+
+                        var language = GetLanguage(command.Data!);
+                        if (language.HasValue)
+                        {
+                            settings.InterfaceLanguageId = language;
+                            await userSettingsRepository.UpdateAsync(settings);
+                        }
+
+                        await SendIntefaceLanguageEstablished(command.ChatId, command.UserId);
+                        break;
+                    }
                 default:
                     {
                         break;
                     }
             }
         }
+    }
+
+    public async Task SendIntefaceLanguageEstablished(long chatId, long userId)
+    {
+        var settings = await userSettingsRepository.GetLanguageInterfaceAsync(userId);
+        var message = $"Your interface language: {settings.InterfaceLanguage.Name}";
+
+        var commandMessage = new SendMessageCommand(chatId, message, ParseMode.Html);
+
+        await commandDispatcher.DispatchAsync(commandMessage);
     }
 
     public async Task SendLanguagesWereEstablished(long chatId, long userId)
@@ -106,8 +134,8 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
             var message = $"The languages was established.\n" +
                           $"You can send text, photo, audio for translating.\n" +
                           $"Your languages \n" +
-                          $"Native Language: {nativeLanguage}\n" +
-                          $"Target Language: {targetLanguage}";
+                          $"Native Language: {nativeLanguage.Name}\n" +
+                          $"Target Language: {targetLanguage.Name}";
 
             var command = new SendMessageCommand(chatId, message, ParseMode.Html);
 
