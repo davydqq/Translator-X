@@ -9,7 +9,7 @@ public static class DatabaseContextModules
 {
     public static void ApplyDataBaseDI(this IServiceCollection services, string dbConnection)
     {
-        services.AddDbContext<TB_DatabaseContext>
+        services.AddDbContext<TBDatabaseContext>
         (
             options => options.UseNpgsql(dbConnection), 
             contextLifetime: ServiceLifetime.Transient,

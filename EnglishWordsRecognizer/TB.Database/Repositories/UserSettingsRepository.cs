@@ -6,7 +6,7 @@ namespace TB.Database.Repositories;
 
 public class UserSettingsRepository : Repository<UserSettings, int>
 {
-	public UserSettingsRepository(TB_DatabaseContext databaseContext) : base(databaseContext)
+	public UserSettingsRepository(TBDatabaseContext databaseContext) : base(databaseContext)
 	{
 
 	}

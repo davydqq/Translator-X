@@ -22,5 +22,5 @@ public class Language : BaseEntity<LanguageENUM>
 
     public List<UserSettings> UserSettingsInterfaceLangs { set; get; }
 
-    
+    public List<Translation> Translations { set; get; }
 }

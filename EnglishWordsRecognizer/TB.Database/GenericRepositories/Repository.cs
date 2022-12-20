@@ -7,11 +7,11 @@ namespace TB.Database.GenericRepositories
 {
     public class Repository<T, IdType> : IRepository<T, IdType> where T : BaseEntity<IdType> where IdType : struct
     {
-        public readonly TB_DatabaseContext context;
+        public readonly TBDatabaseContext context;
 
         protected DbSet<T> entities;
 
-        public Repository(TB_DatabaseContext context)
+        public Repository(TBDatabaseContext context)
         {
             this.context = context;
             entities = context.Set<T>();
