@@ -5,42 +5,19 @@ using TB.Database.Entities;
 
 namespace TB.Database.GenericRepositories
 {
-    public class Repository<T, IdType> : IRepository<T, IdType> where T : BaseEntity<IdType> where IdType : struct
+    public class Repository<T, IdType> : ModifyRepository<T>, IRepository<T, IdType> where T : BaseEntity<IdType> where IdType : struct
     {
         public readonly TBDatabaseContext context;
 
         protected DbSet<T> entities;
 
-        public Repository(TBDatabaseContext context)
+        public Repository(TBDatabaseContext context) : base(context)
         {
             this.context = context;
             entities = context.Set<T>();
         }
 
         public virtual Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate) => entities.FirstOrDefaultAsync(predicate);
-
-        // REMOVE
-        public async Task RemoveAsync(T entity)
-        {
-            entities.Remove(entity);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task RemoveIfExistAsync(Expression<Func<T, bool>> predicate)
-        {
-            var ent = await entities.FirstOrDefaultAsync(predicate);
-            if(ent != null)
-            {
-                entities.Remove(ent);
-                await context.SaveChangesAsync();
-            }
-        }
-
-        public async Task RemoveRangeAsync(IEnumerable<T> ents)
-        {
-            entities.RemoveRange(ents);
-            await context.SaveChangesAsync();
-        }
 
         // GET
         public virtual Task<List<T>> GetAllAsync()
@@ -71,39 +48,6 @@ namespace TB.Database.GenericRepositories
         public Task<bool> GetAnyAsync(Expression<Func<T, bool>> predicate)
         {
             return entities.AnyAsync(predicate);
-        }
-
-        // UPDATE
-        public async Task UpdateRangeAsync(IEnumerable<T> ents)
-        {
-            entities.UpdateRange(ents);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(T entity)
-        {
-            entities.Update(entity);
-            await context.SaveChangesAsync();
-        }
-
-        // ADD
-        public async Task AddRangeAsync(IEnumerable<T> ents)
-        {
-            await entities.AddRangeAsync(ents);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task AddRangeAsync(List<T> ents)
-        {
-            await entities.AddRangeAsync(ents);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task<EntityEntry<T>> AddAsync(T entity)
-        {
-            var ent = await entities.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return ent;
         }
     }
 }

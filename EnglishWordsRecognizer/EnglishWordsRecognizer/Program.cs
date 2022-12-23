@@ -7,6 +7,7 @@ using TB.ComputerVision;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
 using TB.Database;
+using TB.Localization;
 using TB.Meaning;
 using TB.Menu.Entities;
 using TB.Routing;
@@ -60,6 +61,8 @@ builder.Services.AddSingleton<IComputerVisionService, AzureComputerVisionService
 builder.Services.AddSingleton<ISpeechToTextService, GoogleSpeechToTextService>();
 
 builder.Services.AddTransient<IUserService, UserService>();
+
+builder.Services.ApplyLocalizationModules();
 
 builder.Services.AddHttpClient();
 
