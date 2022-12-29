@@ -10,6 +10,7 @@
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
     <ProjectReference Include="..\TB.Common\TB.Common.csproj" />
     <ProjectReference Include="..\TB.Database\TB.Database.csproj" />
+    <ProjectReference Include="..\TB.Localization\TB.Localization.csproj" />
     <ProjectReference Include="..\TelegramBotManager\TB.Core.csproj" />
   </ItemGroup>
 

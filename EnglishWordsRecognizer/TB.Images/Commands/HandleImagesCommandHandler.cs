@@ -6,6 +6,7 @@ using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
 using TB.Database.GenericRepositories;
+using TB.Localization.Services;
 using TB.Texts.Commands;
 using TB.Translator;
 using TB.User;
@@ -29,6 +30,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
     private readonly IRepository<Language, LanguageENUM> langRepository;
 
+    private readonly ILocalizationService localizationService;
+
     public HandleImagesCommandHandler(
         ILogger<HandleImagesCommandHandler> logger, 
         IComputerVisionService computerVisionService,
@@ -36,7 +39,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         ICommandDispatcher commandDispatcher,
         ITranslateService translateService,
         IUserService userService,
-        IRepository<Language, LanguageENUM> langRepository)
+        IRepository<Language, LanguageENUM> langRepository,
+        ILocalizationService localizationService)
     {
         this.logger = logger;
         this.computerVisionService = computerVisionService;
@@ -45,6 +49,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         this.translateService = translateService;
         this.userService = userService;
         this.langRepository = langRepository;
+        this.localizationService = localizationService;
     }
 
     public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
@@ -94,7 +99,9 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
                 // TODO output for diff languages
                 var resp = await translateService.TranslateTextsAsync(resTags.ToArray(), languagesToTranslate);
 
-                var text = "<b>Image objects</b>\n\n";
+                var imageObjectsMessage = await localizationService.GetTranslateByInterface("app.images.objects", userId);
+
+                var text = $"{imageObjectsMessage}\n\n";
                 text += string.Join("\n", resTags);
 
                 resText += text;
@@ -104,7 +111,9 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             {
                 var captions = results.Description.Captions.Select(x => x.Text);
 
-                var text = "\n<b>Image description</b>\n";
+                var imageDescMessage = await localizationService.GetTranslateByInterface("app.images.description", userId);
+
+                var text = $"\n{imageDescMessage}\n";
                 text += string.Join("\n", captions);
                 resText += text;
             }
@@ -124,7 +133,9 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
         if (results != null && results.TextResults.Count > 0)
         {
-            var text = "<b>Text on photo</b>\n\n";
+            var textPhotoMessage = await localizationService.GetTranslateByInterface("app.images.text", userId);
+
+            var text = $"{textPhotoMessage}\n\n";
             var texts = string.Join("\n", results.TextResults.SelectMany(x => x.Lines).Select(x => x.Text));
 
             if (!string.IsNullOrEmpty(texts))

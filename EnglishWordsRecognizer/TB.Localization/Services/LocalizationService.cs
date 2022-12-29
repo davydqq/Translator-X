@@ -20,16 +20,13 @@ public class LocalizationService : ILocalizationService
     public async Task<string> GetTranslateByInterface(string key, long userId)
     {
         var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
+        var interfaceLangId = settings?.InterfaceLanguageId ?? LanguageENUM.English;
 
-        if (settings != null)
+        var translate = translateCacheRepository.GetByKeyOrDefault((key, interfaceLangId));
+
+        if (translate != null)
         {
-            var interfaceLangId = settings.InterfaceLanguageId ?? LanguageENUM.English;
-            var translate = translateCacheRepository.GetByKeyOrDefault((key, interfaceLangId));
-
-            if (translate != null)
-            {
-                return translate.Translate;
-            }
+            return translate.Translate;
         }
 
         return null!;

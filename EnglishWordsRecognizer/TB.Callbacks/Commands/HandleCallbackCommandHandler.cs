@@ -3,11 +3,10 @@ using Microsoft.Extensions.Options;
 using TB.Core.Commands;
 using TB.Database.Entities;
 using TB.Database.Repositories;
+using TB.Localization.Services;
 using TB.Menu.Commands;
 using TB.Menu.Entities;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TB.Callbacks.Commands;
 
@@ -19,14 +18,18 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
 
     private readonly UserSettingsRepository userSettingsRepository;
 
+    private readonly ILocalizationService localizationService;
+
     public HandleCallbackCommandHandler(
         IOptions<BotMenuConfig> options, 
         ICommandDispatcher commandDispatcher,
-        UserSettingsRepository userSettingsRepository)
+        UserSettingsRepository userSettingsRepository,
+        ILocalizationService localizationService)
     {
         this.options = options;
         this.commandDispatcher = commandDispatcher;
         this.userSettingsRepository = userSettingsRepository;
+        this.localizationService = localizationService;
     }
 
     public async Task HandleAsync(HandleCallbackCommand command, CancellationToken cancellation = default)
@@ -115,7 +118,9 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
     public async Task SendIntefaceLanguageEstablished(long chatId, long userId)
     {
         var settings = await userSettingsRepository.GetLanguageInterfaceAsync(userId);
-        var message = $"Your interface language: {settings.InterfaceLanguage.Name}";
+
+        var baseMessage = await localizationService.GetTranslateByInterface("app.languages.interfaceLanguage", userId);
+        var message = $"{baseMessage} {settings.InterfaceLanguage.Name}";
 
         var commandMessage = new SendMessageCommand(chatId, message, ParseMode.Html);
 
@@ -131,11 +136,19 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
             var nativeLanguage = settings.NativeLanguage;
             var targetLanguage = settings.TargetLanguage;
 
-            var message = $"The languages was established.\n" +
-                          $"You can send text, photo, audio for translating.\n" +
-                          $"Your languages \n" +
-                          $"Native Language: {nativeLanguage.Name}\n" +
-                          $"Target Language: {targetLanguage.Name}";
+            var messageEstablished = await localizationService.GetTranslateByInterface("app.languages.established", userId);
+            var messageLanguages = await localizationService.GetTranslateByInterface("app.languages.yourLanguages", userId);
+
+            var messageTargetLanguage = await localizationService.GetTranslateByInterface("app.languages.targetL", userId);
+            var messageNativeLanguage = await localizationService.GetTranslateByInterface("app.languages.nativeL", userId);
+
+            var messageCanSend = await localizationService.GetTranslateByInterface("app.languages.canSend", userId);
+
+            var message = $"{messageEstablished}\n" +
+                          $"{messageCanSend}\n" +
+                          $"{messageLanguages} \n" +
+                          $"{messageNativeLanguage} {nativeLanguage.Name}\n" +
+                          $"{messageTargetLanguage} {targetLanguage.Name}";
 
             var command = new SendMessageCommand(chatId, message, ParseMode.Html);
 

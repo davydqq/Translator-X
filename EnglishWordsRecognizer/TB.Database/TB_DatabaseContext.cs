@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TB.Database.Entities;
+using TB.Database.Initing;
 
 namespace TB.Database;
 
@@ -170,6 +171,7 @@ public class TBDatabaseContext : DbContext
 
     private void InitTranslations(ModelBuilder modelBuilder)
     {
+        // CALLBACKS
         var interfaceKey = "app.languages.interfaceLanguage";
         var languagesSettedKey = "app.languages.established";
         var languageYourLanguagesKey = "app.languages.yourLanguages";
@@ -177,172 +179,325 @@ public class TBDatabaseContext : DbContext
         var targetLanguageKey = "app.languages.targetL";
         var canSendKey = "app.languages.canSend";
 
+        // IMAGES
         var textImageKey = "app.images.text";
         var descriptionImageKey = "app.images.description";
         var objectsImageKey = "app.images.objects";
 
+        // TEXTS
         var textMaybeMeanKey = "app.texts.maybeMean";
 
-        modelBuilder.Entity<Translation>().HasData(
-            new Translation { Id = 1, Key = interfaceKey, LanguageId = LanguageENUM.Ukrainian, Translate = "Мова інтерфейсу:" },
-            new Translation { Id = 2, Key = interfaceKey, LanguageId = LanguageENUM.Russian, Translate = "Язык интерфейса:" },
-            new Translation { Id = 3, Key = interfaceKey, LanguageId = LanguageENUM.English, Translate = "Your interface language:" },
-            new Translation { Id = 4, Key = interfaceKey, LanguageId = LanguageENUM.Spanish, Translate = "Tu idioma de interfaz:" },
-            new Translation { Id = 5, Key = interfaceKey, LanguageId = LanguageENUM.French, Translate = "La langue de votre interface :" },
-            new Translation { Id = 6, Key = interfaceKey, LanguageId = LanguageENUM.Japanese, Translate = "" },
-            new Translation { Id = 7, Key = interfaceKey, LanguageId = LanguageENUM.Chinese, Translate = "" },
-            new Translation { Id = 8, Key = interfaceKey, LanguageId = LanguageENUM.Czech, Translate = "Váš jazyk rozhraní:" },
-            new Translation { Id = 9, Key = interfaceKey, LanguageId = LanguageENUM.Danish, Translate = "Dit grænsefladesprog:" },
-            new Translation { Id = 10, Key = interfaceKey, LanguageId = LanguageENUM.Hindi, Translate = "" },
-            new Translation { Id = 11, Key = interfaceKey, LanguageId = LanguageENUM.Italian, Translate = "La lingua dell'interfaccia:" },
-            new Translation { Id = 12, Key = interfaceKey, LanguageId = LanguageENUM.Swedish, Translate = "Ditt gränssnittsspråk:" },
-            new Translation { Id = 13, Key = interfaceKey, LanguageId = LanguageENUM.German, Translate = "Ihre Oberflächensprache:" },
-            new Translation { Id = 14, Key = interfaceKey, LanguageId = LanguageENUM.Polish, Translate = "Twój język interfejsu:" },
-            new Translation { Id = 15, Key = interfaceKey, LanguageId = LanguageENUM.Turkish, Translate = "Arayüz diliniz:" },
-            //
-            new Translation { Id = 16, Key = languagesSettedKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 17, Key = languagesSettedKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 18, Key = languagesSettedKey, LanguageId = LanguageENUM.English, Translate = "The languages were established." },
-            new Translation { Id = 19, Key = languagesSettedKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 20, Key = languagesSettedKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 21, Key = languagesSettedKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 22, Key = languagesSettedKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 23, Key = languagesSettedKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 24, Key = languagesSettedKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 25, Key = languagesSettedKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 26, Key = languagesSettedKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 27, Key = languagesSettedKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 28, Key = languagesSettedKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 29, Key = languagesSettedKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 30, Key = languagesSettedKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 31, Key = nativeLanguageKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 32, Key = nativeLanguageKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 33, Key = nativeLanguageKey, LanguageId = LanguageENUM.English, Translate = "Native Language:" },
-            new Translation { Id = 34, Key = nativeLanguageKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 35, Key = nativeLanguageKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 36, Key = nativeLanguageKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 37, Key = nativeLanguageKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 38, Key = nativeLanguageKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 39, Key = nativeLanguageKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 40, Key = nativeLanguageKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 41, Key = nativeLanguageKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 42, Key = nativeLanguageKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 43, Key = nativeLanguageKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 44, Key = nativeLanguageKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 45, Key = nativeLanguageKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 46, Key = targetLanguageKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 47, Key = targetLanguageKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 48, Key = targetLanguageKey, LanguageId = LanguageENUM.English, Translate = "Target Language:" },
-            new Translation { Id = 49, Key = targetLanguageKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 50, Key = targetLanguageKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 51, Key = targetLanguageKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 52, Key = targetLanguageKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 53, Key = targetLanguageKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 54, Key = targetLanguageKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 55, Key = targetLanguageKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 56, Key = targetLanguageKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 57, Key = targetLanguageKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 58, Key = targetLanguageKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 59, Key = targetLanguageKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 60, Key = targetLanguageKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 61, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 62, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 63, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.English, Translate = "Your languages" },
-            new Translation { Id = 64, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 65, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 66, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 67, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 68, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 69, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 70, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 71, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 72, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 73, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 74, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 75, Key = languageYourLanguagesKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 76, Key = canSendKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 77, Key = canSendKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 78, Key = canSendKey, LanguageId = LanguageENUM.English, Translate = "Send text, photo, audio for translating." },
-            new Translation { Id = 79, Key = canSendKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 80, Key = canSendKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 81, Key = canSendKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 82, Key = canSendKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 83, Key = canSendKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 84, Key = canSendKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 85, Key = canSendKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 86, Key = canSendKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 87, Key = canSendKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 88, Key = canSendKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 89, Key = canSendKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 90, Key = canSendKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 91, Key = textImageKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 92, Key = textImageKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 93, Key = textImageKey, LanguageId = LanguageENUM.English, Translate = "<b>Text on photo</b>" },
-            new Translation { Id = 94, Key = textImageKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 95, Key = textImageKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 96, Key = textImageKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 97, Key = textImageKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 98, Key = textImageKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 99, Key = textImageKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 100, Key = textImageKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 101, Key = textImageKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 102, Key = textImageKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 103, Key = textImageKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 104, Key = textImageKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 105, Key = textImageKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 106, Key = objectsImageKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 107, Key = objectsImageKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 108, Key = objectsImageKey, LanguageId = LanguageENUM.English, Translate = "<b>Image objects</b>" },
-            new Translation { Id = 109, Key = objectsImageKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 110, Key = objectsImageKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 111, Key = objectsImageKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 112, Key = objectsImageKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 113, Key = objectsImageKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 114, Key = objectsImageKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 115, Key = objectsImageKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 116, Key = objectsImageKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 117, Key = objectsImageKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 118, Key = objectsImageKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 119, Key = objectsImageKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 120, Key = objectsImageKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 121, Key = descriptionImageKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 122, Key = descriptionImageKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 123, Key = descriptionImageKey, LanguageId = LanguageENUM.English, Translate = "<b>Image description</b>" },
-            new Translation { Id = 124, Key = descriptionImageKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 125, Key = descriptionImageKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 126, Key = descriptionImageKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 127, Key = descriptionImageKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 128, Key = descriptionImageKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 129, Key = descriptionImageKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 130, Key = descriptionImageKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 131, Key = descriptionImageKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 132, Key = descriptionImageKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 133, Key = descriptionImageKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 134, Key = descriptionImageKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 135, Key = descriptionImageKey, LanguageId = LanguageENUM.Turkish, Translate = "" },
-            //
-            new Translation { Id = 136, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Ukrainian, Translate = "" },
-            new Translation { Id = 137, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Russian, Translate = "" },
-            new Translation { Id = 138, Key = textMaybeMeanKey, LanguageId = LanguageENUM.English, Translate = "<b>Maybe you mean</b>" },
-            new Translation { Id = 139, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Spanish, Translate = "" },
-            new Translation { Id = 140, Key = textMaybeMeanKey, LanguageId = LanguageENUM.French, Translate = "" },
-            new Translation { Id = 141, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Japanese, Translate = "1" },
-            new Translation { Id = 142, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Chinese, Translate = "1" },
-            new Translation { Id = 143, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Czech, Translate = "" },
-            new Translation { Id = 144, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Danish, Translate = "" },
-            new Translation { Id = 145, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Hindi, Translate = "1" },
-            new Translation { Id = 146, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Italian, Translate = "" },
-            new Translation { Id = 147, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Swedish, Translate = "" },
-            new Translation { Id = 148, Key = textMaybeMeanKey, LanguageId = LanguageENUM.German, Translate = "" },
-            new Translation { Id = 149, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Polish, Translate = "" },
-            new Translation { Id = 150, Key = textMaybeMeanKey, LanguageId = LanguageENUM.Turkish, Translate = "" }
-        );
+        // MENU
+        var menuChooseNativeKey = "app.menu.chooseNative";
+        var menuChooseTargetKey = "app.menu.chooseTarget";
+        var menuEnglishMeaningKey = "app.menu.englishMeaning";
+        var menuDisable = "app.menu.disabled";
+        var menuActivated = "app.menu.activated";
+        var menuChooseLang = "app.menu.chooseLang";
+        var menuInfoKey = "app.menu.info";
+
+        var data = new List<KeyTranslationsInitEntity>
+        {
+            new KeyTranslationsInitEntity(interfaceKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Мова інтерфейсу:")
+                .AddTranslate(LanguageENUM.Russian, "Язык интерфейса:")
+                .AddTranslate(LanguageENUM.English, "Your interface language:")
+                .AddTranslate(LanguageENUM.Spanish, "Tu idioma de interfaz:")
+                .AddTranslate(LanguageENUM.French, "La langue de votre interface :")
+                .AddTranslate(LanguageENUM.Japanese, "インターフェース言語:")
+                .AddTranslate(LanguageENUM.Chinese, "界面语言：")
+                .AddTranslate(LanguageENUM.Czech, "Váš jazyk rozhraní:")
+                .AddTranslate(LanguageENUM.Danish, "Dit grænsefladesprog:")
+                .AddTranslate(LanguageENUM.Hindi, "अंतरफलक भाषा:")
+                .AddTranslate(LanguageENUM.Italian, "La lingua dell'interfaccia:")
+                .AddTranslate(LanguageENUM.Swedish, "Ditt gränssnittsspråk:")
+                .AddTranslate(LanguageENUM.German, "Ihre Oberflächensprache:")
+                .AddTranslate(LanguageENUM.Polish, "Twój język interfejsu:")
+                .AddTranslate(LanguageENUM.Turkish, "Arayüz diliniz:"),
+            new KeyTranslationsInitEntity(languagesSettedKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Мови були встановлені.")
+                .AddTranslate(LanguageENUM.Russian, "Языки были установлены.")
+                .AddTranslate(LanguageENUM.English, "The languages were established.")
+                .AddTranslate(LanguageENUM.Spanish, "Se han establecido las lenguas.")
+                .AddTranslate(LanguageENUM.French, "Les langues ont été définies.")
+                .AddTranslate(LanguageENUM.Japanese, "言語が設定されました。")
+                .AddTranslate(LanguageENUM.Chinese, "设置了语言。")
+                .AddTranslate(LanguageENUM.Czech, "Jazyky byly nastaveny.")
+                .AddTranslate(LanguageENUM.Danish, "Sprog blev sat.")
+                .AddTranslate(LanguageENUM.Hindi, "भाषाएँ निर्धारित की गईं।")
+                .AddTranslate(LanguageENUM.Italian, "Le lingue sono state impostate.")
+                .AddTranslate(LanguageENUM.Swedish, "Språk sattes.")
+                .AddTranslate(LanguageENUM.German, "Sprachen wurden eingestellt.")
+                .AddTranslate(LanguageENUM.Polish, "Ustawiono języki.")
+                .AddTranslate(LanguageENUM.Turkish, "Diller ayarlandı."),
+            new KeyTranslationsInitEntity(nativeLanguageKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Основна мова:")
+                .AddTranslate(LanguageENUM.Russian, "Основной язык:")
+                .AddTranslate(LanguageENUM.English, "Main Language:")
+                .AddTranslate(LanguageENUM.Spanish, "Lenguaje principal:")
+                .AddTranslate(LanguageENUM.French, "Langage principal:")
+                .AddTranslate(LanguageENUM.Japanese, "主要言語：")
+                .AddTranslate(LanguageENUM.Chinese, "主要语言：")
+                .AddTranslate(LanguageENUM.Czech, "Hlavní jazyk:")
+                .AddTranslate(LanguageENUM.Danish, "Hovedsprog:")
+                .AddTranslate(LanguageENUM.Hindi, "मुख्य भाषा:")
+                .AddTranslate(LanguageENUM.Italian, "Lingua principale:")
+                .AddTranslate(LanguageENUM.Swedish, "Modersmål:")
+                .AddTranslate(LanguageENUM.German, "Muttersprache:")
+                .AddTranslate(LanguageENUM.Polish, "Główny język:")
+                .AddTranslate(LanguageENUM.Turkish, "Ana dil:"),
+            new KeyTranslationsInitEntity(languageYourLanguagesKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Ваші мови")
+                .AddTranslate(LanguageENUM.Russian, "Ваши языки")
+                .AddTranslate(LanguageENUM.English, "Your languages")
+                .AddTranslate(LanguageENUM.Spanish, "Tus idiomas")
+                .AddTranslate(LanguageENUM.French, "Vos langues")
+                .AddTranslate(LanguageENUM.Japanese, "あなたの言語")
+                .AddTranslate(LanguageENUM.Chinese, "你的语言")
+                .AddTranslate(LanguageENUM.Czech, "Vaše jazyky")
+                .AddTranslate(LanguageENUM.Danish, "Dine sprog")
+                .AddTranslate(LanguageENUM.Hindi, "आपकी भाषाएँ")
+                .AddTranslate(LanguageENUM.Italian, "Le tue lingue")
+                .AddTranslate(LanguageENUM.Swedish, "Dina språk")
+                .AddTranslate(LanguageENUM.German, "Ihre Sprachen")
+                .AddTranslate(LanguageENUM.Polish, "Twoje języki")
+                .AddTranslate(LanguageENUM.Turkish, "Dilleriniz"),
+            new KeyTranslationsInitEntity(canSendKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Russian, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.English, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Spanish, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.French, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Japanese, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Chinese, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Czech, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Danish, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Hindi, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Italian, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Swedish, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.German, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Polish, "Send text, photo, audio for translating. TODO")
+                .AddTranslate(LanguageENUM.Turkish, "Send text, photo, audio for translating. TODO"),
+            new KeyTranslationsInitEntity(textImageKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "<b>Текст фото</b>")
+                .AddTranslate(LanguageENUM.Russian, "<b>Фото текст</b>")
+                .AddTranslate(LanguageENUM.English, "<b>Photo text</b>")
+                .AddTranslate(LanguageENUM.Spanish, "<b>Foto texto</b>")
+                .AddTranslate(LanguageENUM.French, "<b>Texte photo</b>")
+                .AddTranslate(LanguageENUM.Japanese, "<b>写真テキスト</b>")
+                .AddTranslate(LanguageENUM.Chinese, "<b>照片文字</b>")
+                .AddTranslate(LanguageENUM.Czech, "<b>Text fotografie</b>")
+                .AddTranslate(LanguageENUM.Danish, "<b>Fototekst</b>")
+                .AddTranslate(LanguageENUM.Hindi, "<b>फोटो पाठ</b>")
+                .AddTranslate(LanguageENUM.Italian, "<b>Testo fotografico</b>")
+                .AddTranslate(LanguageENUM.Swedish, "<b>Fototext</b>")
+                .AddTranslate(LanguageENUM.German, "<b>Fototext</b>")
+                .AddTranslate(LanguageENUM.Polish, "<b>Tekst zdjęcia</b>")
+                .AddTranslate(LanguageENUM.Turkish, "<b>Fotoğraf metni</b>"),
+            new KeyTranslationsInitEntity(objectsImageKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "<b>Об'єкти зображення</b>")
+                .AddTranslate(LanguageENUM.Russian, "<b>Объекты изображения</b>")
+                .AddTranslate(LanguageENUM.English, "<b>Image objects</b>")
+                .AddTranslate(LanguageENUM.Spanish, "<b>Objetos de imagen</b>")
+                .AddTranslate(LanguageENUM.French, "<b>Objets images</b>")
+                .AddTranslate(LanguageENUM.Japanese, "<b>画像オブジェクト</b>")
+                .AddTranslate(LanguageENUM.Chinese, "<b>图像对象</b>")
+                .AddTranslate(LanguageENUM.Czech, "<b>Obrazové objekty</b>")
+                .AddTranslate(LanguageENUM.Danish, "<b>Billedobjekter</b>")
+                .AddTranslate(LanguageENUM.Hindi, "<b>छवि वस्तुएं</b>")
+                .AddTranslate(LanguageENUM.Italian, "<b>Oggetti immagine</b>")
+                .AddTranslate(LanguageENUM.Swedish, "<b>Bildobjekt</b>")
+                .AddTranslate(LanguageENUM.German, "<b>Bildobjekte</b>")
+                .AddTranslate(LanguageENUM.Polish, "<b>Obiekty obrazu</b>")
+                .AddTranslate(LanguageENUM.Turkish, "<b>Görüntü nesneleri</b>"),
+            new KeyTranslationsInitEntity(descriptionImageKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "<b>Опис зображення</b>")
+                .AddTranslate(LanguageENUM.Russian, "<b>Описание изображения</b>")
+                .AddTranslate(LanguageENUM.English, "<b>Image description</b>")
+                .AddTranslate(LanguageENUM.Spanish, "<b>Descripción de la imagen</b>")
+                .AddTranslate(LanguageENUM.French, "<b>Description de l'image</b>")
+                .AddTranslate(LanguageENUM.Japanese, "<b>画像の説明</b>")
+                .AddTranslate(LanguageENUM.Chinese, "<b>图片描述</b>")
+                .AddTranslate(LanguageENUM.Czech, "<b>Popis obrázku</b>")
+                .AddTranslate(LanguageENUM.Danish, "<b>Billedbeskrivelse</b>")
+                .AddTranslate(LanguageENUM.Hindi, "<b>चित्र का वर्णन</b>")
+                .AddTranslate(LanguageENUM.Italian, "<b>Descrizione dell'immagine</b>")
+                .AddTranslate(LanguageENUM.Swedish, "<b>Bildbeskrivning</b>")
+                .AddTranslate(LanguageENUM.German, "<b>Bildbeschreibung</b>")
+                .AddTranslate(LanguageENUM.Polish, "<b>Opis obrazu</b>")
+                .AddTranslate(LanguageENUM.Turkish, "<b>Görüntü açıklaması</b>"),
+            new KeyTranslationsInitEntity(textMaybeMeanKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "<b>Можливо, ви маєте на увазі</b>")
+                .AddTranslate(LanguageENUM.Russian, "<b>Может быть, вы имеете в виду</b>")
+                .AddTranslate(LanguageENUM.English, "<b>Maybe you mean</b>")
+                .AddTranslate(LanguageENUM.Spanish, "<b>Tal vez te refieres</b>")
+                .AddTranslate(LanguageENUM.French, "<b>Peut-être que tu veux dire</b>")
+                .AddTranslate(LanguageENUM.Japanese, "<b>多分あなたが意味する</b>")
+                .AddTranslate(LanguageENUM.Chinese, "<b>也许你的意思是</b>")
+                .AddTranslate(LanguageENUM.Czech, "<b>Možná myslíš</b>")
+                .AddTranslate(LanguageENUM.Danish, "<b>Måske mener du</b>")
+                .AddTranslate(LanguageENUM.Hindi, "<b>शायद आपका मतलब है</b>")
+                .AddTranslate(LanguageENUM.Italian, "<b>Forse intendi</b>")
+                .AddTranslate(LanguageENUM.Swedish, "<b>Du kanske menar</b>")
+                .AddTranslate(LanguageENUM.German, "<b>Vielleicht meinst du</b>")
+                .AddTranslate(LanguageENUM.Polish, "<b>Może masz na myśli</b>")
+                .AddTranslate(LanguageENUM.Turkish, "<b>Belki demek istiyorsun</b>"),
+            new KeyTranslationsInitEntity(targetLanguageKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Мова перекладу:")
+                .AddTranslate(LanguageENUM.Russian, "Целевой язык:")
+                .AddTranslate(LanguageENUM.English, "Target Language:")
+                .AddTranslate(LanguageENUM.Spanish, "Lengua meta:")
+                .AddTranslate(LanguageENUM.French, "Langue cible :")
+                .AddTranslate(LanguageENUM.Japanese, "ターゲット言語")
+                .AddTranslate(LanguageENUM.Chinese, "目标语言。")
+                .AddTranslate(LanguageENUM.Czech, "Cílový jazyk:")
+                .AddTranslate(LanguageENUM.Danish, "Målsprog:")
+                .AddTranslate(LanguageENUM.Hindi, "लक्ष्य भाषा:")
+                .AddTranslate(LanguageENUM.Italian, "Lingua di destinazione:")
+                .AddTranslate(LanguageENUM.Swedish, "Målspråk:")
+                .AddTranslate(LanguageENUM.German, "Zielsprache:")
+                .AddTranslate(LanguageENUM.Polish, "Język docelowy:")
+                .AddTranslate(LanguageENUM.Turkish, "Hedef dil:"),
+            new KeyTranslationsInitEntity(menuChooseNativeKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Виберіть мову")
+                .AddTranslate(LanguageENUM.Russian, "Выберите родной язык")
+                .AddTranslate(LanguageENUM.English, "Choose native language")
+                .AddTranslate(LanguageENUM.Spanish, "Elija el idioma nativo")
+                .AddTranslate(LanguageENUM.French, "Choisissez la langue maternelle")
+                .AddTranslate(LanguageENUM.Japanese, "母国語を選択")
+                .AddTranslate(LanguageENUM.Chinese, "选择母语")
+                .AddTranslate(LanguageENUM.Czech, "Vyberte rodný jazyk")
+                .AddTranslate(LanguageENUM.Danish, "Vælg modersmål")
+                .AddTranslate(LanguageENUM.Hindi, "अपनी मूल भाषा चुनें")
+                .AddTranslate(LanguageENUM.Italian, "Scegli la lingua madre")
+                .AddTranslate(LanguageENUM.Swedish, "Välj modersmål")
+                .AddTranslate(LanguageENUM.German, "Muttersprache wählen")
+                .AddTranslate(LanguageENUM.Polish, "Wybierz język ojczysty")
+                .AddTranslate(LanguageENUM.Turkish, "Yerel dili seçin"),
+            new KeyTranslationsInitEntity(menuChooseTargetKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Виберіть цільову мову")
+                .AddTranslate(LanguageENUM.Russian, "Выберите целевой язык")
+                .AddTranslate(LanguageENUM.English, "Choose target language")
+                .AddTranslate(LanguageENUM.Spanish, "Elija el idioma de destino")
+                .AddTranslate(LanguageENUM.French, "Choisissez la langue cible")
+                .AddTranslate(LanguageENUM.Japanese, "ターゲット言語を選択")
+                .AddTranslate(LanguageENUM.Chinese, "选择目标语言")
+                .AddTranslate(LanguageENUM.Czech, "Vyberte cílový jazyk")
+                .AddTranslate(LanguageENUM.Danish, "Vælg målsprog")
+                .AddTranslate(LanguageENUM.Hindi, "लक्षित भाषा चुनें")
+                .AddTranslate(LanguageENUM.Italian, "Scegli la lingua di destinazione")
+                .AddTranslate(LanguageENUM.Swedish, "Välj målspråk")
+                .AddTranslate(LanguageENUM.German, "Zielsprache wählen")
+                .AddTranslate(LanguageENUM.Polish, "Wybierz język docelowy")
+                .AddTranslate(LanguageENUM.Turkish, "Hedef dili seçin"),
+            new KeyTranslationsInitEntity(menuEnglishMeaningKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Показувати значення англійських слів")
+                .AddTranslate(LanguageENUM.Russian, "Показывать значение английских слов")
+                .AddTranslate(LanguageENUM.English, "Show english words meaning")
+                .AddTranslate(LanguageENUM.Spanish, "Mostrar el significado de las palabras en inglés")
+                .AddTranslate(LanguageENUM.French, "Afficher le sens des mots anglais")
+                .AddTranslate(LanguageENUM.Japanese, "英単語の意味を表示")
+                .AddTranslate(LanguageENUM.Chinese, "显示英文单词的意思")
+                .AddTranslate(LanguageENUM.Czech, "Zobrazit význam anglických slov")
+                .AddTranslate(LanguageENUM.Danish, "Vis engelske ords betydning")
+                .AddTranslate(LanguageENUM.Hindi, "अंग्रेजी शब्दों का अर्थ दिखाएँ")
+                .AddTranslate(LanguageENUM.Italian, "Mostra il significato delle parole inglesi")
+                .AddTranslate(LanguageENUM.Swedish, "Visa engelska ords betydelse")
+                .AddTranslate(LanguageENUM.German, "Zeigen Sie die Bedeutung der englischen Wörter")
+                .AddTranslate(LanguageENUM.Polish, "Pokaż znaczenie angielskich słów")
+                .AddTranslate(LanguageENUM.Turkish, "İngilizce kelimelerin anlamını göster"),
+            new KeyTranslationsInitEntity(menuDisable)
+                .AddTranslate(LanguageENUM.Ukrainian, "вимкнено")
+                .AddTranslate(LanguageENUM.Russian, "отключено")
+                .AddTranslate(LanguageENUM.English, "disabled")
+                .AddTranslate(LanguageENUM.Spanish, "discapacitado")
+                .AddTranslate(LanguageENUM.French, "désactivé")
+                .AddTranslate(LanguageENUM.Japanese, "無効")
+                .AddTranslate(LanguageENUM.Chinese, "禁用")
+                .AddTranslate(LanguageENUM.Czech, "zakázáno")
+                .AddTranslate(LanguageENUM.Danish, "handicappet")
+                .AddTranslate(LanguageENUM.Hindi, "अक्षम")
+                .AddTranslate(LanguageENUM.Italian, "disabilitato")
+                .AddTranslate(LanguageENUM.Swedish, "Inaktiverad")
+                .AddTranslate(LanguageENUM.German, "deaktiviert")
+                .AddTranslate(LanguageENUM.Polish, "wyłączony")
+                .AddTranslate(LanguageENUM.Turkish, "engelli"),
+            new KeyTranslationsInitEntity(menuActivated)
+                .AddTranslate(LanguageENUM.Ukrainian, "активовано")
+                .AddTranslate(LanguageENUM.Russian, "активировано")
+                .AddTranslate(LanguageENUM.English, "activated")
+                .AddTranslate(LanguageENUM.Spanish, "activado")
+                .AddTranslate(LanguageENUM.French, "activé")
+                .AddTranslate(LanguageENUM.Japanese, "アクティブ化")
+                .AddTranslate(LanguageENUM.Chinese, "活性")
+                .AddTranslate(LanguageENUM.Czech, "aktivováno")
+                .AddTranslate(LanguageENUM.Danish, "aktiveret")
+                .AddTranslate(LanguageENUM.Hindi, "सक्रिय")
+                .AddTranslate(LanguageENUM.Italian, "attivato")
+                .AddTranslate(LanguageENUM.Swedish, "aktiveras")
+                .AddTranslate(LanguageENUM.German, "aktiviert")
+                .AddTranslate(LanguageENUM.Polish, "aktywowany")
+                .AddTranslate(LanguageENUM.Turkish, "aktif"),
+            new KeyTranslationsInitEntity(menuChooseLang)
+                .AddTranslate(LanguageENUM.Ukrainian, "Виберіть мову інтерфейсу")
+                .AddTranslate(LanguageENUM.Russian, "Выберите язык интерфейса")
+                .AddTranslate(LanguageENUM.English, "Choose interface language")
+                .AddTranslate(LanguageENUM.Spanish, "Elija el idioma de la interfaz")
+                .AddTranslate(LanguageENUM.French, "Choisissez la langue de l'interface")
+                .AddTranslate(LanguageENUM.Japanese, "インターフェイス言語の選択")
+                .AddTranslate(LanguageENUM.Chinese, "选择界面语言")
+                .AddTranslate(LanguageENUM.Czech, "Vyberte jazyk rozhraní")
+                .AddTranslate(LanguageENUM.Danish, "Vælg grænsefladesprog")
+                .AddTranslate(LanguageENUM.Hindi, "इंटरफ़ेस भाषा चुनें")
+                .AddTranslate(LanguageENUM.Italian, "Scegli la lingua dell'interfaccia")
+                .AddTranslate(LanguageENUM.Swedish, "Välj gränssnittsspråk")
+                .AddTranslate(LanguageENUM.German, "Wählen Sie die Sprache der Benutzeroberfläche")
+                .AddTranslate(LanguageENUM.Polish, "Wybierz język interfejsu")
+                .AddTranslate(LanguageENUM.Turkish, "Arayüz dilini seçin"),
+            new KeyTranslationsInitEntity(menuInfoKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Info")
+                .AddTranslate(LanguageENUM.Russian, "Info")
+                .AddTranslate(LanguageENUM.English, "Info")
+                .AddTranslate(LanguageENUM.Spanish, "Info")
+                .AddTranslate(LanguageENUM.French, "Info")
+                .AddTranslate(LanguageENUM.Japanese, "Info")
+                .AddTranslate(LanguageENUM.Chinese, "Info")
+                .AddTranslate(LanguageENUM.Czech, "Info")
+                .AddTranslate(LanguageENUM.Danish, "Info")
+                .AddTranslate(LanguageENUM.Hindi, "Info")
+                .AddTranslate(LanguageENUM.Italian, "Info")
+                .AddTranslate(LanguageENUM.Swedish, "Info")
+                .AddTranslate(LanguageENUM.German, "Info")
+                .AddTranslate(LanguageENUM.Polish, "Info")
+                .AddTranslate(LanguageENUM.Turkish, "Info"),
+            //new KeyTranslationsInitEntity("")
+            //    .AddTranslate(LanguageENUM.Ukrainian, "")
+            //    .AddTranslate(LanguageENUM.Russian, "")
+            //    .AddTranslate(LanguageENUM.English, "")
+            //    .AddTranslate(LanguageENUM.Spanish, "")
+            //    .AddTranslate(LanguageENUM.French, "")
+            //    .AddTranslate(LanguageENUM.Japanese, "")
+            //    .AddTranslate(LanguageENUM.Chinese, "")
+            //    .AddTranslate(LanguageENUM.Czech, "")
+            //    .AddTranslate(LanguageENUM.Danish, "")
+            //    .AddTranslate(LanguageENUM.Hindi, "")
+            //    .AddTranslate(LanguageENUM.Italian, "")
+            //    .AddTranslate(LanguageENUM.Swedish, "")
+            //    .AddTranslate(LanguageENUM.German, "")
+            //    .AddTranslate(LanguageENUM.Polish, "")
+            //    .AddTranslate(LanguageENUM.Turkish, ""),
+        };
+
+        var i = 1;
+
+        var translation = data.SelectMany((x) => x.Translates.Select(q => new Translation
+        {
+            Id = i++,
+            Key = x.Key,
+            LanguageId = q.LanguageENUM,
+            Translate = q.Translate
+        })).ToList();
+
+        modelBuilder.Entity<Translation>().HasData(translation);
     }
 }

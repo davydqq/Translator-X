@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using TB.Core.Commands;
 using TB.Database.Entities;
 using TB.Database.Repositories;
+using TB.Localization.Services;
 using TB.Meaning;
 using TB.Meaning.Entities;
 using TB.Translator;
@@ -25,13 +26,16 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
     private readonly UserSettingsRepository repositoryUserSettings;
 
+    private readonly ILocalizationService localizationService;
+
     public HandleTextsCommandHandler(
         ILogger<HandleTextsCommandHandler> logger,
         ICommandDispatcher commandDispatcher,
         ITranslateService translateService,
         IUserService userService,
         CambridgeDictionaryService cambridgeDictionaryService,
-        UserSettingsRepository repositoryUserSettings)
+        UserSettingsRepository repositoryUserSettings,
+        ILocalizationService localizationService)
     {
         this.logger = logger;
         this.commandDispatcher = commandDispatcher;
@@ -39,6 +43,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
         this.userService = userService;
         this.cambridgeDictionaryService = cambridgeDictionaryService;
         this.repositoryUserSettings = repositoryUserSettings;
+        this.localizationService = localizationService;
     }
 
     public async Task HandleAsync(HandleTextsCommand command, CancellationToken cancellation = default)
@@ -92,7 +97,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
                     if (meaningActive)
                     {
                         var result = await cambridgeDictionaryService.GetCambridgeEnglishAsync(text);
-                        var message = GetMessageMeaning(result);
+                        var message = await GetMessageMeaning(result, userId);
                         if (!string.IsNullOrEmpty(message))
                         {
                             await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, message, replyToMessageId: replyId, parseMode: ParseMode.Html));
@@ -103,7 +108,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
         }
     }
 
-    private string GetMessageMeaning(MeaningResult result)
+    private async Task<string> GetMessageMeaning(MeaningResult result, long userId)
     {
         if (result.Results == null || !result.Results.Any())
         {
@@ -123,7 +128,9 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
             return message;
         }
 
-        message += "<b>Maybe you mean</b>\n";
+        var maybeMeanMessage = await localizationService.GetTranslateByInterface("app.texts.maybeMean", userId);
+
+        message += $"{maybeMeanMessage}\n";
 
         foreach (var item in result.Results)
         {
