@@ -10,10 +10,8 @@ public class TranslateCacheRepository : CacheRepository<Translation, int, (strin
 
     }
 
-    public override async Task CreateDictionaryByKey()
+    public override void CreateDictionaryByKey()
     {
-        await InitAsync();
-
         if (cachedEnts.Count > 0)
         {
             cachedDictionary = cachedEnts.ToDictionary(x => (x.Key, x.LanguageId));
@@ -26,6 +24,8 @@ public class TranslateCacheRepository : CacheRepository<Translation, int, (strin
 
     public override Translation GetByKeyOrDefault((string, LanguageENUM) key)
     {
+        InitAsync();
+
         if (cachedDictionary.ContainsKey(key))
         {
             return cachedDictionary[key];

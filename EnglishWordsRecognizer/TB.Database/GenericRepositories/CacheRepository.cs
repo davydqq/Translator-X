@@ -25,13 +25,13 @@ public abstract class CacheRepository<T, IdType, TKey> : ModifyRepository<T>, IC
 
     public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
     {
-        await InitAsync();
+        InitAsync();
         return cachedEnts.FirstOrDefault(predicate.Compile());
     }
 
     public async Task<List<T>> GetAllAsync()
     {
-        await InitAsync();
+        InitAsync();
         return cachedEnts;
     }
 
@@ -42,7 +42,7 @@ public abstract class CacheRepository<T, IdType, TKey> : ModifyRepository<T>, IC
 
     public async Task<bool> GetAnyAsync(Expression<Func<T, bool>> predicate)
     {
-        await InitAsync();
+        InitAsync();
         return cachedEnts.Any(predicate.Compile());
     }
 
@@ -54,25 +54,27 @@ public abstract class CacheRepository<T, IdType, TKey> : ModifyRepository<T>, IC
 
     public async Task<List<T>> GetManyAsync(IEnumerable<IdType> ids)
     {
-        await InitAsync();
+        InitAsync();
         return cachedEnts.Where(x => ids.Contains(x.Id)).ToList();
     }
 
     public async Task<List<T>> GetWhereAsync(Expression<Func<T, bool>> predicate)
     {
-        await InitAsync();
+        InitAsync();
         return cachedEnts.Where(predicate.Compile()).ToList();
     }
 
-    protected async Task InitAsync()
+    protected void InitAsync()
     {
         if(cachedEnts == null)
         {
-            cachedEnts = await entities.ToListAsync();
+            cachedEnts = entities.ToList();
         }
+
+        CreateDictionaryByKey();
     }
 
-    public abstract Task CreateDictionaryByKey();
+    public abstract void CreateDictionaryByKey();
 
     public abstract T GetByKeyOrDefault(TKey key);
 }

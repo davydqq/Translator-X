@@ -1,11 +1,14 @@
-﻿using CQRS.Commands;
+﻿using ConsoleTables;
+using CQRS.Commands;
 using CQRS.Queries;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using TB.ComputerVision;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Texts.Commands;
 using TB.Translator;
@@ -32,6 +35,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
     private readonly ILocalizationService localizationService;
 
+    private readonly UserSettingsRepository userSettingsRepository;
+
     public HandleImagesCommandHandler(
         ILogger<HandleImagesCommandHandler> logger, 
         IComputerVisionService computerVisionService,
@@ -40,7 +45,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         ITranslateService translateService,
         IUserService userService,
         IRepository<Language, LanguageENUM> langRepository,
-        ILocalizationService localizationService)
+        ILocalizationService localizationService,
+        UserSettingsRepository userSettingsRepository)
     {
         this.logger = logger;
         this.computerVisionService = computerVisionService;
@@ -50,6 +56,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         this.userService = userService;
         this.langRepository = langRepository;
         this.localizationService = localizationService;
+        this.userSettingsRepository = userSettingsRepository;
     }
 
     public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
@@ -96,13 +103,10 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
                 var languages = await langRepository.GetWhereAsync(x => x.Id != LanguageENUM.English);
                 var languagesToTranslate = languages.Select(x => x.Code).ToArray();
 
-                // TODO output for diff languages
-                var resp = await translateService.TranslateTextsAsync(resTags.ToArray(), languagesToTranslate);
-
                 var imageObjectsMessage = await localizationService.GetTranslateByInterface("app.images.objects", userId);
-
                 var text = $"{imageObjectsMessage}\n\n";
-                text += string.Join("\n", resTags);
+
+                text += await DrawTableFromTags(resTags, userId);
 
                 resText += text;
             }
@@ -125,6 +129,67 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         }
 
         return false;
+    }
+
+    private async Task<string> DrawTableFromTags(IEnumerable<string> en_tags, long userId)
+    {
+        var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(userId);
+
+        if (settings == null)
+        {
+            logger.LogError("settings null");
+            throw new Exception("Settings null");
+        }
+
+        var oneLTag = "";
+        var languagesToTranslate = new List<string>();
+
+        if (settings.TargetLanguage!.Code != "en")
+        {
+            languagesToTranslate.Add(settings.TargetLanguage!.Code);
+            oneLTag = settings.TargetLanguage!.Code;
+        }
+        if (settings.NativeLanguage!.Code != "en")
+        {
+            languagesToTranslate.Add(settings.NativeLanguage!.Code);
+            oneLTag = settings.NativeLanguage!.Code;
+        }
+
+        var resp = await translateService.TranslateTextsAsync(en_tags.ToArray(), languagesToTranslate.ToArray());
+
+        var groupedTranslates  = resp.SelectMany(x => x.Translations).GroupBy(x => x.To);
+
+        string markdown = null;
+
+        if (groupedTranslates.Count() == 1)
+        {
+            var l = groupedTranslates.ToList();
+            var otherTags = l[0].Select(x => x.Text);
+
+            var zippedWords = en_tags.Zip(otherTags).ToList();
+
+            var table = new ConsoleTable("EN", oneLTag.ToUpper());
+            table.Configure(x => x.EnableCount = false);
+            zippedWords.ForEach(x => table.AddRow(x.First, x.Second));
+
+            markdown = table.ToMarkDownString();
+        }
+        if (groupedTranslates.Count() == 2)
+        {
+            var l = groupedTranslates.ToList();
+            var targetTags = l[0].Select(x => x.Text);
+            var nativeTags = l[1].Select(x => x.Text);
+
+            var zippedWords = en_tags.Zip(targetTags, nativeTags).ToList();
+
+            var table = new ConsoleTable("EN", settings.TargetLanguage!.Code.ToUpper(), settings.NativeLanguage!.Code.ToUpper());
+            table.Configure(x => x.EnableCount = false);
+            zippedWords.ForEach(x => table.AddRow(x.First, x.Second, x.Third));
+
+            markdown = table.ToMarkDownString();
+        }
+
+        return "<pre>" + markdown + "</pre>";
     }
 
     private async Task<bool> ProcessAndSendOCRResultsAsync(byte[] bytes, long chatId, long userId, int replyId)
