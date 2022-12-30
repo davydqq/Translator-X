@@ -169,6 +169,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             var zippedWords = en_tags.Zip(otherTags).ToList();
 
             var table = new ConsoleTable("EN", oneLTag.ToUpper());
+
             table.Configure(x => x.EnableCount = false);
             zippedWords.ForEach(x => table.AddRow(x.First, x.Second));
 
@@ -180,11 +181,11 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             var targetTags = l[0].Select(x => x.Text);
             var nativeTags = l[1].Select(x => x.Text);
 
-            var zippedWords = en_tags.Zip(targetTags, nativeTags).ToList();
+            var zippedWords = targetTags.Zip(nativeTags).ToList();
 
-            var table = new ConsoleTable("EN", settings.TargetLanguage!.Code.ToUpper(), settings.NativeLanguage!.Code.ToUpper());
+            var table = new ConsoleTable(settings.TargetLanguage!.Code.ToUpper(), settings.NativeLanguage!.Code.ToUpper());
             table.Configure(x => x.EnableCount = false);
-            zippedWords.ForEach(x => table.AddRow(x.First, x.Second, x.Third));
+            zippedWords.ForEach(x => table.AddRow(x.First, x.Second));
 
             markdown = table.ToMarkDownString();
         }
