@@ -107,12 +107,40 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
                         await SendIntefaceLanguageEstablished(command.ChatId, command.UserId);
                         break;
                     }
+                case BotMenuId.AudioTranscriptionLanguage:
+                    {
+                        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, command.MessageId));
+
+                        var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
+
+                        var language = GetLanguage(command.Data!);
+                        if (language.HasValue)
+                        {
+                            settings.AudioLanguageId = language;
+                            await userSettingsRepository.UpdateAsync(settings);
+                        }
+
+                        await SendAudioLanguageEstablished(command.ChatId, command.UserId);
+                        break;
+                    }
                 default:
                     {
                         break;
                     }
             }
         }
+    }
+
+    public async Task SendAudioLanguageEstablished(long chatId, long userId)
+    {
+        var settings = await userSettingsRepository.GetAudioLanguageAsync(userId);
+
+        var baseMessage = await localizationService.GetTranslateByInterface("app.languages.audioLanguageKey", userId);
+        var message = $"{baseMessage} {settings.AudioLanguage.Name}";
+
+        var commandMessage = new SendMessageCommand(chatId, message, ParseMode.Html);
+
+        await commandDispatcher.DispatchAsync(commandMessage);
     }
 
     public async Task SendIntefaceLanguageEstablished(long chatId, long userId)

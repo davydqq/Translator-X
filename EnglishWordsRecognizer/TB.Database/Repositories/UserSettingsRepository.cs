@@ -33,4 +33,9 @@ public class UserSettingsRepository : Repository<UserSettings, int>
     {
         return entities.Include(x => x.InterfaceLanguage).FirstOrDefaultAsync(x => x.TelegramUserId == userId);
     }
+
+    public Task<UserSettings?> GetAudioLanguageAsync(long userId)
+    {
+        return entities.Include(x => x.AudioLanguage).FirstOrDefaultAsync(x => x.TelegramUserId == userId);
+    }
 }

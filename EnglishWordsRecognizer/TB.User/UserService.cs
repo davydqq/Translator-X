@@ -49,4 +49,18 @@ public class UserService : IUserService
 
         return true;
     }
+
+    public async Task<bool> ValidateThatAudioLanguageSelected(BaseTelegramMessageCommand command)
+    {
+        var isAudioLangugeSetted = await repositoryUserSettings.GetAnyAsync(x => x.TelegramUserId == command.UserId && x.AudioLanguageId != null);
+        if (!isAudioLangugeSetted)
+        {
+            var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.AudioTranscriptionLanguage);
+            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
+            await commandDispatcher.DispatchAsync(commandToChangeLanguage);
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -127,6 +127,19 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
                     await commandDispatcher.DispatchAsync(commandToSend);
                     break;
                 }
+            case BotMenuId.AudioTranscriptionLanguage:
+                {
+                    var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
+                    var audioLanguage = settings.AudioLanguageId;
+                    var message = await localizationService.GetTranslateByInterface("app.menu.audioLang", command.UserId);
+                    var langs = await languageRepository.GetWhereAsync(x => x.Id != audioLanguage && x.IsSupportAudioTranscription);
+                    var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, langs);
+                    InlineKeyboardMarkup inlineKeyboard = new(buttons);
+
+                    var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
+                    await commandDispatcher.DispatchAsync(commandToSend);
+                    break;
+                }
 		}
 	}
 

@@ -26,20 +26,30 @@ public class TBDatabaseContext : DbContext
             .HasMany(m => m.UserSettingsNativeLangs)
             .WithOne(t => t.NativeLanguage)
             .HasForeignKey(m => m.NativeLanguageId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
 
         modelBuilder.Entity<Language>()
             .HasMany(m => m.UserSettingsTargetLangs)
             .WithOne(t => t.TargetLanguage)
             .HasForeignKey(m => m.TargetLanguageId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
 
 
         modelBuilder.Entity<Language>()
             .HasMany(m => m.UserSettingsInterfaceLangs)
             .WithOne(t => t.InterfaceLanguage)
             .HasForeignKey(m => m.InterfaceLanguageId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
+
+        modelBuilder.Entity<Language>()
+            .HasMany(m => m.UserSettingsAudioLangs)
+            .WithOne(t => t.AudioLanguage)
+            .HasForeignKey(m => m.AudioLanguageId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
 
         modelBuilder.Entity<Language>().HasData(
                 new Language { 
@@ -49,6 +59,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language
                 {
@@ -58,6 +69,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.English, 
@@ -66,6 +78,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language
                 {
@@ -75,6 +88,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.French, 
@@ -83,6 +97,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Japanese, 
@@ -91,6 +106,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Chinese, 
@@ -99,6 +115,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Czech, 
@@ -107,6 +124,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Danish, 
@@ -115,6 +133,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Hindi, 
@@ -123,6 +142,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Italian, 
@@ -131,6 +151,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Swedish, 
@@ -139,6 +160,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.German, 
@@ -147,6 +169,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Polish, 
@@ -155,6 +178,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 },
                 new Language { 
                     Id = LanguageENUM.Turkish, 
@@ -163,6 +187,7 @@ public class TBDatabaseContext : DbContext
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,
+                    IsSupportAudioTranscription = true,
                 }
             );
 
@@ -173,6 +198,7 @@ public class TBDatabaseContext : DbContext
     {
         // CALLBACKS
         var interfaceKey = "app.languages.interfaceLanguage";
+        var audioLanguageKey = "app.languages.audioLanguageKey";
         var languagesSettedKey = "app.languages.established";
         var languageYourLanguagesKey = "app.languages.yourLanguages";
         var nativeLanguageKey = "app.languages.nativeL";
@@ -187,6 +213,9 @@ public class TBDatabaseContext : DbContext
         // TEXTS
         var textMaybeMeanKey = "app.texts.maybeMean";
 
+        // Audios
+        var audioText = "app.audios.audioText";
+
         // MENU
         var menuChooseNativeKey = "app.menu.chooseNative";
         var menuChooseTargetKey = "app.menu.chooseTarget";
@@ -195,6 +224,7 @@ public class TBDatabaseContext : DbContext
         var menuActivated = "app.menu.activated";
         var menuChooseLang = "app.menu.chooseLang";
         var menuInfoKey = "app.menu.info";
+        var menuAudioLangKey = "app.menu.audioLang";
 
         var data = new List<KeyTranslationsInitEntity>
         {
@@ -470,6 +500,54 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "Info")
                 .AddTranslate(LanguageENUM.Polish, "Info")
                 .AddTranslate(LanguageENUM.Turkish, "Info"),
+            new KeyTranslationsInitEntity(audioText)
+                .AddTranslate(LanguageENUM.Ukrainian, "Аудіо-транскрипція")
+                .AddTranslate(LanguageENUM.Russian, "Транскрипция аудио")
+                .AddTranslate(LanguageENUM.English, "Audio transcription")
+                .AddTranslate(LanguageENUM.Spanish, "Transcripción de audio")
+                .AddTranslate(LanguageENUM.French, "Transcription audio")
+                .AddTranslate(LanguageENUM.Japanese, "音声トランスクリプション")
+                .AddTranslate(LanguageENUM.Chinese, "音频转录")
+                .AddTranslate(LanguageENUM.Czech, "Přepis zvuku")
+                .AddTranslate(LanguageENUM.Danish, "Lydtransskription")
+                .AddTranslate(LanguageENUM.Hindi, "ऑडियो ट्रांसक्रिप्शन")
+                .AddTranslate(LanguageENUM.Italian, "Trascrizione audio")
+                .AddTranslate(LanguageENUM.Swedish, "Ljudtranskription")
+                .AddTranslate(LanguageENUM.German, "Audiotranskription")
+                .AddTranslate(LanguageENUM.Polish, "Transkrypcja dźwięku")
+                .AddTranslate(LanguageENUM.Turkish, "Ses transkripsiyonu"),
+            new KeyTranslationsInitEntity(menuAudioLangKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Виберіть мову аудіо при транскрипії")
+                .AddTranslate(LanguageENUM.Russian, "Выберите язык аудио при транскрипции")
+                .AddTranslate(LanguageENUM.English, "Select the audio language when transcribing")
+                .AddTranslate(LanguageENUM.Spanish, "Seleccionar el idioma del audio al transcribir")
+                .AddTranslate(LanguageENUM.French, "Sélectionnez la langue audio lors de la transcription")
+                .AddTranslate(LanguageENUM.Japanese, "文字起こし時の音声言語の選択")
+                .AddTranslate(LanguageENUM.Chinese, "转录时选择音频语言")
+                .AddTranslate(LanguageENUM.Czech, "Vyberte jazyk zvuku při přepisu")
+                .AddTranslate(LanguageENUM.Danish, "Vælg lydsproget, når du transskriberer")
+                .AddTranslate(LanguageENUM.Hindi, "लिप्यंतरण करते समय ऑडियो भाषा का चयन करें")
+                .AddTranslate(LanguageENUM.Italian, "Seleziona la lingua dell'audio durante la trascrizione")
+                .AddTranslate(LanguageENUM.Swedish, "Välj ljudspråk när du transkriberar")
+                .AddTranslate(LanguageENUM.German, "Wählen Sie beim Transkribieren die Audiosprache aus")
+                .AddTranslate(LanguageENUM.Polish, "Wybierz język ścieżki dźwiękowej podczas transkrypcji")
+                .AddTranslate(LanguageENUM.Turkish, "Yazıya dökerken ses dilini seçin"),
+            new KeyTranslationsInitEntity(audioLanguageKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Мова аудіо транскрипції:")
+                .AddTranslate(LanguageENUM.Russian, "Язык аудио транскрипции:")
+                .AddTranslate(LanguageENUM.English, "Audio transcription language:")
+                .AddTranslate(LanguageENUM.Spanish, "Idioma de transcripción de audio:")
+                .AddTranslate(LanguageENUM.French, "Langue de transcription audio :")
+                .AddTranslate(LanguageENUM.Japanese, "音声転写言語:")
+                .AddTranslate(LanguageENUM.Chinese, "音频转录语言：")
+                .AddTranslate(LanguageENUM.Czech, "Jazyk zvukového přepisu:")
+                .AddTranslate(LanguageENUM.Danish, "Lydtransskriptionssprog:")
+                .AddTranslate(LanguageENUM.Hindi, "ऑडियो ट्रांसक्रिप्शन भाषा:")
+                .AddTranslate(LanguageENUM.Italian, "Lingua di trascrizione audio:")
+                .AddTranslate(LanguageENUM.Swedish, "Språk för ljudtranskription:")
+                .AddTranslate(LanguageENUM.German, "Sprache der Audiotranskription:")
+                .AddTranslate(LanguageENUM.Polish, "Język transkrypcji dźwięku:")
+                .AddTranslate(LanguageENUM.Turkish, "Ses transkripsiyon dili:"),
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")
