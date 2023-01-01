@@ -55,6 +55,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
 
             if (result != null && result.Results != null && result.Results.Count > 0)
             {
+                // TODO IMPROVE OUTPUT AUDIO
                 var text = await ProcessSpeechToTextResult(result, command.UserId);
 
                 if (!string.IsNullOrEmpty(text))
