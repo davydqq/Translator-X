@@ -1,6 +1,7 @@
 using CQRS;
 using Microsoft.Extensions.Options;
 using TB.API.Jobs;
+using TB.API.Middlewares;
 using TB.Audios;
 using TB.Audios.Entities;
 using TB.ComputerVision;
@@ -87,6 +88,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
