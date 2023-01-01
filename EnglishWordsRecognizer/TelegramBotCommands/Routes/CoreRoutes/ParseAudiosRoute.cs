@@ -28,10 +28,39 @@ public class ParseAudiosRoute : IBaseRoute
         var chatId = message.Chat.Id;
         var messageId = message.MessageId;
 
-        var file = new AudioInfo() { FileId = message.Audio.FileId };
+        var file = GetAudio(message);
 
         var command = new HandleAudiosCommand(chatId, userId, messageId, file);
 
         return new BaseRouteResult(command);
+    }
+
+    private AudioInfo GetAudio(Message message)
+    {
+        switch (message.Type)
+        {
+            case MessageType.Voice:
+                {
+                    return new AudioInfo()
+                    {
+                        FileId = message.Voice.FileId,
+                        Duration = message.Voice.Duration,
+                        MimeType = message.Voice.MimeType
+                    };
+                }
+            case MessageType.Audio:
+                {
+                    return new AudioInfo()
+                    {
+                        FileId = message.Audio.FileId,
+                        Duration = message.Audio.Duration,
+                        MimeType = message.Audio.MimeType
+                    };
+                }
+            default:
+                {
+                    throw new ArgumentException("Incorrect type");
+                }
+        }
     }
 }

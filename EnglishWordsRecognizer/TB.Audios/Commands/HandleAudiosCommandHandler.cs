@@ -10,7 +10,6 @@ using TB.Localization.Services;
 using TB.User;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-
 namespace TB.Audios.Commands;
 
 public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
@@ -43,6 +42,15 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
 
     public async Task HandleAsync(HandleAudiosCommand command, CancellationToken cancellation = default)
     {
+        // VALIDATIONS
+        if(command.File.Duration > 59)
+        {
+            var text = "Audio duration must not exceed 60 seconds";
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
+            return;
+        }
+
         var res = await userService.ValidateThatUserSelectLanguages(command);
         var res2 = await userService.ValidateThatAudioLanguageSelected(command);
 
