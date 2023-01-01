@@ -50,14 +50,14 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
         {
             var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
 
-            var settings = await userSettingsRepository.GetLanguageInterfaceAsync(command.UserId);
+            var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
  
             var result = await speechToTextService.RecognizeAsync(bytes, settings.AudioLanguageId.Value);
 
             if (result != null && result.Results != null && result.Results.Count > 0)
             {
                 // TODO IMPROVE OUTPUT AUDIO
-                var text = await ProcessSpeechToTextResult(result, command.UserId, settings.InterfaceLanguage);
+                var text = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);
 
                 if (!string.IsNullOrEmpty(text))
                 {
@@ -68,12 +68,12 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
         }
     }
 
-    private async Task<string> ProcessSpeechToTextResult(AudioRecognizeResponse response, long userId, Language interfaceLanguage)
+    private async Task<string> ProcessSpeechToTextResult(AudioRecognizeResponse response, long userId, Language audioLanguage)
     {
         var audioTranscriptionHeader = await localizationService.GetTranslateByInterface("app.audios.audioText", userId);
 
         var resText = $"<b>{audioTranscriptionHeader}</b>\n\n";
-        resText += $"<b>{interfaceLanguage.GetCode()}</b>\n\n";
+        resText += $"<b>{audioLanguage.GetCode().ToUpper()}</b>\n\n";
         foreach (var item in response.Results)
         {
             foreach(var translate in item.Alternatives)
