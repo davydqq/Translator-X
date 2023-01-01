@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using TB.Audios.Entities;
 using TB.Core.Commands;
 using TB.Core.Queries;
+using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.User;
@@ -49,14 +50,14 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
         {
             var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
 
-            var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
+            var settings = await userSettingsRepository.GetLanguageInterfaceAsync(command.UserId);
  
             var result = await speechToTextService.RecognizeAsync(bytes, settings.AudioLanguageId.Value);
 
             if (result != null && result.Results != null && result.Results.Count > 0)
             {
                 // TODO IMPROVE OUTPUT AUDIO
-                var text = await ProcessSpeechToTextResult(result, command.UserId);
+                var text = await ProcessSpeechToTextResult(result, command.UserId, settings.InterfaceLanguage);
 
                 if (!string.IsNullOrEmpty(text))
                 {
@@ -67,12 +68,13 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
         }
     }
 
-    private async Task<string> ProcessSpeechToTextResult(AudioRecognizeResponse response, long userId)
+    private async Task<string> ProcessSpeechToTextResult(AudioRecognizeResponse response, long userId, Language interfaceLanguage)
     {
         var audioTranscriptionHeader = await localizationService.GetTranslateByInterface("app.audios.audioText", userId);
 
         var resText = $"<b>{audioTranscriptionHeader}</b>\n\n";
-        foreach(var item in response.Results)
+        resText += $"<b>{interfaceLanguage.GetCode()}</b>\n\n";
+        foreach (var item in response.Results)
         {
             foreach(var translate in item.Alternatives)
             {

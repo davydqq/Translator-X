@@ -10,7 +10,7 @@ public class Language : BaseEntity<LanguageENUM>
     [Required]
     public string Code { set; get; } = default!;
 
-    public string? DisplayName { set; get; }
+    public string? DisplayCode { set; get; }
 
     public bool IsSupportInteface { set; get; }
 
@@ -30,8 +30,8 @@ public class Language : BaseEntity<LanguageENUM>
 
     public List<Translation> Translations { set; get; }
 
-    public string GetName()
+    public string GetCode()
     {
-        return DisplayName ?? Name;
+        return DisplayCode ?? Code;
     }
 }
