@@ -52,9 +52,8 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
         if (res)
         {
-
-            var userSettingsT = await repositoryUserSettings.GetSettingsIncludedLanguageTargetAsync(command.UserId);
-            var languageTo = userSettingsT.TargetLanguage;
+            var userSettings = await repositoryUserSettings.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
+            var languageTo = userSettings.TargetLanguage;
             // PROCESSING
 
             if (string.IsNullOrEmpty(command.Text))
@@ -67,8 +66,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
             if (resDetect.Count > 0 && languageTo.Code == resDetect.First().Language)
             {
-                var userSettingsN = await repositoryUserSettings.GetSettingsIncludeLanguageNativeAsync(command.UserId);
-                var languageFrom = userSettingsN.NativeLanguage;
+                var languageFrom = userSettings.NativeLanguage;
 
                 var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code);
 
@@ -80,9 +78,9 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
             }
 
             var resText = await GetTranslationsAsync(command.Text, languageTo.Code);
-            await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
+            var message = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
             
-            await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, command.MessageId);
+            await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, message.MessageId);
         }
     }
 
@@ -130,12 +128,12 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
         var maybeMeanMessage = await localizationService.GetTranslateByInterface("app.texts.maybeMean", userId);
 
-        message += $"{maybeMeanMessage}\n";
+        message += $"{maybeMeanMessage}\n\n";
 
         foreach (var item in result.Results)
         {
-            message += "• " + item.Phrase + " - " + item.Meaning;
-            message += "\n";
+            message += "• " + "<b>" + item.Phrase + "</b>" + " - " + item.Meaning;
+            message += "\n\n";
         }
 
         return message;

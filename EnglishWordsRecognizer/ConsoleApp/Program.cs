@@ -12,8 +12,14 @@ using var httpClient = new HttpClient();
 
 var phrase = "moron".Trim();
 
-var resp = await GetPhraseInfo(phrase);
-Console.WriteLine(resp);
+var tasks = Enumerable.Range(0, 10000).Select(x => GetPhraseInfo(phrase));
+
+var count = 1;
+foreach(var taskItems in tasks.Chunk(10))
+{
+    var res = await Task.WhenAll(taskItems);
+    Console.WriteLine(count++);
+}
 
 /*
 var meanings = await GetSpellCheckPhrases(phrase);

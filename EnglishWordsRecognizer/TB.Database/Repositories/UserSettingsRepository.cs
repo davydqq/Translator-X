@@ -11,16 +11,6 @@ public class UserSettingsRepository : Repository<UserSettings, int>
 
 	}
 
-	public Task<UserSettings?> GetSettingsIncludedLanguageTargetAsync(long userId)
-	{
-		return entities.Include(x => x.TargetLanguage).FirstOrDefaultAsync(x => x.TelegramUserId == userId);
-	}
-
-    public Task<UserSettings?> GetSettingsIncludeLanguageNativeAsync(long userId)
-    {
-        return entities.Include(x => x.NativeLanguage).FirstOrDefaultAsync(x => x.TelegramUserId == userId);
-    }
-
     public Task<UserSettings?> GetSettingsIncludeTargetNativeLanguagesAsync(long userId)
     {
         return entities
