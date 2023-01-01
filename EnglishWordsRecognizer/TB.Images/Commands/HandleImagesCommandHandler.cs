@@ -103,9 +103,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
             if (resTags != null && resTags.Any())
             {
-                var languages = await langRepository.GetWhereAsync(x => x.Id != LanguageENUM.English);
-                var languagesToTranslate = languages.Select(x => x.Code).ToArray();
-
                 var imageObjectsMessage = await localizationService.GetTranslateByInterface("app.images.objects", userId);
                 var text = $"{imageObjectsMessage}\n\n";
 
@@ -133,7 +130,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
                     if (resp.isOnlyOneLanguage)
                     {
-                        resText += $"\n\n<b>{languagesToTranslate.First().ToUpper()}</b>\n";
+                        resText += $"\n\n<b>{languagesToTranslate.First().GetCode().ToUpper()}</b>\n";
                         foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
                         {
                             resText += sentense + "\n";
@@ -141,13 +138,13 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
                     }
                     else
                     {
-                        resText += $"\n\n<b>{settings.TargetLanguage!.Code.ToUpper()}</b>\n";
+                        resText += $"\n\n<b>{settings.TargetLanguage!.GetCode().ToUpper()}</b>\n";
                         foreach (var sentense in resp.zippedWords.Select(x => x.fTarget))
                         {
                             resText += sentense + "\n";
                         }
 
-                        resText += $"\n<b>{settings.NativeLanguage!.Code.ToUpper()}</b>\n";
+                        resText += $"\n<b>{settings.NativeLanguage!.GetCode().ToUpper()}</b>\n";
                         foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
                         {
                             resText += sentense + "\n";
@@ -179,11 +176,11 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         ConsoleTable onePhrasesTable = null; 
         if (res.isOnlyOneLanguage)
         {
-            onePhrasesTable = new ConsoleTable("EN", languagesToTranslate.First().ToUpper());
+            onePhrasesTable = new ConsoleTable("EN", languagesToTranslate.First().GetCode().ToUpper());
         }
         else
         {
-            onePhrasesTable = new ConsoleTable(settings.TargetLanguage!.Code.ToUpper(), settings.NativeLanguage!.Code.ToUpper());
+            onePhrasesTable = new ConsoleTable(settings.TargetLanguage!.GetCode().ToUpper(), settings.NativeLanguage!.GetCode().ToUpper());
         }
 
         var separator = " ";
@@ -209,9 +206,10 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
     }
 
     private async Task<(List<(string fTarget, string sNative)> zippedWords, bool isOnlyOneLanguage)> TranslateImageRecognitionResponse(
-        List<string> languagesToTranslate, string[] textToTranslate)
+        List<Language> languagesToTranslate, string[] textToTranslate)
     {
-        var resp = await translateService.TranslateTextsAsync(textToTranslate, languagesToTranslate.ToArray());
+        var codes = languagesToTranslate.Select(x => x.Code);
+        var resp = await translateService.TranslateTextsAsync(textToTranslate, codes.ToArray());
         var groupedTranslates = resp.SelectMany(x => x.Translations).GroupBy(x => x.To);
         var l = groupedTranslates.ToList();
 
@@ -227,17 +225,17 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         return (targetLanguageTranslate.Zip(nativeLanguageTranslate).ToList(), false);
     }
 
-    private List<string> GetLanguagesToTranslate(UserSettings settings)
+    private List<Language> GetLanguagesToTranslate(UserSettings settings)
     {
-        var languagesToTranslate = new List<string>();
+        var languagesToTranslate = new List<Language>();
 
         if (settings.TargetLanguage!.Code != "en")
         {
-            languagesToTranslate.Add(settings.TargetLanguage!.Code);
+            languagesToTranslate.Add(settings.TargetLanguage);
         }
         if (settings.NativeLanguage!.Code != "en")
         {
-            languagesToTranslate.Add(settings.NativeLanguage!.Code);
+            languagesToTranslate.Add(settings.NativeLanguage);
         }
 
         return languagesToTranslate;
