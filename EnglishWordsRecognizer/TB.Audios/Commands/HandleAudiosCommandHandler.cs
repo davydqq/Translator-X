@@ -22,6 +22,15 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
     private readonly ILocalizationService localizationService;
     private readonly ICommandDispatcher commandDispatcher;
 
+    private readonly string[] supportedAudioFormats = new string[] 
+    { 
+        "audio/mpeg", 
+        "audio/ogg", 
+        "audio/wav", 
+        "audio/webm",
+        "audio/opus"
+    };
+
     public HandleAudiosCommandHandler(
         ILogger<HandleAudiosCommandHandler> logger,
         IUserService userService,
@@ -51,27 +60,36 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
             return;
         }
 
-        var res = await userService.ValidateThatUserSelectLanguages(command);
-        var res2 = await userService.ValidateThatAudioLanguageSelected(command);
-
-        if (res && res2)
+        if(!supportedAudioFormats.Any(x => x == command.File.MimeType))
         {
-            var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
+            var text = "Not supported format. Use .mp3, .ogg, .opus, .wav, .webm";
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
+            return;
+        }
 
-            var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
- 
-            var result = await speechToTextService.RecognizeAsync(bytes, settings.AudioLanguageId.Value);
+        var res = await userService.ValidateThatUserSelectLanguages(command);
+        if (!res) return;
 
-            if (result != null && result.Results != null && result.Results.Count > 0)
+        var res2 = await userService.ValidateThatAudioLanguageSelected(command);
+        if (!res2) return;
+
+        // 
+        var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
+
+        var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
+
+        var result = await speechToTextService.RecognizeAsync(bytes, settings.AudioLanguageId.Value);
+
+        if (result != null && result.Results != null && result.Results.Count > 0)
+        {
+            // TODO IMPROVE OUTPUT AUDIO
+            var text = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);
+
+            if (!string.IsNullOrEmpty(text))
             {
-                // TODO IMPROVE OUTPUT AUDIO
-                var text = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);
-
-                if (!string.IsNullOrEmpty(text))
-                {
-                    var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
-                    await commandDispatcher.DispatchAsync(commandTelegram);
-                }
+                var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+                await commandDispatcher.DispatchAsync(commandTelegram);
             }
         }
     }
