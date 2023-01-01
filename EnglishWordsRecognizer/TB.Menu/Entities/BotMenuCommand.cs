@@ -9,4 +9,6 @@ public class BotMenuCommand
     public string Description { set; get; }
 
     public string? CallBackId { set; get; }
+
+    public int Order { set; get; }
 }

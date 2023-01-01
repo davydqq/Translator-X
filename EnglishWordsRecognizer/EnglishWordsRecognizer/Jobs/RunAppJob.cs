@@ -36,7 +36,7 @@ namespace TB.API.Jobs
 
         public async Task SendMenuAsync(TelegramBotClient botClient)
         {
-            var newCommands = botMenuOptions.Value.Commands.Select(x => new BotCommand { Command = x.Name, Description = x.Description });
+            var newCommands = botMenuOptions.Value.Commands.OrderBy(x => x.Order).Select(x => new BotCommand { Command = x.Name, Description = x.Description });
             await botClient.SetMyCommandsAsync(newCommands);
         }
 

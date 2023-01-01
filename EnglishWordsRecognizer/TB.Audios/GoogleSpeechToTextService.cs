@@ -28,6 +28,7 @@ public class GoogleSpeechToTextService : ISpeechToTextService
             Encoding = AudioEncoding.EncodingUnspecified,
             SampleRateHertz = 16000,
             LanguageCode = GetAudioLanguage(language),
+            
         };
 
         RecognizeResponse response = await client.RecognizeAsync(config, audio);
