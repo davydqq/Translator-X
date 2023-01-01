@@ -136,7 +136,7 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
         var settings = await userSettingsRepository.GetAudioLanguageAsync(userId);
 
         var baseMessage = await localizationService.GetTranslateByInterface("app.languages.audioLanguageKey", userId);
-        var message = $"{baseMessage} {settings.AudioLanguage.Name}";
+        var message = $"{baseMessage} {settings.AudioLanguage.GetName()}";
 
         var commandMessage = new SendMessageCommand(chatId, message, ParseMode.Html);
 
@@ -148,7 +148,7 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
         var settings = await userSettingsRepository.GetLanguageInterfaceAsync(userId);
 
         var baseMessage = await localizationService.GetTranslateByInterface("app.languages.interfaceLanguage", userId);
-        var message = $"{baseMessage} {settings.InterfaceLanguage.Name}";
+        var message = $"{baseMessage} {settings.InterfaceLanguage.GetName()}";
 
         var commandMessage = new SendMessageCommand(chatId, message, ParseMode.Html);
 
@@ -175,8 +175,8 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
             var message = $"{messageEstablished}\n" +
                           $"{messageCanSend}\n" +
                           $"{messageLanguages} \n" +
-                          $"{messageNativeLanguage} {nativeLanguage.Name}\n" +
-                          $"{messageTargetLanguage} {targetLanguage.Name}";
+                          $"{messageNativeLanguage} {nativeLanguage.GetName()}\n" +
+                          $"{messageTargetLanguage} {targetLanguage.GetName()}";
 
             var command = new SendMessageCommand(chatId, message, ParseMode.Html);
 

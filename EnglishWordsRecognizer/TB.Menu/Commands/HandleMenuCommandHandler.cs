@@ -150,10 +150,8 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
         {
             return languages.Select(language =>
             {
-                var name = language.Name;
                 var languageCallbackData = callBackId + language.Id.ToString();
-
-                return InlineKeyboardButton.WithCallbackData(text: language.Name, callbackData: languageCallbackData);
+                return InlineKeyboardButton.WithCallbackData(text: language.GetName(), callbackData: languageCallbackData);
             });
         });
     }

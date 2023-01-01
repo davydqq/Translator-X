@@ -56,6 +56,7 @@ public class TBDatabaseContext : DbContext
                     Id = LanguageENUM.Ukrainian, 
                     Name = SupportedLanguages.Ukrainian, 
                     Code = "uk",
+                    DisplayName = "ua",
                     IsSupportInteface = true,
                     IsSupportNativeLanguage = true,
                     IsSupportTargetLanguage = true,

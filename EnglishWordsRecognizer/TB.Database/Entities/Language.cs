@@ -10,6 +10,8 @@ public class Language : BaseEntity<LanguageENUM>
     [Required]
     public string Code { set; get; } = default!;
 
+    public string? DisplayName { set; get; }
+
     public bool IsSupportInteface { set; get; }
 
     public bool IsSupportAudioTranscription { set; get; }
@@ -27,4 +29,9 @@ public class Language : BaseEntity<LanguageENUM>
     public List<UserSettings> UserSettingsAudioLangs { set; get; }
 
     public List<Translation> Translations { set; get; }
+
+    public string GetName()
+    {
+        return DisplayName ?? Name;
+    }
 }
