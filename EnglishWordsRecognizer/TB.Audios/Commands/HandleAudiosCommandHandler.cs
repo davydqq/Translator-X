@@ -102,7 +102,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
         resText += $"<b>{audioLanguage.GetCode().ToUpper()}</b>\n\n";
         foreach (var item in response.Results)
         {
-            foreach(var translate in item.Alternatives)
+            foreach (var translate in item.Alternatives)
             {
                 resText += translate.Transcript + "\n";
             }

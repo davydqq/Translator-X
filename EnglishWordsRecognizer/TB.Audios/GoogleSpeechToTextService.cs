@@ -10,6 +10,25 @@ public class GoogleSpeechToTextService : ISpeechToTextService
 {
     private readonly IOptions<GoogleConfig> options;
 
+    private readonly string[] languages = new string[]
+    {
+        LanguageCodes.Ukrainian.Ukraine,
+        LanguageCodes.Russian.Russia,
+        LanguageCodes.English.UnitedStates,
+        LanguageCodes.Spanish.Spain,
+        LanguageCodes.French.France,
+        LanguageCodes.Japanese.Japan,
+        LanguageCodes.ChineseMandarin.SimplifiedChina,
+        LanguageCodes.Czech.CzechRepublic,
+        LanguageCodes.Danish.Denmark,
+        LanguageCodes.Hindi.India,
+        LanguageCodes.Italian.Italy,
+        LanguageCodes.Swedish.Sweden,
+        LanguageCodes.German.Germany,
+        LanguageCodes.Polish.Poland,
+        LanguageCodes.Turkish.Turkey
+    };
+
     public GoogleSpeechToTextService(IOptions<GoogleConfig> options)
     {
         this.options = options;
@@ -23,13 +42,14 @@ public class GoogleSpeechToTextService : ISpeechToTextService
 
         var client = await builder.BuildAsync();
 
-        RecognitionConfig config = new RecognitionConfig
+        RecognitionConfig config = new RecognitionConfig()
         {
             Encoding = AudioEncoding.EncodingUnspecified,
             SampleRateHertz = 16000,
             LanguageCode = GetAudioLanguage(language),
-            
         };
+
+        // config.AlternativeLanguageCodes.AddRange(languages);
 
         RecognizeResponse response = await client.RecognizeAsync(config, audio);
 
