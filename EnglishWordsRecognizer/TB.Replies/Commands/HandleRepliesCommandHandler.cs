@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 using TB.Texts.Commands;
+using Telegram.Bot.Types.Enums;
 
 namespace TB.Replies.Commands;
 
@@ -20,6 +21,17 @@ public class HandleRepliesCommandHandler : ICommandHandler<HandleRepliesCommand,
 
     public async Task<bool> HandleAsync(HandleRepliesCommand command, CancellationToken cancellation = default)
     {
+        switch (command.ReplyMessage.Type)
+        {
+            case MessageType.Text:
+                {
+                    break;
+                }
+        }
+
+
+        // TODO NO SUPPORT MESSAGE;
+
         return true;
 
         // var commandToSend = new HandleTextsCommand(command.ChatId, command.UserId, command.MessageId, command.ReplyText, command.MessageId);

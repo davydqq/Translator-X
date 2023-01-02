@@ -1,18 +1,19 @@
 ﻿using CQRS.Commands;
 using TB.Common;
+using Telegram.Bot.Types;
 
 namespace TB.Replies.Commands;
 
 public class HandleRepliesCommand : BaseTelegramMessageCommand, ICommand<bool>
 {
-	public HandleRepliesCommand(long userId, long chatId, int messageId, string originalText, string replyText)
-         : base(chatId, userId, messageId)
-    {
+	public HandleRepliesCommand(long userId, long chatId, int messageId, Message replyMessage, string originalText)
+		 : base(chatId, userId, messageId)
+	{
+		ReplyMessage = replyMessage;
 		OriginalText = originalText;
-		ReplyText = replyText;
 	}
 
-	public string OriginalText { get; }
+	public Message ReplyMessage { get; }
 
-	public string ReplyText { get; }
+    public string OriginalText { get; }
 }
