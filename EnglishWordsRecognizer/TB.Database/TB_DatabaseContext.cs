@@ -238,6 +238,8 @@ public class TBDatabaseContext : DbContext
         var photoCantProcess = "app.photo.cantProcess";
         var photoLargeFile = "app.photo.tooLargeFile";
 
+        var textMaxLengthKey = "app.text.maxLength";
+
         var data = new List<KeyTranslationsInitEntity>
         {
             new KeyTranslationsInitEntity(interfaceKey)
@@ -672,6 +674,22 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "Eine zu große Datei. Verwenden Sie Fotos bis zu 4 MB")
                 .AddTranslate(LanguageENUM.Polish, "Zbyt duży plik. Użyj zdjęcia do 4 MB")
                 .AddTranslate(LanguageENUM.Turkish, "Çok büyük bir dosya. 4 MB'a kadar fotoğraf kullan"),
+            new KeyTranslationsInitEntity(textMaxLengthKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Максимальна довжина тексту одного повідомлення не повинна перевищувати 40 тис. символів.")
+                .AddTranslate(LanguageENUM.Russian, "Максимальная длина текста одного сообщения не должна превышать 40 тыс. символов.")
+                .AddTranslate(LanguageENUM.English, "The maximum text length of one message must not exceed 40k characters.")
+                .AddTranslate(LanguageENUM.Spanish, "La longitud máxima del texto de un mensaje no debe exceder los 40k caracteres.")
+                .AddTranslate(LanguageENUM.French, "La longueur maximale du texte d'un message ne doit pas dépasser 40 000 caractères")
+                .AddTranslate(LanguageENUM.Japanese, "1 つのメッセージの最大テキスト長は 40,000 文字を超えてはなりません")
+                .AddTranslate(LanguageENUM.Chinese, "一條消息的最大文本長度不得超過 40k 個字符")
+                .AddTranslate(LanguageENUM.Czech, "Maximální délka textu jedné zprávy nesmí přesáhnout 40 000 znaků")
+                .AddTranslate(LanguageENUM.Danish, "Den maksimale tekstlængde på én besked må ikke overstige 40.000 tegn")
+                .AddTranslate(LanguageENUM.Hindi, "एक संदेश की अधिकतम टेक्स्ट लंबाई 40k वर्णों से अधिक नहीं होनी चाहिए")
+                .AddTranslate(LanguageENUM.Italian, "La lunghezza massima del testo di un messaggio non deve superare i 40k caratteri")
+                .AddTranslate(LanguageENUM.Swedish, "Den maximala textlängden för ett meddelande får inte överstiga 40 000 tecken")
+                .AddTranslate(LanguageENUM.German, "Die maximale Textlänge einer Nachricht darf 40.000 Zeichen nicht überschreiten")
+                .AddTranslate(LanguageENUM.Polish, "Maksymalna długość tekstu jednej wiadomości nie może przekraczać 40 tys. znaków")
+                .AddTranslate(LanguageENUM.Turkish, "Bir mesajın maksimum metin uzunluğu 40k karakteri geçmemelidir"),
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")
