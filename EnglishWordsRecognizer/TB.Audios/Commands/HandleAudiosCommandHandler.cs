@@ -9,7 +9,6 @@ using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.User;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 namespace TB.Audios.Commands;
 
@@ -48,7 +47,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
         // VALIDATIONS
         if(command.File.Duration > 59)
         {
-            var text = "Audio duration must not exceed 60 seconds";
+            var text = await localizationService.GetTranslateByInterface("app.audio.noExceedDuration", command.UserId);
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
             return;
@@ -56,7 +55,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
 
         if(!supportedAudioFormats.Any(x => x == command.File.MimeType))
         {
-            var text = "Not supported format. Use (.mp3, .ogg, .flac, .wav)";
+            var text = await localizationService.GetTranslateByInterface("app.audio.noSupportFormat", command.UserId);
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
             return;
@@ -69,15 +68,15 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
         if (!res2) return;
 
         // 
-        var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
+        var downloadFile = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
 
         var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
 
-        var result = await speechToTextService.RecognizeAsync(bytes, settings.AudioLanguageId.Value, command.File.MimeType);
+        var result = await speechToTextService.RecognizeAsync(downloadFile.File, settings.AudioLanguageId.Value, command.File.MimeType);
 
         if (!result.IsSuccess)
         {
-            var text = "Can't process this audio try another one.";
+            var text = await localizationService.GetTranslateByInterface("app.audio.cantProcess", command.UserId);
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
             return;

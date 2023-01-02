@@ -1,8 +1,10 @@
 ﻿using ConsoleTables;
 using CQRS.Commands;
 using CQRS.Queries;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
+using TB.Common;
 using TB.ComputerVision;
 using TB.Core.Commands;
 using TB.Core.Queries;
@@ -14,7 +16,9 @@ using TB.Texts.Commands;
 using TB.Translator;
 using TB.Translator.Entities;
 using TB.User;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TB.Images.Commands;
 
@@ -37,6 +41,10 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
     private readonly ILocalizationService localizationService;
 
     private readonly UserSettingsRepository userSettingsRepository;
+
+    private readonly string[] supportedFormats = PhotosExtension.GetFormats();
+
+    private int four_mb = 4194304;
 
     public HandleImagesCommandHandler(
         ILogger<HandleImagesCommandHandler> logger, 
@@ -62,19 +70,50 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
 
     public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
     {
-        // TODO add validation accepted types;
-
         var res = await userService.ValidateThatUserSelectLanguages(command);
+        if (!res) return;
 
-        if (res)
+        var file = command.Files.Where(x => x.Size < four_mb).MaxBy(x => x.Size);
+        if(file == null)
         {
-            var file = command.Files.MaxBy(x => x.Size);
-            var bytes = await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
-
-            await ProcessCaptions(command.ChatId, command.UserId, command.MessageId, command.Caption, command.MessageId);
-            await ProcessAndSendOCRResultsAsync(bytes, command.ChatId, command.UserId, command.MessageId);
-            await ProcessAndSendPhotoAnalysisAsync(bytes, command.ChatId, command.UserId, command.MessageId);
+            var text = await localizationService.GetTranslateByInterface("app.photo.tooLargeFile", command.UserId);
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
+            return;
         }
+
+        var downloadFile = await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
+
+        var extension = Path.GetExtension(downloadFile.Path);
+        if (!supportedFormats.Any(x => x == extension))
+        {
+            var text = await localizationService.GetTranslateByInterface("app.photo.noSupportFormat", command.UserId);
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
+            return;
+        }
+
+        await ProcessCaptions(command.ChatId, command.UserId, command.MessageId, command.Caption, command.MessageId);
+
+        var res1 = await ProcessAndSendOCRResultsAsync(downloadFile.File, command.ChatId, command.UserId, command.MessageId);
+        if (!res1)
+        {
+            await SendErrorMessage(command.ChatId, command.MessageId, command.UserId);
+            return;
+        }
+
+        var res2 = await ProcessAndSendPhotoAnalysisAsync(downloadFile.File, command.ChatId, command.UserId, command.MessageId);
+        if (!res2)
+        {
+            await SendErrorMessage(command.ChatId, command.MessageId, command.UserId);
+        }
+    }
+
+    private async Task SendErrorMessage(long chatId, int replyId, long userId)
+    {
+        var errorText = await localizationService.GetTranslateByInterface("app.photo.cantProcess", userId);
+        var commandTelegram = new SendMessageCommand(chatId, errorText, parseMode: ParseMode.Html, replyToMessageId: replyId);
+        await commandDispatcher.DispatchAsync(commandTelegram);
     }
 
     private async Task ProcessCaptions(long chatId, long userId, int messageId, string caption, int replyId)
@@ -90,76 +129,76 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
     {
         var results = await computerVisionService.AnalyzeImageAsync(bytes);
 
-        if (results != null)
+        if (results == null || !results.isSuccess) return false;
+
+        //
+        var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(userId);
+
+        var resText = "";
+
+        var tags = results.Tags?.Select(x => x.Name) ?? new List<string>();
+        var descriptionTags = results.Description?.Tags ?? new List<string>();
+
+        var resTags = tags.Union(descriptionTags).Distinct();
+
+        if (resTags != null && resTags.Any())
         {
-            var settings = await userSettingsRepository.GetSettingsIncludeTargetNativeLanguagesAsync(userId);
+            var imageObjectsMessage = await localizationService.GetTranslateByInterface("app.images.objects", userId);
+            var text = $"{imageObjectsMessage}\n\n";
 
-            var resText = "";
+            text += await ProccessTagsResponse(resTags, settings);
 
-            var tags = results.Tags?.Select(x => x.Name) ?? new List<string>();
-            var descriptionTags = results.Description?.Tags ?? new List<string>();
+            resText += text;
+        }
 
-            var resTags = tags.Union(descriptionTags).Distinct();
+        if (results.Description != null)
+        {
+            var captions = results.Description.Captions.Select(x => x.Text);
+            var captionsRes = string.Join("\n", captions);
 
-            if (resTags != null && resTags.Any())
+            if (captionsRes.Trim() != "text")
             {
-                var imageObjectsMessage = await localizationService.GetTranslateByInterface("app.images.objects", userId);
-                var text = $"{imageObjectsMessage}\n\n";
+                var imageDescMessage = await localizationService.GetTranslateByInterface("app.images.description", userId);
 
-                text += await ProccessTagsResponse(resTags, settings);
-
+                var text = $"\n{imageDescMessage}\n\n";
+                text += "<b>EN</b>\n";
+                text += captionsRes;
                 resText += text;
-            }
 
-            if (results.Description != null)
-            {
-                var captions = results.Description.Captions.Select(x => x.Text);
-                var captionsRes = string.Join("\n", captions);
+                var languagesToTranslate = GetLanguagesToTranslate(settings);
+                var resp = await TranslateImageRecognitionResponse(languagesToTranslate, new string[] { captionsRes });
 
-                if(captionsRes.Trim() != "text")
+                if (resp.isOnlyOneLanguage)
                 {
-                    var imageDescMessage = await localizationService.GetTranslateByInterface("app.images.description", userId);
-
-                    var text = $"\n{imageDescMessage}\n\n";
-                    text += "<b>EN</b>\n";
-                    text += captionsRes;
-                    resText += text;
-
-                    var languagesToTranslate = GetLanguagesToTranslate(settings);
-                    var resp = await TranslateImageRecognitionResponse(languagesToTranslate, new string[] { captionsRes });
-
-                    if (resp.isOnlyOneLanguage)
+                    resText += $"\n\n<b>{languagesToTranslate.First().GetCode().ToUpper()}</b>\n";
+                    foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
                     {
-                        resText += $"\n\n<b>{languagesToTranslate.First().GetCode().ToUpper()}</b>\n";
-                        foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
-                        {
-                            resText += sentense + "\n";
-                        }
+                        resText += sentense + "\n";
                     }
-                    else
+                }
+                else
+                {
+                    resText += $"\n\n<b>{settings.TargetLanguage!.GetCode().ToUpper()}</b>\n";
+                    foreach (var sentense in resp.zippedWords.Select(x => x.fTarget))
                     {
-                        resText += $"\n\n<b>{settings.TargetLanguage!.GetCode().ToUpper()}</b>\n";
-                        foreach (var sentense in resp.zippedWords.Select(x => x.fTarget))
-                        {
-                            resText += sentense + "\n";
-                        }
+                        resText += sentense + "\n";
+                    }
 
-                        resText += $"\n<b>{settings.NativeLanguage!.GetCode().ToUpper()}</b>\n";
-                        foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
-                        {
-                            resText += sentense + "\n";
-                        }
+                    resText += $"\n<b>{settings.NativeLanguage!.GetCode().ToUpper()}</b>\n";
+                    foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
+                    {
+                        resText += sentense + "\n";
                     }
                 }
             }
-
-            if (!string.IsNullOrEmpty(resText))
-            {
-                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, resText, parseMode: ParseMode.Html, replyToMessageId: replyId));
-            }
         }
 
-        return false;
+        if (!string.IsNullOrEmpty(resText))
+        {
+            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, resText, parseMode: ParseMode.Html, replyToMessageId: replyId));
+        }
+
+        return true;
     }
 
     private async Task<string> ProccessTagsResponse(IEnumerable<string> en_tags, UserSettings settings)
@@ -245,22 +284,22 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
     {
         var results = await computerVisionService.OCRImageAsync(bytes);
 
-        if (results != null && results.TextResults.Count > 0)
+        if (results == null || !results.IsSuccess || results.TextResults.Count == 0)
         {
-            var textPhotoMessage = await localizationService.GetTranslateByInterface("app.images.text", userId);
-            var text = $"{textPhotoMessage}\n\n";
-
-            var texts = string.Join("\n", results.TextResults.SelectMany(x => x.Lines).Select(x => x.Text));
-
-            if (!string.IsNullOrEmpty(texts))
-            {
-                text += texts;
-                await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, text, parseMode: ParseMode.Html, replyToMessageId: replyId));
-
-                return true;
-            }
+            return false;
         }
 
-        return false;
+        var textPhotoMessage = await localizationService.GetTranslateByInterface("app.images.text", userId);
+        var text = $"{textPhotoMessage}\n\n";
+
+        var texts = string.Join("\n", results.TextResults.SelectMany(x => x.Lines).Select(x => x.Text));
+
+        if (!string.IsNullOrEmpty(texts))
+        {
+            text += texts;
+            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, text, parseMode: ParseMode.Html, replyToMessageId: replyId));
+        }
+
+        return true;
     }
 }
