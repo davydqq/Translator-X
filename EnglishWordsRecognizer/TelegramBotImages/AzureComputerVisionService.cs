@@ -121,7 +121,7 @@ public class AzureComputerVisionService : IComputerVisionService
         }
         catch (Exception e)
         {
-            logger.LogError(e.Message);
+            logger.LogError(e.ToString());
         }
 
         return new OCR_Result();

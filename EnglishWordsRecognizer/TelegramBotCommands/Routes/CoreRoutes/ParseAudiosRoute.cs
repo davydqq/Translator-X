@@ -24,7 +24,7 @@ public class ParseAudiosRoute : IBaseRoute
     private bool isAudioFile(Message message)
     {
         var formats = AudiosFormats.GetFormats();
-        return message.Document != null && formats.Contains(message.Document.MimeType);
+        return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
     }
 
     public BaseRouteResult GetCommand(Update update)

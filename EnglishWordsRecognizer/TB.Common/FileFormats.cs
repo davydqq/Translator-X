@@ -19,3 +19,35 @@ public static class AudiosFormats
         return Formats;
     }
 }
+
+public static class PhotosFormats
+{
+    private static string[] Formats = new string[] { JPEG, PNG, PNG1 };
+
+    public const string JPEG = "image/jpeg";
+
+    public const string PNG = "image/png";
+
+    public const string PNG1 = "image/x-png";
+
+    public static string[] GetFormats()
+    {
+        return Formats;
+    }
+}
+
+public static class  PhotosExtension
+{
+    private static string[] Formats = new string[] { JPEG, JPEG_1, PNG };
+
+    public const string JPEG = ".jpeg";
+
+    public const string JPEG_1 = ".jpg";
+
+    public const string PNG = ".png";
+
+    public static string[] GetFormats()
+    {
+        return Formats;
+    }
+}
