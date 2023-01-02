@@ -82,16 +82,19 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
             return;
         }
 
-        if (result.Results != null && result.Results.Count > 0)
+        if (result.Results == null || result.Results.Count == 0)
         {
-            // TODO IMPROVE OUTPUT AUDIO
-            var text = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);
+            var text = await localizationService.GetTranslateByInterface("app.audio.EmptyResult", command.UserId);
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
+            return;
+        }
 
-            if (!string.IsNullOrEmpty(text))
-            {
-                var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
-                await commandDispatcher.DispatchAsync(commandTelegram);
-            }
+        var textProcessed = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);
+        if (!string.IsNullOrEmpty(textProcessed))
+        {
+            var commandTelegram = new SendMessageCommand(command.ChatId, textProcessed, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
         }
     }
 

@@ -233,6 +233,7 @@ public class TBDatabaseContext : DbContext
         var audioNoSupportFormatKey = "app.audio.noSupportFormat";
         var audioCantProcess = "app.audio.cantProcess";
         var audioExceedDurationKey = "app.audio.noExceedDuration";
+        var audioEmptyResult = "app.audio.EmptyResult";
 
         var photoNoSupportFormatKey = "app.photo.noSupportFormat";
         var photoCantProcess = "app.photo.cantProcess";
@@ -690,6 +691,22 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "Die maximale Textlänge einer Nachricht darf 40.000 Zeichen nicht überschreiten")
                 .AddTranslate(LanguageENUM.Polish, "Maksymalna długość tekstu jednej wiadomości nie może przekraczać 40 tys. znaków")
                 .AddTranslate(LanguageENUM.Turkish, "Bir mesajın maksimum metin uzunluğu 40k karakteri geçmemelidir"),
+            new KeyTranslationsInitEntity(audioEmptyResult)
+                .AddTranslate(LanguageENUM.Ukrainian, "Не вдалося транскрибувати. Спробуйте вибрати іншу мову транскрибування /audio_language або надішліть інший аудіоформат.")
+                .AddTranslate(LanguageENUM.Russian, "Не удалось расшифровать. Попробуйте выбрать другой язык расшифровки /audio_language или отправьте аудио в другом формате.")
+                .AddTranslate(LanguageENUM.English, "Failed to transcribe, please try selecting a different transcribing language /audio_language or send a different audio format.")
+                .AddTranslate(LanguageENUM.Spanish, "No se pudo transcribir, intente seleccionar un idioma de transcripción diferente /audio_language o envíe un formato de audio diferente.")
+                .AddTranslate(LanguageENUM.French, "Échec de la transcription, veuillez essayer de sélectionner une autre langue de transcription /audio_language ou envoyer un format audio différent.")
+                .AddTranslate(LanguageENUM.Japanese, "文字起こしに失敗しました。別の文字起こし言語 /audio_language を選択するか、別の音声形式を送信してください。")
+                .AddTranslate(LanguageENUM.Chinese, "转录失败，请尝试选择不同的转录语言 /audio_language 或发送不同的音频格式。")
+                .AddTranslate(LanguageENUM.Czech, "Přepis se nezdařil, zkuste prosím vybrat jiný jazyk přepisu /audio_language nebo pošlete jiný formát zvuku.")
+                .AddTranslate(LanguageENUM.Danish, "Kunne ikke transskriberes. Prøv at vælge et andet transskriberingssprog /audio_language eller send et andet lydformat.")
+                .AddTranslate(LanguageENUM.Hindi, "लिप्यंतरण करने में विफल, कृपया एक भिन्न अनुलेखन भाषा /audio_language का चयन करने का प्रयास करें या एक भिन्न ऑडियो प्रारूप भेजें।")
+                .AddTranslate(LanguageENUM.Italian, "Impossibile trascrivere, prova a selezionare una lingua di trascrizione diversa /audio_language o invia un formato audio diverso.")
+                .AddTranslate(LanguageENUM.Swedish, "Det gick inte att transkribera, försök att välja ett annat transkriberingsspråk /audio_language eller skicka ett annat ljudformat.")
+                .AddTranslate(LanguageENUM.German, "Transkription fehlgeschlagen, bitte versuchen Sie es mit der Auswahl einer anderen Transkriptionssprache /audio_language oder senden Sie ein anderes Audioformat.")
+                .AddTranslate(LanguageENUM.Polish, "Transkrypcja nie powiodła się. Spróbuj wybrać inny język transkrypcji /audio_language lub wyślij inny format audio.")
+                .AddTranslate(LanguageENUM.Turkish, "Metne dönüştürülemedi, lütfen farklı bir transkripsiyon dili /audio_language seçmeyi deneyin veya farklı bir ses formatı gönderin."),
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")
