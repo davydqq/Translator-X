@@ -3,7 +3,7 @@ using TB.Common;
 
 namespace TB.Texts.Commands;
 
-public class HandleTextsCommand : BaseTelegramMessageCommand, ICommand
+public class HandleTextsCommand : BaseTelegramMessageCommand, ICommand<bool>
 {
 	public HandleTextsCommand(long chatId, long userId, int messageId, string text, int? replyId = null) 
 		: base(chatId, userId, messageId)

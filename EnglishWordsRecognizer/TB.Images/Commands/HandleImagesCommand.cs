@@ -4,7 +4,7 @@ using TB.Images.Entities;
 
 namespace TB.Images.Commands;
 
-public class HandleImagesCommand : BaseTelegramMessageCommand, ICommand
+public class HandleImagesCommand : BaseTelegramMessageCommand, ICommand<bool>
 {
 	public HandleImagesCommand(long chatId, long userId, int messageId, string caption, List<ImagesInfo> files)
         : base(chatId, userId, messageId)

@@ -12,7 +12,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace TB.Texts.Commands;
 
-public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
+public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, bool>
 {
     private readonly ILogger<HandleTextsCommandHandler> logger;
 
@@ -46,11 +46,11 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
         this.localizationService = localizationService;
     }
 
-    public async Task HandleAsync(HandleTextsCommand command, CancellationToken cancellation = default)
+    public async Task<bool> HandleAsync(HandleTextsCommand command, CancellationToken cancellation = default)
     {
         var res = await userService.ValidateThatUserSelectLanguages(command);
 
-        if (!res) return;
+        if (!res) return false;
 
         var userSettings = await repositoryUserSettings.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
         var languageTo = userSettings.TargetLanguage;
@@ -59,7 +59,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
         if (string.IsNullOrEmpty(command.Text))
         {
             logger.LogError("Text empty");
-            return;
+            return false;
         }
 
         if (command.Text.Length > 40000)
@@ -67,7 +67,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
             var text = await localizationService.GetTranslateByInterface("app.text.maxLength", command.UserId);
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
-            return;
+            return false;
         }
 
         var resDetect = await translateService.DetectLanguagesAsync(command.Text);
@@ -82,13 +82,15 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand>
 
             await HandleMeaning(languageTo, command.Text, command.UserId, command.ChatId, sentMessage.MessageId);
 
-            return;
+            return false;
         }
 
         var resText = await GetTranslationsAsync(command.Text, languageTo.Code);
         var message = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
 
         await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, message.MessageId);
+
+        return true;
     }
 
     private async Task HandleMeaning(Language language, string text, long userId, long chatId, int? replyId)

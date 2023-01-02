@@ -6,7 +6,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace TB.Documents.Commands;
 
-public class HandleDocumentsCommandHandler : ICommandHandler<HandleDocumentsCommand>
+public class HandleDocumentsCommandHandler : ICommandHandler<HandleDocumentsCommand, bool>
 {
     private readonly ILogger<HandleDocumentsCommandHandler> logger;
 
@@ -24,10 +24,12 @@ public class HandleDocumentsCommandHandler : ICommandHandler<HandleDocumentsComm
         this.localizationService = localizationService;
     }
 
-    public async Task HandleAsync(HandleDocumentsCommand command, CancellationToken cancellation = default)
+    public async Task<bool> HandleAsync(HandleDocumentsCommand command, CancellationToken cancellation = default)
     {
         var text = await localizationService.GetTranslateByInterface("app.file.noSupportContent", command.UserId);
         var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
         await commandDispatcher.DispatchAsync(commandTelegram);
+
+        return true;
     }
 }

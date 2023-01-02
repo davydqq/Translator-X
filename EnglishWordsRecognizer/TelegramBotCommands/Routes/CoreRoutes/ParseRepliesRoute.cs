@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TB.Images.Commands;
-using TB.Replies.Commands;
+﻿using TB.Replies.Commands;
+using TB.Routing.Commands;
 using TB.Routing.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -24,7 +19,7 @@ public class ParseRepliesRoute : IBaseRoute
         return message.Type == MessageType.Text && message.ReplyToMessage != null;
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
         var userId = message!.From!.Id;
@@ -34,7 +29,12 @@ public class ParseRepliesRoute : IBaseRoute
         var originalText = message.Text;
         var replyText = message.ReplyToMessage!.Text;
 
+        var upd = new Update();
+        upd.Message = message.ReplyToMessage;
+        var testC = new TelegramUpdatesCommand(upd);
+
         var command = new HandleRepliesCommand(userId, chatId, messageId, originalText, replyText);
-        return new BaseRouteResult(command);
+
+        return new BaseRouteResult<bool>(testC);
     }
 }

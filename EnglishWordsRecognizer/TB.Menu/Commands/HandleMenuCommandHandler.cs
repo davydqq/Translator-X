@@ -10,7 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TB.Menu.Commands;
 
-public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
+public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand, bool>
 {
 	private readonly ICommandDispatcher commandDispatcher;
 
@@ -36,7 +36,7 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
         this.localizationService = localizationService;
     }
 
-	public async Task HandleAsync(HandleMenuCommand command, CancellationToken cancellation = default)
+	public async Task<bool> HandleAsync(HandleMenuCommand command, CancellationToken cancellation = default)
 	{
         if (command.DeleteMessage)
         {
@@ -141,6 +141,8 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand>
                     break;
                 }
 		}
+
+        return true;
 	}
 
     public IEnumerable<IEnumerable<InlineKeyboardButton>> GetLanguagesButtons(

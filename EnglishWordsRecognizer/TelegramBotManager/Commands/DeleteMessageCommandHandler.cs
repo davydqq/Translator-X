@@ -4,7 +4,7 @@ using Telegram.Bot;
 
 namespace TB.Core.Commands;
 
-public class DeleteMessageCommandHandler : ICommandHandler<DeleteMessageCommand>
+public class DeleteMessageCommandHandler : ICommandHandler<DeleteMessageCommand, bool>
 {
     private readonly TelegramBotClient telegramBotClient;
     private readonly ILogger<DeleteMessageCommandHandler> logger;
@@ -15,15 +15,17 @@ public class DeleteMessageCommandHandler : ICommandHandler<DeleteMessageCommand>
         this.logger = logger;
     }
 
-    public async Task HandleAsync(DeleteMessageCommand command, CancellationToken cancellation = default)
+    public async Task<bool> HandleAsync(DeleteMessageCommand command, CancellationToken cancellation = default)
     {
         try
         {
             await telegramBotClient.DeleteMessageAsync(command.ChatId, command.MessageId);
+            return true;
         }
         catch (Exception e)
         {
             logger.LogWarning("Message wasn`t been deleted");
+            return false;
         }
     }
 }

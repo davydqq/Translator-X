@@ -10,7 +10,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace TB.Callbacks.Commands;
 
-public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackCommand>
+public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackCommand, bool>
 {
     private readonly IOptions<BotMenuConfig> options;
 
@@ -32,7 +32,7 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
         this.localizationService = localizationService;
     }
 
-    public async Task HandleAsync(HandleCallbackCommand command, CancellationToken cancellation = default)
+    public async Task<bool> HandleAsync(HandleCallbackCommand command, CancellationToken cancellation = default)
     {
         var callbackId = GetCallbackId(command.Data);
         var menuCommand = options.Value.Commands.FirstOrDefault(x => x.CallBackId == callbackId);
@@ -129,6 +129,8 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
                     }
             }
         }
+
+        return true;
     }
 
     public async Task SendAudioLanguageEstablished(long chatId, long userId)

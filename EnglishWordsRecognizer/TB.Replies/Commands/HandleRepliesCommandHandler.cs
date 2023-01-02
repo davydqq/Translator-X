@@ -5,7 +5,7 @@ using TB.Texts.Commands;
 
 namespace TB.Replies.Commands;
 
-public class HandleRepliesCommandHandler : ICommandHandler<HandleRepliesCommand>
+public class HandleRepliesCommandHandler : ICommandHandler<HandleRepliesCommand, bool>
 {
     private readonly ILogger<HandleRepliesCommandHandler> logger;
     private readonly ICommandDispatcher commandDispatcher;
@@ -18,9 +18,11 @@ public class HandleRepliesCommandHandler : ICommandHandler<HandleRepliesCommand>
         this.commandDispatcher = commandDispatcher;
     }
 
-    public async Task HandleAsync(HandleRepliesCommand command, CancellationToken cancellation = default)
+    public async Task<bool> HandleAsync(HandleRepliesCommand command, CancellationToken cancellation = default)
     {
-        var commandToSend = new HandleTextsCommand(command.ChatId, command.UserId, command.MessageId, command.ReplyText, command.MessageId);
-        await commandDispatcher.DispatchAsync(commandToSend);
+        return true;
+
+        // var commandToSend = new HandleTextsCommand(command.ChatId, command.UserId, command.MessageId, command.ReplyText, command.MessageId);
+        // await commandDispatcher.DispatchAsync(commandToSend);
     }
 }

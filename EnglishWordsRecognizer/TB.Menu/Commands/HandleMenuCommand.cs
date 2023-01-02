@@ -4,7 +4,7 @@ using TB.Menu.Entities;
 
 namespace TB.Menu.Commands;
 
-public class HandleMenuCommand : BaseTelegramMessageCommand, ICommand
+public class HandleMenuCommand : BaseTelegramMessageCommand, ICommand<bool>
 {
 	public HandleMenuCommand(BotMenuCommand command, long chatId, int messageId, long userId, bool deleteMessage)
 		:base(chatId, userId, messageId)

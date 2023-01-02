@@ -4,7 +4,7 @@ using TB.Database.GenericRepositories;
 
 namespace TB.User.Commands;
 
-public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
+public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, bool>
 {
     private readonly IRepository<TelegramUser, int> userRepository;
     private readonly IRepository<UserSettings, int> settingsRepository;
@@ -17,7 +17,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
         this.settingsRepository = settingsRepository;
     }
 
-    public async Task HandleAsync(RegisterUserCommand command, CancellationToken cancellation = default)
+    public async Task<bool> HandleAsync(RegisterUserCommand command, CancellationToken cancellation = default)
     {
         var message = command.Update.Message;
         if (message != null && message.From != null)
@@ -46,5 +46,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
                 await settingsRepository.AddAsync(new UserSettings { TelegramUserId = user.Id, InterfaceLanguageId = LanguageENUM.English });
             }
         }
+
+        return true;
     }
 }

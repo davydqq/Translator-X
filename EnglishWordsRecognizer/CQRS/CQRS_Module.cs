@@ -41,17 +41,6 @@ public static class CQRS_Module
             selector.FromApplicationDependencies()
                     .AddClasses(filter =>
                     {
-                        filter.AssignableTo(typeof(ICommandHandler<>));
-                    })
-                    .AsImplementedInterfaces()
-                    .WithTransientLifetime();
-        });
-
-        services.Scan(selector =>
-        {
-            selector.FromApplicationDependencies()
-                    .AddClasses(filter =>
-                    {
                         filter.AssignableTo(typeof(IEventHandler<>));
                     })
                     .AsImplementedInterfaces()

@@ -28,7 +28,7 @@ public class ParsePhotosRoute : IBaseRoute
         return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
         var userId = message!.From!.Id;
@@ -38,7 +38,7 @@ public class ParsePhotosRoute : IBaseRoute
         var files = GetPhotos(message);
 
         var command = new HandleImagesCommand(chatId, userId, messageId, message.Caption, files);
-        return new BaseRouteResult(command);
+        return new BaseRouteResult<bool>(command);
     }
 
     private List<ImagesInfo> GetPhotos(Message message)

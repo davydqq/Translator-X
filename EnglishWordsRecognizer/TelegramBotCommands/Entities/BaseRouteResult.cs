@@ -2,11 +2,11 @@
 
 namespace TB.Routing.Entities;
 
-public class BaseRouteResult
+public class BaseRouteResult<T>
 {
-    public ICommand Command { set; get; }
+    public ICommand<T> Command { set; get; }
 
-    public BaseRouteResult(ICommand command)
+    public BaseRouteResult(ICommand<T> command)
     {
         Command = command;
     }

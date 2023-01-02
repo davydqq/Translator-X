@@ -2,7 +2,7 @@
 
 namespace TB.Callbacks.Commands;
 
-public class HandleCallbackCommand : ICommand
+public class HandleCallbackCommand : ICommand<bool>
 {
 	public HandleCallbackCommand(long chatId, long userId, int messageId, string data)
 	{

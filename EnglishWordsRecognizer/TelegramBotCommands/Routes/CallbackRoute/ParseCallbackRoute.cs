@@ -22,7 +22,7 @@ public class ParseCallbackRoute : IBaseRoute
         return false;
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var query = update.CallbackQuery;
 
@@ -33,6 +33,6 @@ public class ParseCallbackRoute : IBaseRoute
 
         var command = new HandleCallbackCommand(chatId, userId, messageId, data);
 
-        return new BaseRouteResult(command);
+        return new BaseRouteResult<bool>(command);
     }
 }

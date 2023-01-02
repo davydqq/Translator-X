@@ -33,7 +33,7 @@ public class ParseMenuRoute : IBaseRoute
         return config.Value.Commands.Any(command => message.Text.Contains(command.Name));
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
         var command = config.Value.Commands.First(command => message.Text.Contains(command.Name));
@@ -45,6 +45,6 @@ public class ParseMenuRoute : IBaseRoute
 
         var commandToExecute = new HandleMenuCommand(command, chatId, messageId, userId, true);
 
-        return new BaseRouteResult(commandToExecute);
+        return new BaseRouteResult<bool>(commandToExecute);
     }
 }

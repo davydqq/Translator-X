@@ -19,7 +19,7 @@ public class ParseVideosRoute : IBaseRoute
         return message.Type == MessageType.Video;
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
 
@@ -27,6 +27,6 @@ public class ParseVideosRoute : IBaseRoute
         var chatId = message.Chat.Id;
         var messageId = message.MessageId;
          
-        return new BaseRouteResult(new HandleVideosCommand(chatId, userId, messageId));
+        return new BaseRouteResult<bool>(new HandleVideosCommand(chatId, userId, messageId));
     }
 }

@@ -5,7 +5,7 @@ namespace TB.Routing;
 
 public interface IBaseRoute
 {
-    public BaseRouteResult GetCommand(Update update);
+    public BaseRouteResult<bool> GetCommand(Update update);
 
     public bool CanHandle(Update update);
 

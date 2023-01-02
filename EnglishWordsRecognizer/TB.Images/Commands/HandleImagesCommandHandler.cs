@@ -1,28 +1,22 @@
 ﻿using ConsoleTables;
 using CQRS.Commands;
 using CQRS.Queries;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using TB.Common;
 using TB.ComputerVision;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
-using TB.Database.GenericRepositories;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Texts.Commands;
 using TB.Translator;
-using TB.Translator.Entities;
 using TB.User;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TB.Images.Commands;
 
-public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
+public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, bool>
 {
     private readonly ILogger<HandleImagesCommandHandler> logger;
 
@@ -35,8 +29,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
     private readonly ITranslateService translateService;
 
     private readonly IUserService userService;
-
-    private readonly IRepository<Language, LanguageENUM> langRepository;
 
     private readonly ILocalizationService localizationService;
 
@@ -53,7 +45,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         ICommandDispatcher commandDispatcher,
         ITranslateService translateService,
         IUserService userService,
-        IRepository<Language, LanguageENUM> langRepository,
         ILocalizationService localizationService,
         UserSettingsRepository userSettingsRepository)
     {
@@ -63,15 +54,14 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         this.commandDispatcher = commandDispatcher;
         this.translateService = translateService;
         this.userService = userService;
-        this.langRepository = langRepository;
         this.localizationService = localizationService;
         this.userSettingsRepository = userSettingsRepository;
     }
 
-    public async Task HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
+    public async Task<bool> HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
     {
         var res = await userService.ValidateThatUserSelectLanguages(command);
-        if (!res) return;
+        if (!res) return false;
 
         var file = command.Files.Where(x => x.Size < four_mb).MaxBy(x => x.Size);
         if(file == null)
@@ -79,7 +69,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             var text = await localizationService.GetTranslateByInterface("app.photo.tooLargeFile", command.UserId);
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
-            return;
+            return false;
         }
 
         var downloadFile = await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
@@ -90,7 +80,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
             var text = await localizationService.GetTranslateByInterface("app.photo.noSupportFormat", command.UserId);
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
-            return;
+            return false;
         }
 
         await ProcessCaptions(command.ChatId, command.UserId, command.MessageId, command.Caption, command.MessageId);
@@ -99,7 +89,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         if (!res1)
         {
             await SendErrorMessage(command.ChatId, command.MessageId, command.UserId);
-            return;
+            return false;
         }
 
         var res2 = await ProcessAndSendPhotoAnalysisAsync(downloadFile.File, command.ChatId, command.UserId, command.MessageId);
@@ -107,6 +97,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand>
         {
             await SendErrorMessage(command.ChatId, command.MessageId, command.UserId);
         }
+
+        return true;
     }
 
     private async Task SendErrorMessage(long chatId, int replyId, long userId)

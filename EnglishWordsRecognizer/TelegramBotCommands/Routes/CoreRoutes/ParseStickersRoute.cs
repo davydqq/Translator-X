@@ -20,7 +20,7 @@ public class ParseStickersRoute : IBaseRoute
         return message.Type == MessageType.Sticker;
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
         var userId = message!.From!.Id;
@@ -33,6 +33,6 @@ public class ParseStickersRoute : IBaseRoute
         };
 
         var command = new HandleImagesCommand(chatId, userId, messageId, message.Caption, files);
-        return new BaseRouteResult(command);
+        return new BaseRouteResult<bool>(command);
     }
 }

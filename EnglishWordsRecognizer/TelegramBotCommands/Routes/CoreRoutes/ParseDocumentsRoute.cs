@@ -32,7 +32,7 @@ public class ParseDocumentsRoute : IBaseRoute
         return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
 
@@ -40,6 +40,6 @@ public class ParseDocumentsRoute : IBaseRoute
         var chatId = message.Chat.Id;
         var messageId = message.MessageId;
 
-        return new BaseRouteResult(new HandleDocumentsCommand(chatId, userId, messageId));
+        return new BaseRouteResult<bool>(new HandleDocumentsCommand(chatId, userId, messageId));
     }
 }

@@ -27,7 +27,7 @@ public class ParseAudiosRoute : IBaseRoute
         return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
 
@@ -39,7 +39,7 @@ public class ParseAudiosRoute : IBaseRoute
 
         var command = new HandleAudiosCommand(chatId, userId, messageId, file);
 
-        return new BaseRouteResult(command);
+        return new BaseRouteResult<bool>(command);
     }
 
     private AudioInfo GetAudio(Message message)

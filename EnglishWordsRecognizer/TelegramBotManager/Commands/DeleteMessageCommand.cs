@@ -2,7 +2,7 @@
 
 namespace TB.Core.Commands;
 
-public class DeleteMessageCommand : ICommand
+public class DeleteMessageCommand : ICommand<bool>
 {
     public DeleteMessageCommand(long chatId, int messageId)
     {

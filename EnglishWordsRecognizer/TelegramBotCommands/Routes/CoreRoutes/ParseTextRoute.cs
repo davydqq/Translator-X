@@ -19,7 +19,7 @@ public class ParseTextRoute : IBaseRoute
         return message.Type == MessageType.Text;
     }
 
-    public BaseRouteResult GetCommand(Update update)
+    public BaseRouteResult<bool> GetCommand(Update update)
     {
         var message = update.Message;
 
@@ -29,6 +29,6 @@ public class ParseTextRoute : IBaseRoute
         var text = message.Text;
 
         var command = new HandleTextsCommand(chatId, userId, messageId, text, messageId);
-        return new BaseRouteResult(command);
+        return new BaseRouteResult<bool>(command);
     }
 }

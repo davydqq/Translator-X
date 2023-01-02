@@ -12,9 +12,9 @@ namespace TB.Routing.Routes
             return true;
         }
 
-        public BaseRouteResult GetCommand(Update update)
+        public BaseRouteResult<bool> GetCommand(Update update)
         {
-            return new BaseRouteResult(null);
+            return new BaseRouteResult<bool>(null);
         }
     }
 }

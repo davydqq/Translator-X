@@ -3,7 +3,7 @@ using TB.Common;
 
 namespace TB.Replies.Commands;
 
-public class HandleRepliesCommand : BaseTelegramMessageCommand, ICommand
+public class HandleRepliesCommand : BaseTelegramMessageCommand, ICommand<bool>
 {
 	public HandleRepliesCommand(long userId, long chatId, int messageId, string originalText, string replyText)
          : base(chatId, userId, messageId)
