@@ -1,10 +1,7 @@
 ﻿using TB.Audios.Commands;
-using TB.Audios.Entities;
 using TB.Common;
-using TB.Routing;
 using TB.Routing.Entities;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace TB.Routing.Routes.CoreRoutes;
 
@@ -18,13 +15,7 @@ public class ParseAudiosRoute : IBaseRoute
             return false;
 
         var message = update.Message;
-        return message.Type == MessageType.Audio || message.Type == MessageType.Voice || isAudioFile(message);
-    }
-
-    private bool isAudioFile(Message message)
-    {
-        var formats = AudiosFormats.GetFormats();
-        return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
+        return TelegramMessageContentHelper.IsAudioRoute(update.Message);
     }
 
     public BaseRouteResult<bool> GetCommand(Update update)
@@ -35,47 +26,10 @@ public class ParseAudiosRoute : IBaseRoute
         var chatId = message.Chat.Id;
         var messageId = message.MessageId;
 
-        var file = GetAudio(message);
+        var file = TelegramMessageContentHelper.GetAudio(message);
 
         var command = new HandleAudiosCommand(chatId, userId, messageId, file);
 
         return new BaseRouteResult<bool>(command);
-    }
-
-    private AudioInfo GetAudio(Message message)
-    {
-        switch (message.Type)
-        {
-            case MessageType.Voice:
-                {
-                    return new AudioInfo()
-                    {
-                        FileId = message.Voice.FileId,
-                        Duration = message.Voice.Duration,
-                        MimeType = message.Voice.MimeType
-                    };
-                }
-            case MessageType.Audio:
-                {
-                    return new AudioInfo()
-                    {
-                        FileId = message.Audio.FileId,
-                        Duration = message.Audio.Duration,
-                        MimeType = message.Audio.MimeType
-                    };
-                }
-            case MessageType.Document:
-                {
-                    return new AudioInfo()
-                    {
-                        FileId = message.Document.FileId,
-                        MimeType = message.Document.MimeType
-                    };
-                }
-            default:
-                {
-                    throw new ArgumentException("Incorrect type");
-                }
-        }
     }
 }

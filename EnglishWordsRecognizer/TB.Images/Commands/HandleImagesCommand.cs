@@ -1,6 +1,5 @@
 ﻿using CQRS.Commands;
 using TB.Common;
-using TB.Images.Entities;
 
 namespace TB.Images.Commands;
 

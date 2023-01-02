@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\TB.Audios\TB.Audios.csproj" />
+    <ProjectReference Include="..\TB.Images\TB.Images.csproj" />
     <ProjectReference Include="..\TB.Texts\TB.Texts.csproj" />
   </ItemGroup>
 

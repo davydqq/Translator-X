@@ -1,4 +1,4 @@
-﻿namespace TB.Images.Entities;
+﻿namespace TB.Common;
 
 public class ImagesInfo
 {

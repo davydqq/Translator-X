@@ -1,4 +1,4 @@
-﻿namespace TB.Audios.Entities;
+﻿namespace TB.Common;
 
 public class AudioInfo
 {
