@@ -1,10 +1,11 @@
 ﻿using CQRS.Queries;
 using Microsoft.Extensions.Logging;
+using TB.Core.Entities;
 using Telegram.Bot;
 
 namespace TB.Core.Queries;
 
-public class DownloadFileQueryHandler : IQueryHandler<DownloadFileQuery, byte[]>
+public class DownloadFileQueryHandler : IQueryHandler<DownloadFileQuery, DownloadFileResult>
 {
     private readonly TelegramBotClient telegramBotClient;
     private readonly ILogger<DownloadFileQueryHandler> logger;
@@ -15,7 +16,7 @@ public class DownloadFileQueryHandler : IQueryHandler<DownloadFileQuery, byte[]>
         this.logger = logger;
     }
 
-    public async Task<byte[]> HandleAsync(DownloadFileQuery query, CancellationToken cancellation)
+    public async Task<DownloadFileResult> HandleAsync(DownloadFileQuery query, CancellationToken cancellation)
     {
         var file = await telegramBotClient.GetFileAsync(query.FileId);
 
@@ -28,6 +29,10 @@ public class DownloadFileQueryHandler : IQueryHandler<DownloadFileQuery, byte[]>
         using var saveImageStream = new MemoryStream();
         await telegramBotClient.DownloadFileAsync(file.FilePath, saveImageStream);
 
-        return saveImageStream.ToArray();
+        return new DownloadFileResult
+        {
+            File = saveImageStream.ToArray(),
+            Path = file.FilePath
+        };
     }
 }

@@ -1,8 +1,9 @@
 ﻿using CQRS.Queries;
+using TB.Core.Entities;
 
 namespace TB.Core.Queries;
 
-public class DownloadFileQuery : IQuery<byte[]>
+public class DownloadFileQuery : IQuery<DownloadFileResult>
 {
 	public DownloadFileQuery(string fileId)
 	{
