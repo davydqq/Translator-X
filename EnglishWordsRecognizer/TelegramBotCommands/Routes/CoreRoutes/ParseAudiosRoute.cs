@@ -1,5 +1,6 @@
 ﻿using TB.Audios.Commands;
 using TB.Audios.Entities;
+using TB.Common;
 using TB.Routing;
 using TB.Routing.Entities;
 using Telegram.Bot.Types;
@@ -17,7 +18,13 @@ public class ParseAudiosRoute : IBaseRoute
             return false;
 
         var message = update.Message;
-        return message.Type == MessageType.Audio || message.Type == MessageType.Voice;
+        return message.Type == MessageType.Audio || message.Type == MessageType.Voice || isAudioFile(message);
+    }
+
+    private bool isAudioFile(Message message)
+    {
+        var formats = AudiosFormats.GetFormats();
+        return message.Document != null && formats.Contains(message.Document.MimeType);
     }
 
     public BaseRouteResult GetCommand(Update update)
@@ -55,6 +62,14 @@ public class ParseAudiosRoute : IBaseRoute
                         FileId = message.Audio.FileId,
                         Duration = message.Audio.Duration,
                         MimeType = message.Audio.MimeType
+                    };
+                }
+            case MessageType.Document:
+                {
+                    return new AudioInfo()
+                    {
+                        FileId = message.Document.FileId,
+                        MimeType = message.Document.MimeType
                     };
                 }
             default:

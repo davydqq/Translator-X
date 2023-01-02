@@ -2,6 +2,7 @@
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
 using TB.Audios.Entities;
+using TB.Common;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
@@ -22,14 +23,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
     private readonly ILocalizationService localizationService;
     private readonly ICommandDispatcher commandDispatcher;
 
-    private readonly string[] supportedAudioFormats = new string[] 
-    { 
-        "audio/mpeg", 
-        "audio/ogg", 
-        "audio/wav", 
-        "audio/webm",
-        "audio/opus"
-    };
+    private readonly string[] supportedAudioFormats = AudiosFormats.GetFormats();
 
     public HandleAudiosCommandHandler(
         ILogger<HandleAudiosCommandHandler> logger,
@@ -62,7 +56,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
 
         if(!supportedAudioFormats.Any(x => x == command.File.MimeType))
         {
-            var text = "Not supported format. Use .mp3, .ogg, .opus, .wav, .webm";
+            var text = "Not supported format. Use (.mp3, .ogg, .flac, .wav)";
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
             return;
@@ -79,9 +73,17 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand>
 
         var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
 
-        var result = await speechToTextService.RecognizeAsync(bytes, settings.AudioLanguageId.Value);
+        var result = await speechToTextService.RecognizeAsync(bytes, settings.AudioLanguageId.Value, command.File.MimeType);
 
-        if (result != null && result.Results != null && result.Results.Count > 0)
+        if (!result.IsSuccess)
+        {
+            var text = "Can't process this audio try another one.";
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
+            return;
+        }
+
+        if (result.Results != null && result.Results.Count > 0)
         {
             // TODO IMPROVE OUTPUT AUDIO
             var text = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);

@@ -1,7 +1,11 @@
-﻿using Google.Cloud.Speech.V1;
+﻿using Google.Apis.Logging;
+using Google.Cloud.Speech.V1;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TB.Audios.Entities;
+using TB.Common;
 using TB.Database.Entities;
+using Telegram.Bot.Types;
 using static Google.Cloud.Speech.V1.RecognitionConfig.Types;
 
 namespace TB.Audios;
@@ -9,7 +13,7 @@ namespace TB.Audios;
 public class GoogleSpeechToTextService : ISpeechToTextService
 {
     private readonly IOptions<GoogleConfig> options;
-
+    private readonly ILogger<GoogleSpeechToTextService> logger;
     private readonly string[] languages = new string[]
     {
         LanguageCodes.Ukrainian.Ukraine,
@@ -29,32 +33,28 @@ public class GoogleSpeechToTextService : ISpeechToTextService
         LanguageCodes.Turkish.Turkey
     };
 
-    public GoogleSpeechToTextService(IOptions<GoogleConfig> options)
+    public GoogleSpeechToTextService(IOptions<GoogleConfig> options, ILogger<GoogleSpeechToTextService> logger)
     {
         this.options = options;
+        this.logger = logger;
     }
 
-    public async Task<AudioRecognizeResponse> RecognizeAsync(byte[] bytes, LanguageENUM language)
+    public async Task<AudioRecognizeResponse> RecognizeAsync(byte[] bytes, LanguageENUM language, string mimeType)
     {
         RecognitionAudio audio = RecognitionAudio.FromBytes(bytes);
 
-        var builder = new SpeechClientBuilder() { CredentialsPath = options.Value.Path };
+        var result = await RecognizeAsyncIternal(audio, language, mimeType);
 
-        var client = await builder.BuildAsync();
-
-        RecognitionConfig config = new RecognitionConfig()
+        if (!result.isSuccess)
         {
-            Encoding = AudioEncoding.EncodingUnspecified,
-            SampleRateHertz = 16000,
-            LanguageCode = GetAudioLanguage(language),
-        };
+            return new AudioRecognizeResponse();
+        }
 
-        // config.AlternativeLanguageCodes.AddRange(languages);
-
-        RecognizeResponse response = await client.RecognizeAsync(config, audio);
+        var response = result.response;
 
         return new AudioRecognizeResponse
         {
+            IsSuccess = true,
             ProcessedSeconds = response.TotalBilledTime.Seconds,
             Results = response.Results.Select(x => new AudioRecognizeResult
             {
@@ -77,7 +77,88 @@ public class GoogleSpeechToTextService : ISpeechToTextService
             }).ToList()
         };
     }
-    
+
+    private async Task<(bool isSuccess, RecognizeResponse response)> RecognizeAsyncIternal(RecognitionAudio audio, LanguageENUM language, string mimeType)
+    {
+        try
+        {
+            var builder = new SpeechClientBuilder() { CredentialsPath = options.Value.Path };
+
+            var client = await builder.BuildAsync();
+
+            RecognitionConfig config = new RecognitionConfig()
+            {
+                Encoding = GetEncoding(mimeType),
+                SampleRateHertz = GetSampleRateHertz(mimeType),
+                LanguageCode = GetAudioLanguage(language),
+            };
+
+            RecognizeResponse response = await client.RecognizeAsync(config, audio);
+
+            return (true, response);
+
+        } catch(Exception e)
+        {
+            logger.LogError(e.ToString());
+            return (false, null);
+        }
+    }
+
+    private int GetSampleRateHertz(string mimeType)
+    {
+        switch (mimeType)
+        {
+            case AudiosFormats.Flac:
+                {
+                    return 0;
+                }
+            case AudiosFormats.WAV:
+                {
+                    return 0;
+                }
+            case AudiosFormats.X_WAV:
+                {
+                    return 0;
+                }
+            case AudiosFormats.OGG:
+                {
+                    return 48000;
+                }
+            default:
+                {
+                    return 16000;
+                }
+        }
+    }
+
+    private AudioEncoding GetEncoding(string mimeType)
+    {
+        switch (mimeType)
+        {
+            case AudiosFormats.Flac:
+                {
+                    return AudioEncoding.Flac;
+                }
+            case AudiosFormats.WAV:
+                {
+                    return AudioEncoding.Linear16;
+                }
+            case AudiosFormats.X_WAV:
+                {
+                    return AudioEncoding.Linear16;
+                }
+            case AudiosFormats.OGG:
+                {
+                    return AudioEncoding.OggOpus;
+                }
+            default:
+                {
+                    return AudioEncoding.EncodingUnspecified;
+                }
+        }
+    }
+
+
     private string GetAudioLanguage(LanguageENUM language)
     {
         switch (language)

@@ -31,10 +31,11 @@ namespace TB.API.Middlewares
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.OK;
 
+            _logger.LogError(exception.ToString());
+
             return context.Response.WriteAsync(new ErrorDetails()
             {
                 StatusCode = context.Response.StatusCode,
-                Message = exception.Message + "\n" + exception.InnerException
             }.ToString());
         }
     }
