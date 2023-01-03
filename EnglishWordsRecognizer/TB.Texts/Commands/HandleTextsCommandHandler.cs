@@ -117,7 +117,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
                         var synonyms = await thesaurusService.GetSynonymsAsync(text);
                         if(synonyms != null && synonyms.Count() > 0)
                         {
-                            var synonumKey = "<b>Synonym</b>\n\n";
+                            var synonumKey = "<b>Synonyms</b>\n\n";
                             synonyms = synonyms.Take(10);
                             var messageText = synonumKey + string.Join(", ", synonyms);
                             await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, messageText, replyToMessageId: replySynonymId, parseMode: ParseMode.Html));
