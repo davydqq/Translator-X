@@ -55,6 +55,7 @@ builder.Services.AddSingleton(x =>
 
 // services
 builder.Services.AddSingleton<CambridgeDictionaryService>();
+builder.Services.AddSingleton<ThesaurusService>();
 
 // Cognitive Services
 builder.Services.AddSingleton<ITranslateService, AzureTranslateService>();

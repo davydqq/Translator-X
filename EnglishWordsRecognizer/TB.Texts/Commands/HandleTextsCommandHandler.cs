@@ -23,7 +23,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
     private readonly IUserService userService;
 
     private readonly CambridgeDictionaryService cambridgeDictionaryService;
-
+    private readonly ThesaurusService thesaurusService;
     private readonly UserSettingsRepository repositoryUserSettings;
 
     private readonly ILocalizationService localizationService;
@@ -34,6 +34,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         ITranslateService translateService,
         IUserService userService,
         CambridgeDictionaryService cambridgeDictionaryService,
+        ThesaurusService thesaurusService,
         UserSettingsRepository repositoryUserSettings,
         ILocalizationService localizationService)
     {
@@ -42,6 +43,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         this.translateService = translateService;
         this.userService = userService;
         this.cambridgeDictionaryService = cambridgeDictionaryService;
+        this.thesaurusService = thesaurusService;
         this.repositoryUserSettings = repositoryUserSettings;
         this.localizationService = localizationService;
     }
@@ -104,11 +106,19 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
                     var meaningActive = await repositoryUserSettings.GetAnyAsync(x => x.TelegramUserId == userId && x.RecognizeEnglishMeaning);
                     if (meaningActive)
                     {
+                        // meaning
                         var result = await cambridgeDictionaryService.GetCambridgeEnglishAsync(text);
                         var message = await GetMessageMeaning(result, userId);
                         if (!string.IsNullOrEmpty(message))
                         {
                             await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, message, replyToMessageId: replyId, parseMode: ParseMode.Html));
+                        }
+                        // synonyms
+                        var synonyms = await thesaurusService.GetSynonymsAsync(text);
+                        if(synonyms != null && synonyms.Count > 0)
+                        {
+                            var messageText = string.Join(',', synonyms);
+                            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, messageText, replyToMessageId: replyId, parseMode: ParseMode.Html));
                         }
                     }
                     break;
