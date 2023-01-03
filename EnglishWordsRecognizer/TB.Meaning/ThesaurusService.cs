@@ -18,7 +18,7 @@ public class ThesaurusService
         this.httpClientFactory = httpClientFactory;
     }
 
-    public async Task<List<string>> GetSynonymsAsync(string str)
+    public async Task<IEnumerable<string>> GetSynonymsAsync(string str)
     {
         if (string.IsNullOrEmpty(str)) return null;
 
@@ -36,7 +36,7 @@ public class ThesaurusService
         if (nodes != null && nodes.Count() > 0)
         {
             var liNodes = nodes.Where(x => x.Name == "li");
-            return liNodes.Where(x => x != null && !string.IsNullOrEmpty(x.InnerText)).Select(x => x.InnerText.Trim()).ToList();
+            return liNodes.Where(x => x != null && !string.IsNullOrEmpty(x.InnerText)).Select(x => x.InnerText.Trim());
         }
 
         return null;

@@ -82,20 +82,20 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
 
             var sentMessage = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom, replyToMessageId: command.ReplyId));
 
-            await HandleMeaning(languageTo, command.Text, command.UserId, command.ChatId, sentMessage.MessageId);
+            await HandleMeaning(languageTo, command.Text, command.UserId, command.ChatId, command.MessageId, command.MessageId);
 
-            return false;
+            return true;
         }
 
         var resText = await GetTranslationsAsync(command.Text, languageTo.Code);
         var message = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
 
-        await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, message.MessageId);
+        await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, message.MessageId, message.MessageId);
 
         return true;
     }
 
-    private async Task HandleMeaning(Language language, string text, long userId, long chatId, int? replyId)
+    private async Task HandleMeaning(Language language, string text, long userId, long chatId, int? replyId, int? replySynonymId)
     {
         if (text.Length > 50) return;
         // todo add reverse lofic
@@ -115,10 +115,12 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
                         }
                         // synonyms
                         var synonyms = await thesaurusService.GetSynonymsAsync(text);
-                        if(synonyms != null && synonyms.Count > 0)
+                        if(synonyms != null && synonyms.Count() > 0)
                         {
-                            var messageText = string.Join(',', synonyms);
-                            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, messageText, replyToMessageId: replyId, parseMode: ParseMode.Html));
+                            var synonumKey = "<b>Synonym</b>\n\n";
+                            synonyms = synonyms.Take(10);
+                            var messageText = synonumKey + string.Join(", ", synonyms);
+                            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, messageText, replyToMessageId: replySynonymId, parseMode: ParseMode.Html));
                         }
                     }
                     break;
