@@ -55,8 +55,7 @@ public class CambridgeDictionaryService
 
                 foreach (var str in firstMeanings)
                 {
-                    var desc = await GetPhraseInfo(str);
-                    res.Add(new MeaningPhraseResult(str, desc));
+                    await ProcessPhraseInfo(res, str);
                 }
 
                 var splitPhrase = phrase.Split(" ");
@@ -67,11 +66,7 @@ public class CambridgeDictionaryService
                     foreach (var splitWord in splitPhrase)
                     {
                         var wordMeaning = otherMeanings.FirstOrDefault(x => x == splitWord);
-                        if (wordMeaning != null)
-                        {
-                            var desc = await GetPhraseInfo(wordMeaning);
-                            res.Add(new MeaningPhraseResult(wordMeaning, desc));
-                        }
+                        await ProcessPhraseInfo(res, wordMeaning);
                     }
                 }
             }
@@ -79,6 +74,22 @@ public class CambridgeDictionaryService
 
         return new MeaningResult { IsMatched = false, Results = res }; ;
     }
+
+    private async Task ProcessPhraseInfo(List<MeaningPhraseResult> res, string str)
+    {
+        if (string.IsNullOrEmpty(str)) return;
+
+        var desc = await GetPhraseInfo(str);
+
+        if (!string.IsNullOrEmpty(desc))
+        {
+            desc = ClearSTR(desc);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                res.Add(new MeaningPhraseResult(str, desc));
+            }
+        }
+    } 
 
     async Task<IEnumerable<string>> GetSpellCheckPhrases(string phrase)
     {
@@ -129,12 +140,10 @@ public class CambridgeDictionaryService
         return null;
     }
 
+    private string ClearSTR(string str) => Regex.Replace(str, @"\t|\n|\r|→", "").Trim();
+
     IEnumerable<string> ClearArray(IEnumerable<string> strs)
     {
-        return strs.Select(x =>
-        {
-            var v = Regex.Replace(x, @"\t|\n|\r", "");
-            return v.Trim();
-        });
+        return strs.Select(x => ClearSTR(x)).Where(x => x?.Length > 2);
     }
 }
