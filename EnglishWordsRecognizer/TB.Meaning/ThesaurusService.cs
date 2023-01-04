@@ -1,29 +1,25 @@
 ﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TB.Meaning;
 
 public class ThesaurusService
 {
-    const string baseUrl = "https://www.thesaurus.com";
+    const string baseUrl = "https://www.thesaurus.com/";
 
-    private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient _httpClient;
 
-    public ThesaurusService(IHttpClientFactory httpClientFactory)
+    public ThesaurusService(HttpClient httpClient)
     {
-        this.httpClientFactory = httpClientFactory;
+        this._httpClient = httpClient;
+
+        _httpClient.BaseAddress = new Uri(baseUrl);
     }
 
     public async Task<IEnumerable<string>> GetSynonymsAsync(string str)
     {
         if (string.IsNullOrEmpty(str)) return null;
 
-        using var httpClient = httpClientFactory.CreateClient();
-        var resp = await httpClient.GetAsync(baseUrl + $"/browse/{str}");
+        var resp = await _httpClient.GetAsync($"browse/{str}");
 
         if(!resp.IsSuccessStatusCode) return null;
 

@@ -66,7 +66,7 @@ public class AzureTranslateService : ITranslateService
 
     private async Task<T> SendRequestAsync<T>(string? requestBody, string route)
     {
-        using var httpClient = httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient("AzureTranslator");
         using var request = new HttpRequestMessage();
 
         // Build the request.

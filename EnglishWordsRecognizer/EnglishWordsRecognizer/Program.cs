@@ -1,4 +1,5 @@
 using CQRS;
+using Polly.Extensions.Http;
 using Microsoft.Extensions.Options;
 using TB.API.Jobs;
 using TB.API.Middlewares;
@@ -16,6 +17,7 @@ using TB.Translator;
 using TB.Translator.Entities.Azure;
 using TB.User;
 using Telegram.Bot;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,7 +68,12 @@ builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.ApplyLocalizationModules();
 
-builder.Services.AddHttpClient();
+// HTTP
+var httpRetryPolicy = Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3);
+
+builder.Services.AddHttpClient<CambridgeDictionaryService>().AddPolicyHandler(httpRetryPolicy);
+builder.Services.AddHttpClient<ThesaurusService>().AddPolicyHandler(httpRetryPolicy);
+builder.Services.AddHttpClient("AzureTranslator").AddPolicyHandler(httpRetryPolicy);
 
 // Add Hosted
 builder.Services.AddHostedService<RunAppJob>();

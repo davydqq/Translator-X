@@ -6,17 +6,19 @@ namespace TB.Meaning;
 
 public class CambridgeDictionaryService
 {
-    const string baseUrl = "https://dictionary.cambridge.org";
+    const string baseUrl = "https://dictionary.cambridge.org/";
 
-    const string dictionaryUrl = $"{baseUrl}/dictionary/english";
+    const string dictionaryUrl = $"dictionary/english";
 
-    const string spellCheckUrl = $"{baseUrl}/spellcheck/english";
+    const string spellCheckUrl = $"spellcheck/english";
 
-    private readonly IHttpClientFactory httpClientFactory;
+    private readonly HttpClient _httpClient;
 
-    public CambridgeDictionaryService(IHttpClientFactory httpClientFactory)
+    public CambridgeDictionaryService(HttpClient httpClient)
     {
-        this.httpClientFactory = httpClientFactory;
+        this._httpClient = httpClient;
+
+        _httpClient.BaseAddress = new Uri(baseUrl);
     }
 
     public async Task<MeaningResult> GetCambridgeEnglishAsync(string phrase)
@@ -93,8 +95,7 @@ public class CambridgeDictionaryService
 
     async Task<IEnumerable<string>> GetSpellCheckPhrases(string phrase)
     {
-        using var httpClient = httpClientFactory.CreateClient();
-        var resp = await httpClient.GetAsync(spellCheckUrl + "/?q=" + phrase);
+        var resp = await _httpClient.GetAsync(spellCheckUrl + "/?q=" + phrase);
 
         if (resp.IsSuccessStatusCode)
         {
@@ -119,8 +120,7 @@ public class CambridgeDictionaryService
 
     async Task<string> GetPhraseInfo(string phrase)
     {
-        using var httpClient = httpClientFactory.CreateClient();
-        var resp = await httpClient.GetAsync(dictionaryUrl + "/" + phrase);
+        var resp = await _httpClient.GetAsync(dictionaryUrl + "/" + phrase);
 
         if (resp.IsSuccessStatusCode)
         {
