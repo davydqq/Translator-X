@@ -12,6 +12,7 @@ using TB.Localization.Services;
 using TB.Texts.Commands;
 using TB.Translator;
 using TB.User;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace TB.Images.Commands;
@@ -83,7 +84,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
             return false;
         }
 
-        await ProcessCaptions(command.ChatId, command.UserId, command.MessageId, command.Caption, command.MessageId);
+        await ProcessCaptions(command.ChatId, command.UserId, command.MessageId, command.Caption, command.MessageId, command.Update);
 
         var res1 = await ProcessAndSendOCRResultsAsync(downloadFile.File, command.ChatId, command.UserId, command.MessageId);
         if (!res1)
@@ -108,11 +109,11 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         await commandDispatcher.DispatchAsync(commandTelegram);
     }
 
-    private async Task ProcessCaptions(long chatId, long userId, int messageId, string caption, int replyId)
+    private async Task ProcessCaptions(long chatId, long userId, int messageId, string caption, int replyId, Update update)
     {
         if (!string.IsNullOrEmpty(caption))
         {
-            var command = new HandleTextsCommand(chatId, userId, messageId, caption, replyId);
+            var command = new HandleTextsCommand(chatId, userId, messageId, caption, update, replyId);
             await commandDispatcher.DispatchAsync(command);
         }
     }

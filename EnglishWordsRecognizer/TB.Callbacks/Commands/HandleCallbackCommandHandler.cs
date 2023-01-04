@@ -59,7 +59,7 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
                         if (settings.TargetLanguageId == null)
                         {
                             var nativeLanguageOption = options.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
-                            var menuCommandNativeLangauge = new HandleMenuCommand(nativeLanguageOption, command.ChatId, command.MessageId, command.UserId, false);
+                            var menuCommandNativeLangauge = new HandleMenuCommand(nativeLanguageOption, command.ChatId, command.MessageId, command.UserId, false, command.Update);
 
                             await commandDispatcher.DispatchAsync(menuCommandNativeLangauge);
                         }
@@ -84,7 +84,7 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
                         if (settings.NativeLanguageId == null)
                         {
                             var nativeLanguageOption = options.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
-                            var menuCommandNativeLangauge = new HandleMenuCommand(nativeLanguageOption, command.ChatId, command.MessageId, command.UserId, false);
+                            var menuCommandNativeLangauge = new HandleMenuCommand(nativeLanguageOption, command.ChatId, command.MessageId, command.UserId, false, command.Update);
                             
                             await commandDispatcher.DispatchAsync(menuCommandNativeLangauge);
                         }

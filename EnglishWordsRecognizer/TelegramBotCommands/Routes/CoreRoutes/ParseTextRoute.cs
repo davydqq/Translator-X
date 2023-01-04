@@ -1,4 +1,5 @@
-﻿using TB.Routing;
+﻿using Npgsql.Replication.PgOutput.Messages;
+using TB.Routing;
 using TB.Routing.Entities;
 using TB.Texts.Commands;
 using Telegram.Bot.Types;
@@ -28,7 +29,7 @@ public class ParseTextRoute : IBaseRoute
         var messageId = message.MessageId;
         var text = message.Text;
 
-        var command = new HandleTextsCommand(chatId, userId, messageId, text, messageId);
+        var command = new HandleTextsCommand(chatId, userId, messageId, text, update, messageId);
         return new BaseRouteResult<bool>(command);
     }
 }

@@ -33,7 +33,7 @@ public class UserService : IUserService
         if (!isTargetLangugeSetted)
         {
             var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.TargetLanguage);
-            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
+            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false, command.Update);
             await commandDispatcher.DispatchAsync(commandToChangeLanguage);
             return false;
         }
@@ -42,7 +42,7 @@ public class UserService : IUserService
         if (!isNativeLangugeSetted)
         {
             var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
-            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
+            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false, command.Update);
             await commandDispatcher.DispatchAsync(commandToChangeLanguage);
             return false;
         }
@@ -56,7 +56,7 @@ public class UserService : IUserService
         if (!isAudioLangugeSetted)
         {
             var menuCommand = menuConfig.Value.Commands.First(x => x.Id == BotMenuId.AudioTranscriptionLanguage);
-            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false);
+            var commandToChangeLanguage = new HandleMenuCommand(menuCommand, command.ChatId, command.MessageId, command.UserId, false, command.Update);
             await commandDispatcher.DispatchAsync(commandToChangeLanguage);
             return false;
         }

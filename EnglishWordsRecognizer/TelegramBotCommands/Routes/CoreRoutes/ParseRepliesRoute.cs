@@ -28,7 +28,7 @@ public class ParseRepliesRoute : IBaseRoute
 
         var originalText = message.Text;
 
-        var command = new HandleRepliesCommand(userId, chatId, messageId, message.ReplyToMessage, originalText);
+        var command = new HandleRepliesCommand(userId, chatId, messageId, message.ReplyToMessage, originalText, update);
         return new BaseRouteResult<bool>(command);
     }
 }

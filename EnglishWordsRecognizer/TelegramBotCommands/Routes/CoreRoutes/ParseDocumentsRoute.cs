@@ -40,6 +40,7 @@ public class ParseDocumentsRoute : IBaseRoute
         var chatId = message.Chat.Id;
         var messageId = message.MessageId;
 
-        return new BaseRouteResult<bool>(new HandleDocumentsCommand(chatId, userId, messageId));
+        var command = new HandleDocumentsCommand(chatId, userId, messageId, update);
+        return new BaseRouteResult<bool>(command);
     }
 }

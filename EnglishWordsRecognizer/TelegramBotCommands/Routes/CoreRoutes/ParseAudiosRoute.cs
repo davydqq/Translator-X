@@ -14,7 +14,6 @@ public class ParseAudiosRoute : IBaseRoute
         if (update == null || update.Message == null)
             return false;
 
-        var message = update.Message;
         return TelegramMessageContentHelper.IsAudioRoute(update.Message);
     }
 
@@ -28,7 +27,7 @@ public class ParseAudiosRoute : IBaseRoute
 
         var file = TelegramMessageContentHelper.GetAudio(message);
 
-        var command = new HandleAudiosCommand(chatId, userId, messageId, file);
+        var command = new HandleAudiosCommand(chatId, userId, messageId, file, update);
 
         return new BaseRouteResult<bool>(command);
     }

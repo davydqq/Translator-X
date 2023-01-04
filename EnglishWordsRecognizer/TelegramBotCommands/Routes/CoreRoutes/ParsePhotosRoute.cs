@@ -26,7 +26,7 @@ public class ParsePhotosRoute : IBaseRoute
 
         var files = TelegramMessageContentHelper.GetPhotos(message);
 
-        var command = new HandleImagesCommand(chatId, userId, messageId, message.Caption, files);
+        var command = new HandleImagesCommand(chatId, userId, messageId, message.Caption, files, update);
         return new BaseRouteResult<bool>(command);
     }
 

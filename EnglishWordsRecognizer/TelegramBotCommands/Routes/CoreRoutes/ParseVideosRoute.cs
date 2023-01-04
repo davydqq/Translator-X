@@ -1,5 +1,4 @@
-﻿using TB.Routing;
-using TB.Routing.Entities;
+﻿using TB.Routing.Entities;
 using TB.Videos.Commands;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -26,7 +25,8 @@ public class ParseVideosRoute : IBaseRoute
         var userId = message.From.Id;
         var chatId = message.Chat.Id;
         var messageId = message.MessageId;
-         
-        return new BaseRouteResult<bool>(new HandleVideosCommand(chatId, userId, messageId));
+
+        var command = new HandleVideosCommand(chatId, userId, messageId, update);
+        return new BaseRouteResult<bool>(command);
     }
 }

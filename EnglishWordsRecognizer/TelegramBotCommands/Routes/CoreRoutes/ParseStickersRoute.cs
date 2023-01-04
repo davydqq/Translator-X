@@ -32,7 +32,7 @@ public class ParseStickersRoute : IBaseRoute
             new ImagesInfo(message.Sticker.FileId, message.Sticker.FileSize)
         };
 
-        var command = new HandleImagesCommand(chatId, userId, messageId, message.Caption, files);
+        var command = new HandleImagesCommand(chatId, userId, messageId, message.Caption, files, update);
         return new BaseRouteResult<bool>(command);
     }
 }

@@ -31,7 +31,7 @@ public class ParseCallbackRoute : IBaseRoute
         var messageId = query.Message.MessageId;
         var data = query.Data;
 
-        var command = new HandleCallbackCommand(chatId, userId, messageId, data);
+        var command = new HandleCallbackCommand(chatId, userId, messageId, data, update);
 
         return new BaseRouteResult<bool>(command);
     }

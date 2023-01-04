@@ -34,7 +34,7 @@ public class HandleRepliesCommandHandler : ICommandHandler<HandleRepliesCommand,
 
         if (command.ReplyMessage.Type == MessageType.Text)
         {
-            commandToSend = new HandleTextsCommand(command.ChatId, command.UserId, replyMessageId, command.ReplyMessage.Text, replyMessageId);
+            commandToSend = new HandleTextsCommand(command.ChatId, command.UserId, replyMessageId, command.ReplyMessage.Text, command.Update, replyMessageId);
         }
         else if (command.ReplyMessage.Type == MessageType.Sticker)
         {
@@ -42,17 +42,17 @@ public class HandleRepliesCommandHandler : ICommandHandler<HandleRepliesCommand,
             {
                 new ImagesInfo(command.ReplyMessage.Sticker.FileId, command.ReplyMessage.Sticker.FileSize)
             };
-            commandToSend = new HandleImagesCommand(command.ChatId, command.UserId, replyMessageId, command.ReplyMessage.Caption, files);
+            commandToSend = new HandleImagesCommand(command.ChatId, command.UserId, replyMessageId, command.ReplyMessage.Caption, files, command.Update);
         }
         else if (TelegramMessageContentHelper.IsPhotoRoute(command.ReplyMessage))
         {
             var files = TelegramMessageContentHelper.GetPhotos(command.ReplyMessage);
-            commandToSend = new HandleImagesCommand(command.ChatId, command.UserId, replyMessageId, command.ReplyMessage.Caption, files);
+            commandToSend = new HandleImagesCommand(command.ChatId, command.UserId, replyMessageId, command.ReplyMessage.Caption, files, command.Update);
         }
         else if (TelegramMessageContentHelper.IsAudioRoute(command.ReplyMessage))
         {
             var file = TelegramMessageContentHelper.GetAudio(command.ReplyMessage);
-            commandToSend = new HandleAudiosCommand(command.ChatId, command.UserId, replyMessageId, file);
+            commandToSend = new HandleAudiosCommand(command.ChatId, command.UserId, replyMessageId, file, command.Update);
         }
 
         if(commandToSend == null)

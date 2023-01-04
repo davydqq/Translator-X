@@ -56,7 +56,7 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand, bool>
                     }
 
                     var commandNL = menuOptions.Value.Commands.First(x => x.Id == BotMenuId.NativeLanguage);
-                    var options = new HandleMenuCommand(commandNL, command.ChatId, command.MessageId, command.UserId, false);
+                    var options = new HandleMenuCommand(commandNL, command.ChatId, command.MessageId, command.UserId, false, command.Update);
                     await HandleAsync(options);
                     break;
 				}

@@ -6,8 +6,8 @@ namespace TB.Replies.Commands;
 
 public class HandleRepliesCommand : BaseTelegramMessageCommand, ICommand<bool>
 {
-	public HandleRepliesCommand(long userId, long chatId, int messageId, Message replyMessage, string originalText)
-		 : base(chatId, userId, messageId)
+	public HandleRepliesCommand(long userId, long chatId, int messageId, Message replyMessage, string originalText, Update update)
+		 : base(chatId, userId, messageId, update)
 	{
 		ReplyMessage = replyMessage;
 		OriginalText = originalText;

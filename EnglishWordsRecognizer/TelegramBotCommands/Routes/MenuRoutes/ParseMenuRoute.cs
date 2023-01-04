@@ -43,7 +43,7 @@ public class ParseMenuRoute : IBaseRoute
         var chatId =  message.Chat.Id;
         var messageId = message.MessageId;
 
-        var commandToExecute = new HandleMenuCommand(command, chatId, messageId, userId, true);
+        var commandToExecute = new HandleMenuCommand(command, chatId, messageId, userId, true, update);
 
         return new BaseRouteResult<bool>(commandToExecute);
     }
