@@ -5,21 +5,21 @@ namespace TB.Common;
 
 public class TelegramMessageContentHelper
 {
-    public static bool IsPhotoRoute(Message message) => message.Type == MessageType.Photo || isPhotoFile(message);
+    public static bool IsPhotoRoute(Message message) => message.Type == MessageType.Photo || isDocumentPhotoFile(message);
 
-    private static bool isPhotoFile(Message message)
+    public static bool isDocumentPhotoFile(Message message)
     {
         var formats = PhotosFormats.GetFormats();
-        return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
+        return message.Document != null && formats.Contains(message.Document.MimeType);
     }
 
 
-    public static bool IsAudioRoute(Message message) => message.Type == MessageType.Audio || message.Type == MessageType.Voice || isAudioFile(message);
+    public static bool IsAudioRoute(Message message) => message.Type == MessageType.Audio || message.Type == MessageType.Voice || isDocumentAudioFile(message);
 
-    private static bool isAudioFile(Message message)
+    public static bool isDocumentAudioFile(Message message)
     {
         var formats = AudiosFormats.GetFormats();
-        return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
+        return message.Document != null && formats.Contains(message.Document.MimeType);
     }
 
     public static List<ImagesInfo> GetPhotos(Message message)

@@ -1,7 +1,9 @@
-﻿using TB.Audios.Commands;
+﻿using Google.Protobuf;
+using TB.Audios.Commands;
 using TB.Common;
 using TB.Routing.Entities;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace TB.Routing.Routes.CoreRoutes;
 
@@ -14,7 +16,7 @@ public class ParseAudiosRoute : IBaseRoute
         if (update == null || update.Message == null)
             return false;
 
-        return TelegramMessageContentHelper.IsAudioRoute(update.Message);
+        return update.Message.Type == MessageType.Audio;
     }
 
     public BaseRouteResult<bool> GetCommand(Update update)

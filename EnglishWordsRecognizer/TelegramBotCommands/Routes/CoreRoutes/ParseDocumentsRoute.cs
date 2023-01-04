@@ -17,19 +17,7 @@ public class ParseDocumentsRoute : IBaseRoute
             return false;
 
         var message = update.Message;
-        return message.Type == MessageType.Document && !isAudioFile(message) && !isPhotoFile(message);
-    }
-
-    private bool isAudioFile(Message message)
-    {
-        var formats = AudiosFormats.GetFormats();
-        return message.Document != null && formats.Contains(message.Document.MimeType);
-    }
-
-    private bool isPhotoFile(Message message)
-    {
-        var formats = PhotosFormats.GetFormats();
-        return message.Type == MessageType.Document && formats.Contains(message.Document.MimeType);
+        return message.Type == MessageType.Document;
     }
 
     public BaseRouteResult<bool> GetCommand(Update update)
