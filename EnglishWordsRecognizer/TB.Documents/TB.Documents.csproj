@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\TB.Audios\TB.Audios.csproj" />
     <ProjectReference Include="..\TB.Common\TB.Common.csproj" />
+    <ProjectReference Include="..\TB.Images\TB.Images.csproj" />
     <ProjectReference Include="..\TB.Localization\TB.Localization.csproj" />
     <ProjectReference Include="..\TelegramBotManager\TB.Core.csproj" />
   </ItemGroup>
