@@ -12,7 +12,7 @@ using TB.Database;
 namespace TB.Database.Migrations
 {
     [DbContext(typeof(TBDatabaseContext))]
-    [Migration("20230105230527_init")]
+    [Migration("20230105231533_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -272,7 +272,7 @@ namespace TB.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TB.Database.Entities.Requests.BasePayableRequest", b =>
+            modelBuilder.Entity("TB.Database.Entities.Requests.BaseRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -285,7 +285,7 @@ namespace TB.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BasePayableRequests", "payable_requests");
+                    b.ToTable("BaseRequest", "requests");
 
                     b.UseTptMappingStrategy();
                 });
@@ -3440,7 +3440,7 @@ namespace TB.Database.Migrations
 
             modelBuilder.Entity("TB.Database.Entities.Requests.TextRequest", b =>
                 {
-                    b.HasBaseType("TB.Database.Entities.Requests.BasePayableRequest");
+                    b.HasBaseType("TB.Database.Entities.Requests.BaseRequest");
 
                     b.Property<int>("ApiType")
                         .HasColumnType("integer");
@@ -3462,7 +3462,7 @@ namespace TB.Database.Migrations
                     b.Property<int>("TotalChars")
                         .HasColumnType("integer");
 
-                    b.ToTable("TextRequests", "payable_requests");
+                    b.ToTable("TextRequests", "requests");
                 });
 
             modelBuilder.Entity("TB.Database.Entities.TelegramUser", b =>
@@ -3528,7 +3528,7 @@ namespace TB.Database.Migrations
 
             modelBuilder.Entity("TB.Database.Entities.Requests.TextRequest", b =>
                 {
-                    b.HasOne("TB.Database.Entities.Requests.BasePayableRequest", null)
+                    b.HasOne("TB.Database.Entities.Requests.BaseRequest", null)
                         .WithOne()
                         .HasForeignKey("TB.Database.Entities.Requests.TextRequest", "Id")
                         .OnDelete(DeleteBehavior.Cascade)

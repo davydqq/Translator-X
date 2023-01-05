@@ -2,8 +2,8 @@
 
 namespace TB.Database.Entities.Requests;
 
-[Table("TextRequests", Schema = "payable_requests")]
-public class TextRequest : BasePayableRequest
+[Table("TextRequests", Schema = "requests")]
+public class TextRequest : BaseRequest
 {
     [Column(TypeName = "jsonb")]
     public string[] Texts { set; get; }
@@ -41,7 +41,7 @@ public class TextRequest : BasePayableRequest
         Texts = texts;
         TotalChars = texts.Sum(x => x.Length);
         ApiType = apiType;
-        TextRequestType = TextRequestTypeENUM.DetectLanguge;
+        TextRequestType = TextRequestTypeENUM.DetectLanguage;
 
         return this;
     }

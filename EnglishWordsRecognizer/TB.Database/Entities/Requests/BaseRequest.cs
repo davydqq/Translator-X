@@ -2,12 +2,12 @@
 
 namespace TB.Database.Entities.Requests;
 
-[Table("BasePayableRequests", Schema = "payable_requests")]
-public class BasePayableRequest : BaseEntity<int>
+[Table(nameof(BaseRequest), Schema = "requests")]
+public class BaseRequest : BaseEntity<int>
 {
     public DateTimeOffset RequestTime { set; get; }
 
-	public BasePayableRequest(DateTimeOffset requestTime)
+	public BaseRequest(DateTimeOffset requestTime)
 	{
 		RequestTime = requestTime;
 	}

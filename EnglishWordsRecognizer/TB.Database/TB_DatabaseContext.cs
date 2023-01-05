@@ -22,7 +22,7 @@ public class TBDatabaseContext : DbContext
 
     public DbSet<Plan> Plans { set; get; }
 
-    public DbSet<BasePayableRequest> BasePayableRequests { set; get; }
+    public DbSet<BaseRequest> BasePayableRequests { set; get; }
 
     public DbSet<TextRequest> TextRequests { set; get; }
 

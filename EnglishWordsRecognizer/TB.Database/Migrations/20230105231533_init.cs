@@ -15,7 +15,7 @@ namespace TB.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "payable_requests");
+                name: "requests");
 
             migrationBuilder.EnsureSchema(
                 name: "app");
@@ -24,8 +24,8 @@ namespace TB.Database.Migrations
                 name: "billing");
 
             migrationBuilder.CreateTable(
-                name: "BasePayableRequests",
-                schema: "payable_requests",
+                name: "BaseRequest",
+                schema: "requests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -34,7 +34,7 @@ namespace TB.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BasePayableRequests", x => x.Id);
+                    table.PrimaryKey("PK_BaseRequest", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,7 +76,7 @@ namespace TB.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "TextRequests",
-                schema: "payable_requests",
+                schema: "requests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
@@ -91,10 +91,10 @@ namespace TB.Database.Migrations
                 {
                     table.PrimaryKey("PK_TextRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TextRequests_BasePayableRequests_Id",
+                        name: "FK_TextRequests_BaseRequest_Id",
                         column: x => x.Id,
-                        principalSchema: "payable_requests",
-                        principalTable: "BasePayableRequests",
+                        principalSchema: "requests",
+                        principalTable: "BaseRequest",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -727,7 +727,7 @@ namespace TB.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "TextRequests",
-                schema: "payable_requests");
+                schema: "requests");
 
             migrationBuilder.DropTable(
                 name: "Translation",
@@ -738,8 +738,8 @@ namespace TB.Database.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
-                name: "BasePayableRequests",
-                schema: "payable_requests");
+                name: "BaseRequest",
+                schema: "requests");
 
             migrationBuilder.DropTable(
                 name: "Language",
