@@ -32,6 +32,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, b
                 IsBot = user.IsBot,
                 LanguageCode = user.LanguageCode,
                 Username = user.Username,
+                PlanId = PlanENUM.Standart
             };
 
             var isUserExist = await userRepository.GetAnyAsync(x => x.TelegramUserId == user.Id);

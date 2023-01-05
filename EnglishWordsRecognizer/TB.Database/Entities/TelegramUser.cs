@@ -23,4 +23,8 @@ public class TelegramUser: BaseEntity<int>
     public string? LanguageCode { get; set; }
 
     public UserSettings UserSettings { set; get; }
+
+
+    public PlanENUM PlanId { set; get; }
+    public Plan Plan { set; get; }
 }

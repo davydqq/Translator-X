@@ -19,9 +19,14 @@ public class TBDatabaseContext : DbContext
 
     public DbSet<Translation> Translations { set; get; }
 
+    public DbSet<Plan> Plans { set; get; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TelegramUser>()
+            .Property(x => x.PlanId).HasDefaultValue(PlanENUM.Standart);
+
         modelBuilder.Entity<Language>()
             .HasMany(m => m.UserSettingsNativeLangs)
             .WithOne(t => t.NativeLanguage)
@@ -50,6 +55,39 @@ public class TBDatabaseContext : DbContext
             .HasForeignKey(m => m.AudioLanguageId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired(false);
+
+        modelBuilder.Entity<Plan>().HasData(
+            new Plan
+            {
+                Id = PlanENUM.Standart,
+                Name = nameof(PlanENUM.Standart),
+                Price = 0,
+                IsCustomPlan = false,
+                MaxAnalysisPhotoCountMonth = 30,
+                MaxAudioTranscriptionSecondsMonth = 300,
+                MaxTranslateCharsMonth = 10000
+            },
+            new Plan
+            {
+                Id = PlanENUM.Premium,
+                Name = nameof(PlanENUM.Premium),
+                Price = 3.00,
+                IsCustomPlan = false,
+                MaxAnalysisPhotoCountMonth = 150,
+                MaxAudioTranscriptionSecondsMonth = 900,
+                MaxTranslateCharsMonth = 50000
+            },
+            new Plan
+            {
+                Id = PlanENUM.Unlimit,
+                Name = nameof(PlanENUM.Unlimit),
+                Price = int.MaxValue,
+                IsCustomPlan = true,
+                MaxAudioTranscriptionSecondsMonth = int.MaxValue,
+                MaxAnalysisPhotoCountMonth = int.MaxValue,
+                MaxTranslateCharsMonth = int.MaxValue
+            }
+        );
 
         modelBuilder.Entity<Language>().HasData(
                 new Language { 
