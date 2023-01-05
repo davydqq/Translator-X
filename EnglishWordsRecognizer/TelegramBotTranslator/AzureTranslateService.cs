@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Data;
 using System.Text;
+using TB.Database.Entities.Requests;
 using TB.Translator.Entities;
 using TB.Translator.Entities.Azure;
 
@@ -19,11 +20,13 @@ public class AzureTranslateService : ITranslateService
         this.httpClientFactory = httpClientFactory;
     }
 
-    public async Task<List<DetectLanguageResponse>> DetectLanguagesAsync(string textToDetect)
+    public ApiTypeENUM apiTypeENUM => ApiTypeENUM.Azure;
+
+    public async Task<List<DetectLanguageResponse>> DetectLanguagesAsync(params string[] textToDetect)
     {
         // Input and output languages are defined as parameters.
         string route = "/detect?api-version=3.0";
-        object[] body = new object[] { new { Text = textToDetect } };
+        object[] body = textToDetect.Select(x => new AzureRequestBody { Text = x }).ToArray();
         var requestBody = JsonConvert.SerializeObject(body);
 
         var resp = await SendRequestAsync<List<AzureDetectLanguageResponse>>(requestBody, route);
