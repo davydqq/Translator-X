@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TB.Database.Entities;
 
+[Table(nameof(TelegramUser), Schema = "app")]
 public class TelegramUser: BaseEntity<int>
 {
     [NotMapped]

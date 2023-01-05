@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TB.Database.Entities;
 
+[Table(nameof(Plan), Schema = "billing")]
 public class Plan : BaseEntity<PlanENUM>
 {
     [Required]

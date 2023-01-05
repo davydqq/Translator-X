@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TB.Database.Entities;
 
+[Table(nameof(Language), Schema = "app")]
 public class Language : BaseEntity<LanguageENUM>
 {
     [Required]

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TB.Database.Entities;
+using TB.Database.Entities.Requests;
 using TB.Database.Initing;
 
 namespace TB.Database;
@@ -20,6 +21,10 @@ public class TBDatabaseContext : DbContext
     public DbSet<Translation> Translations { set; get; }
 
     public DbSet<Plan> Plans { set; get; }
+
+    public DbSet<BasePayableRequest> BasePayableRequests { set; get; }
+
+    public DbSet<TextRequest> TextRequests { set; get; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

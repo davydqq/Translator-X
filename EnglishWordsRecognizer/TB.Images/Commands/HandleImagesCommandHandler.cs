@@ -11,9 +11,11 @@ using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Texts.Commands;
 using TB.Translator;
+using TB.Translator.Commands;
 using TB.User;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TB.Images.Commands;
 
@@ -26,8 +28,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
     private readonly IQueryDispatcher queryDispatcher;
 
     private readonly ICommandDispatcher commandDispatcher;
-
-    private readonly ITranslateService translateService;
 
     private readonly IUserService userService;
 
@@ -44,7 +44,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         IComputerVisionService computerVisionService,
         IQueryDispatcher queryDispatcher,
         ICommandDispatcher commandDispatcher,
-        ITranslateService translateService,
         IUserService userService,
         ILocalizationService localizationService,
         UserSettingsRepository userSettingsRepository)
@@ -53,7 +52,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         this.computerVisionService = computerVisionService;
         this.queryDispatcher = queryDispatcher;
         this.commandDispatcher = commandDispatcher;
-        this.translateService = translateService;
         this.userService = userService;
         this.localizationService = localizationService;
         this.userSettingsRepository = userSettingsRepository;
@@ -161,7 +159,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
                 var languagesToTranslate = GetLanguagesToTranslate(settings);
                 var resp = await TranslateImageRecognitionResponse(languagesToTranslate, new string[] { captionsRes });
 
-                if (resp.isOnlyOneLanguage)
+                if (resp.zippedWords != null && resp.isOnlyOneLanguage)
                 {
                     resText += $"\n\n<b>{languagesToTranslate.First().GetCode().ToUpper()}</b>\n";
                     foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
@@ -169,7 +167,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
                         resText += sentense + "\n";
                     }
                 }
-                else
+
+                if(resp.zippedWords != null && !resp.isOnlyOneLanguage)
                 {
                     resText += $"\n\n<b>{settings.TargetLanguage!.GetCode().ToUpper()}</b>\n";
                     foreach (var sentense in resp.zippedWords.Select(x => x.fTarget))
@@ -240,8 +239,17 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
     private async Task<(List<(string fTarget, string sNative)> zippedWords, bool isOnlyOneLanguage)> TranslateImageRecognitionResponse(
         List<Language> languagesToTranslate, string[] textToTranslate)
     {
-        var codes = languagesToTranslate.Select(x => x.Code);
-        var resp = await translateService.TranslateTextsAsync(textToTranslate, codes.ToArray());
+        var command = new TranslateTextsCommand();
+        command.TextsToTranslate = textToTranslate.ToList();
+        command.LanguagesToTranslate = languagesToTranslate.Select(x => x.Code).ToList();
+        var resp = await commandDispatcher.DispatchAsync(command);
+
+        if(resp == null)
+        {
+            logger.LogWarning("resp null");
+            return (null, false);
+        }
+
         var groupedTranslates = resp.SelectMany(x => x.Translations).GroupBy(x => x.To);
         var l = groupedTranslates.ToList();
 

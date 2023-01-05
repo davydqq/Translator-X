@@ -6,7 +6,7 @@ using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Meaning;
 using TB.Meaning.Entities;
-using TB.Translator;
+using TB.Translator.Commands;
 using TB.User;
 using Telegram.Bot.Types.Enums;
 
@@ -17,8 +17,6 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
     private readonly ILogger<HandleTextsCommandHandler> logger;
 
     private readonly ICommandDispatcher commandDispatcher;
-
-    private readonly ITranslateService translateService;
 
     private readonly IUserService userService;
 
@@ -31,7 +29,6 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
     public HandleTextsCommandHandler(
         ILogger<HandleTextsCommandHandler> logger,
         ICommandDispatcher commandDispatcher,
-        ITranslateService translateService,
         IUserService userService,
         CambridgeDictionaryService cambridgeDictionaryService,
         ThesaurusService thesaurusService,
@@ -40,7 +37,6 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
     {
         this.logger = logger;
         this.commandDispatcher = commandDispatcher;
-        this.translateService = translateService;
         this.userService = userService;
         this.cambridgeDictionaryService = cambridgeDictionaryService;
         this.thesaurusService = thesaurusService;
@@ -72,13 +68,21 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
             return false;
         }
 
-        var resDetect = await translateService.DetectLanguagesAsync(command.Text);
+        var detectLCommand = new DetectLanguagesCommand();
+        detectLCommand.TextToDetect = command.Text;
+        var resDetect = await commandDispatcher.DispatchAsync(detectLCommand);
+
+        if(resDetect == null)
+        {
+            return false;
+        }
 
         if (resDetect.Count > 0 && languageTo.Code == resDetect.First().Language)
         {
             var languageFrom = userSettings.NativeLanguage;
 
             var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code);
+            if (string.IsNullOrEmpty(resTextFrom)) return false;
 
             var sentMessage = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom, replyToMessageId: command.ReplyId));
 
@@ -88,17 +92,17 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         }
 
         var resText = await GetTranslationsAsync(command.Text, languageTo.Code);
+        if (string.IsNullOrEmpty(resText)) return false;
+        
         var message = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
-
         await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, message.MessageId, message.MessageId);
 
-        return true;
+        return true;      
     }
 
     private async Task HandleMeaning(Language language, string text, long userId, long chatId, int? replyId, int? replySynonymId)
     {
         if (text.Length > 50) return;
-        // todo add reverse lofic
         switch (language.Id)
         {
             case LanguageENUM.English:
@@ -163,7 +167,14 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
 
     private async Task<string> GetTranslationsAsync(string text, string langCode)
     {
-        var res = await translateService.TranslateTextsAsync(new[] { text }, langCode);
+        var command = new TranslateTextsCommand();
+        command.TextsToTranslate = new List<string> { text };
+        command.LanguagesToTranslate = new List<string> { langCode };
+
+        var res = await commandDispatcher.DispatchAsync(command);
+
+        if (res == null) return null;
+
         var resText = string.Join("\n", res.SelectMany(x => x.Translations).Select(x => x.Text));
         return resText;
     }

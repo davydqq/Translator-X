@@ -1,5 +1,8 @@
-﻿namespace TB.Database.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace TB.Database.Entities;
+
+[Table(nameof(UserSettings), Schema = "app")]
 public class UserSettings : BaseEntity<int>
 {
     public LanguageENUM? NativeLanguageId { set; get; }
