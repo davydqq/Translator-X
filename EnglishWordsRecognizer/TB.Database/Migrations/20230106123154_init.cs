@@ -24,17 +24,15 @@ namespace TB.Database.Migrations
                 name: "billing");
 
             migrationBuilder.CreateTable(
-                name: "BaseRequest",
-                schema: "requests",
+                name: "ApiTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RequestTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BaseRequest", x => x.Id);
+                    table.PrimaryKey("PK_ApiTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,28 +73,36 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TextRequests",
-                schema: "requests",
+                name: "TextRequestTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
-                    Texts = table.Column<string[]>(type: "jsonb", nullable: false),
-                    TotalChars = table.Column<int>(type: "integer", nullable: false),
-                    LanguageCodes = table.Column<string[]>(type: "jsonb", nullable: true),
-                    ApiType = table.Column<int>(type: "integer", nullable: false),
-                    TextRequestType = table.Column<int>(type: "integer", nullable: false),
-                    Response = table.Column<string>(type: "jsonb", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TextRequests", x => x.Id);
+                    table.PrimaryKey("PK_TextRequestTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BaseRequest",
+                schema: "requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RequestTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    RequestCost = table.Column<double>(type: "double precision", nullable: false),
+                    ApiTypeId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BaseRequest", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TextRequests_BaseRequest_Id",
-                        column: x => x.Id,
-                        principalSchema: "requests",
-                        principalTable: "BaseRequest",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_BaseRequest_ApiTypes_ApiTypeId",
+                        column: x => x.ApiTypeId,
+                        principalTable: "ApiTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -143,6 +149,30 @@ namespace TB.Database.Migrations
                         column: x => x.PlanId,
                         principalSchema: "billing",
                         principalTable: "Plan",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TextRequests",
+                schema: "requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Texts = table.Column<string[]>(type: "jsonb", nullable: false),
+                    TotalChars = table.Column<int>(type: "integer", nullable: false),
+                    LanguageCodes = table.Column<string[]>(type: "jsonb", nullable: true),
+                    TextRequestType = table.Column<int>(type: "integer", nullable: false),
+                    Response = table.Column<string>(type: "jsonb", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TextRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TextRequests_BaseRequest_Id",
+                        column: x => x.Id,
+                        principalSchema: "requests",
+                        principalTable: "BaseRequest",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -202,6 +232,17 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ApiTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Google" },
+                    { 2, "Azure" },
+                    { 3, "Cambridge" },
+                    { 4, "Thesaurus" }
+                });
+
+            migrationBuilder.InsertData(
                 schema: "app",
                 table: "Language",
                 columns: new[] { "Id", "Code", "DisplayCode", "IsSupportAudioTranscription", "IsSupportInteface", "IsSupportNativeLanguage", "IsSupportTargetLanguage", "Name" },
@@ -233,6 +274,15 @@ namespace TB.Database.Migrations
                     { 1, false, 30, 300, 10000, "Standart", 0.0 },
                     { 2, false, 150, 900, 50000, "Premium", 3.0 },
                     { 3, true, 2147483647, 2147483647, 2147483647, "Unlimit", 2147483647.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TextRequestTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Translate" },
+                    { 2, "DetectLanguage" }
                 });
 
             migrationBuilder.InsertData(
@@ -679,6 +729,12 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BaseRequest_ApiTypeId",
+                schema: "requests",
+                table: "BaseRequest",
+                column: "ApiTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TelegramUser_PlanId",
                 schema: "app",
                 table: "TelegramUser",
@@ -730,6 +786,9 @@ namespace TB.Database.Migrations
                 schema: "requests");
 
             migrationBuilder.DropTable(
+                name: "TextRequestTypes");
+
+            migrationBuilder.DropTable(
                 name: "Translation",
                 schema: "app");
 
@@ -748,6 +807,9 @@ namespace TB.Database.Migrations
             migrationBuilder.DropTable(
                 name: "TelegramUser",
                 schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "ApiTypes");
 
             migrationBuilder.DropTable(
                 name: "Plan",

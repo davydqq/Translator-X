@@ -12,7 +12,7 @@ using TB.Database;
 namespace TB.Database.Migrations
 {
     [DbContext(typeof(TBDatabaseContext))]
-    [Migration("20230105231533_init")]
+    [Migration("20230106123154_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -272,6 +272,42 @@ namespace TB.Database.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TB.Database.Entities.Requests.ApiType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Google"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Azure"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Cambridge"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Thesaurus"
+                        });
+                });
+
             modelBuilder.Entity("TB.Database.Entities.Requests.BaseRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -280,14 +316,48 @@ namespace TB.Database.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ApiTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("RequestCost")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTimeOffset>("RequestTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApiTypeId");
+
                     b.ToTable("BaseRequest", "requests");
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.TextRequestType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TextRequestTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Translate"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "DetectLanguage"
+                        });
                 });
 
             modelBuilder.Entity("TB.Database.Entities.TelegramUser", b =>
@@ -3442,9 +3512,6 @@ namespace TB.Database.Migrations
                 {
                     b.HasBaseType("TB.Database.Entities.Requests.BaseRequest");
 
-                    b.Property<int>("ApiType")
-                        .HasColumnType("integer");
-
                     b.Property<string[]>("LanguageCodes")
                         .HasColumnType("jsonb");
 
@@ -3463,6 +3530,15 @@ namespace TB.Database.Migrations
                         .HasColumnType("integer");
 
                     b.ToTable("TextRequests", "requests");
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.BaseRequest", b =>
+                {
+                    b.HasOne("TB.Database.Entities.Requests.ApiType", "ApiType")
+                        .WithMany("BaseRequests")
+                        .HasForeignKey("ApiTypeId");
+
+                    b.Navigation("ApiType");
                 });
 
             modelBuilder.Entity("TB.Database.Entities.TelegramUser", b =>
@@ -3551,6 +3627,11 @@ namespace TB.Database.Migrations
             modelBuilder.Entity("TB.Database.Entities.Plan", b =>
                 {
                     b.Navigation("TelegramUsers");
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.ApiType", b =>
+                {
+                    b.Navigation("BaseRequests");
                 });
 
             modelBuilder.Entity("TB.Database.Entities.TelegramUser", b =>

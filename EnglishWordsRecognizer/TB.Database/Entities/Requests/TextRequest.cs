@@ -18,6 +18,12 @@ public class TextRequest : BaseRequest
     [Column(TypeName = "jsonb")]
     public string Response { set; get; }
 
+
+    public TextRequest(): base(DateTimeOffset.UtcNow, null)
+    {
+
+    }
+
     public TextRequest(ApiTypeENUM apiType, string[] texts, double cost) : base(DateTimeOffset.UtcNow, apiType)
     {
         Texts = texts;

@@ -9,10 +9,10 @@ public class BaseRequest : BaseEntity<int>
 
 	public double RequestCost { set; get; }
 
-    public ApiTypeENUM ApiTypeId { set; get; }
+    public ApiTypeENUM? ApiTypeId { set; get; }
     public ApiType ApiType { set; get; }
 
-	public BaseRequest(DateTimeOffset requestTime, ApiTypeENUM apiTypeId)
+	public BaseRequest(DateTimeOffset requestTime, ApiTypeENUM? apiTypeId)
 	{
 		RequestTime = requestTime;
 		ApiTypeId = apiTypeId;
