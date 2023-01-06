@@ -36,11 +36,13 @@ public class GetPhraseMeaningCommandHandler : ICommandHandler<GetPhraseMeaningCo
         var texts = new string[] { command.Text };
         var request = new TextRequest(ApiTypeENUM.Cambridge, texts, 0).InitMeaning();
 
-        var res = await cambridgeDictionaryService.GetCambridgeEnglishAsync(command.Text);
+        var resp = await cambridgeDictionaryService.GetCambridgeEnglishAsync(command.Text);
 
-        request.InitResponse(JsonConvert.SerializeObject(res));
+        var isSuccess = resp == null ? false : true;
+        var resJson = isSuccess ? JsonConvert.SerializeObject(resp) : null;
+        request.InitResponse(resJson, isSuccess);
         await textRequestRepository.AddAsync(request);
 
-        return res;
+        return resp;
     }
 }

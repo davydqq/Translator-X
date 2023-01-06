@@ -36,6 +36,30 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AudioRequestTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AudioRequestTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImageRequestTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageRequestTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Language",
                 schema: "app",
                 columns: table => new
@@ -77,11 +101,17 @@ namespace TB.Database.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    TextRequestTypeId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TextRequestTypes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TextRequestTypes_TextRequestTypes_TextRequestTypeId",
+                        column: x => x.TextRequestTypeId,
+                        principalTable: "TextRequestTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -93,7 +123,9 @@ namespace TB.Database.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RequestTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     RequestCost = table.Column<double>(type: "double precision", nullable: false),
-                    ApiTypeId = table.Column<int>(type: "integer", nullable: true)
+                    ApiTypeId = table.Column<int>(type: "integer", nullable: true),
+                    Response = table.Column<string>(type: "jsonb", nullable: false),
+                    IsSuccess = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,6 +186,60 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AudioRequests",
+                schema: "requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    AudioRequestTypeId = table.Column<int>(type: "integer", nullable: false),
+                    ProcessedSeconds = table.Column<long>(type: "bigint", nullable: false),
+                    SecondCost = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AudioRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AudioRequests_AudioRequestTypes_AudioRequestTypeId",
+                        column: x => x.AudioRequestTypeId,
+                        principalTable: "AudioRequestTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AudioRequests_BaseRequest_Id",
+                        column: x => x.Id,
+                        principalSchema: "requests",
+                        principalTable: "BaseRequest",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImageRequests",
+                schema: "requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    ImageRequestTypeId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImageRequests_BaseRequest_Id",
+                        column: x => x.Id,
+                        principalSchema: "requests",
+                        principalTable: "BaseRequest",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ImageRequests_ImageRequestTypes_ImageRequestTypeId",
+                        column: x => x.ImageRequestTypeId,
+                        principalTable: "ImageRequestTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TextRequests",
                 schema: "requests",
                 columns: table => new
@@ -162,8 +248,7 @@ namespace TB.Database.Migrations
                     Texts = table.Column<string[]>(type: "jsonb", nullable: false),
                     TotalChars = table.Column<int>(type: "integer", nullable: false),
                     LanguageCodes = table.Column<string[]>(type: "jsonb", nullable: true),
-                    TextRequestType = table.Column<int>(type: "integer", nullable: false),
-                    Response = table.Column<string>(type: "jsonb", nullable: false)
+                    TextRequestTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,6 +258,12 @@ namespace TB.Database.Migrations
                         column: x => x.Id,
                         principalSchema: "requests",
                         principalTable: "BaseRequest",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TextRequests_TextRequestTypes_TextRequestTypeId",
+                        column: x => x.TextRequestTypeId,
+                        principalTable: "TextRequestTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -243,6 +334,20 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AudioRequestTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "Transcription" });
+
+            migrationBuilder.InsertData(
+                table: "ImageRequestTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "OCR" },
+                    { 2, "ImageAnalysis" }
+                });
+
+            migrationBuilder.InsertData(
                 schema: "app",
                 table: "Language",
                 columns: new[] { "Id", "Code", "DisplayCode", "IsSupportAudioTranscription", "IsSupportInteface", "IsSupportNativeLanguage", "IsSupportTargetLanguage", "Name" },
@@ -278,11 +383,13 @@ namespace TB.Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "TextRequestTypes",
-                columns: new[] { "Id", "Name" },
+                columns: new[] { "Id", "Name", "TextRequestTypeId" },
                 values: new object[,]
                 {
-                    { 1, "Translate" },
-                    { 2, "DetectLanguage" }
+                    { 1, "Translate", null },
+                    { 2, "DetectLanguage", null },
+                    { 3, "Synonyms", null },
+                    { 4, "Meaning", null }
                 });
 
             migrationBuilder.InsertData(
@@ -729,16 +836,39 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AudioRequests_AudioRequestTypeId",
+                schema: "requests",
+                table: "AudioRequests",
+                column: "AudioRequestTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BaseRequest_ApiTypeId",
                 schema: "requests",
                 table: "BaseRequest",
                 column: "ApiTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ImageRequests_ImageRequestTypeId",
+                schema: "requests",
+                table: "ImageRequests",
+                column: "ImageRequestTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TelegramUser_PlanId",
                 schema: "app",
                 table: "TelegramUser",
                 column: "PlanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TextRequests_TextRequestTypeId",
+                schema: "requests",
+                table: "TextRequests",
+                column: "TextRequestTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TextRequestTypes_TextRequestTypeId",
+                table: "TextRequestTypes",
+                column: "TextRequestTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Translation_LanguageId",
@@ -782,11 +912,16 @@ namespace TB.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TextRequests",
+                name: "AudioRequests",
                 schema: "requests");
 
             migrationBuilder.DropTable(
-                name: "TextRequestTypes");
+                name: "ImageRequests",
+                schema: "requests");
+
+            migrationBuilder.DropTable(
+                name: "TextRequests",
+                schema: "requests");
 
             migrationBuilder.DropTable(
                 name: "Translation",
@@ -797,8 +932,17 @@ namespace TB.Database.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "AudioRequestTypes");
+
+            migrationBuilder.DropTable(
+                name: "ImageRequestTypes");
+
+            migrationBuilder.DropTable(
                 name: "BaseRequest",
                 schema: "requests");
+
+            migrationBuilder.DropTable(
+                name: "TextRequestTypes");
 
             migrationBuilder.DropTable(
                 name: "Language",

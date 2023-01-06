@@ -72,9 +72,11 @@ public class CambridgeDictionaryService
                     }
                 }
             }
+
+            return new MeaningResult { IsMatched = false, Results = res }; ;
         }
 
-        return new MeaningResult { IsMatched = false, Results = res }; ;
+        return null;
     }
 
     private async Task ProcessPhraseInfo(List<MeaningPhraseResult> res, string str)

@@ -12,7 +12,7 @@ using TB.Database;
 namespace TB.Database.Migrations
 {
     [DbContext(typeof(TBDatabaseContext))]
-    [Migration("20230106123154_init")]
+    [Migration("20230106193533_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -308,6 +308,27 @@ namespace TB.Database.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TB.Database.Entities.Requests.AudioRequestType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AudioRequestTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Transcription"
+                        });
+                });
+
             modelBuilder.Entity("TB.Database.Entities.Requests.BaseRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -319,11 +340,18 @@ namespace TB.Database.Migrations
                     b.Property<int?>("ApiTypeId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsSuccess")
+                        .HasColumnType("boolean");
+
                     b.Property<double>("RequestCost")
                         .HasColumnType("double precision");
 
                     b.Property<DateTimeOffset>("RequestTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
 
                     b.HasKey("Id");
 
@@ -332,6 +360,32 @@ namespace TB.Database.Migrations
                     b.ToTable("BaseRequest", "requests");
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.ImageRequestType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ImageRequestTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "OCR"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "ImageAnalysis"
+                        });
                 });
 
             modelBuilder.Entity("TB.Database.Entities.Requests.TextRequestType", b =>
@@ -343,7 +397,12 @@ namespace TB.Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("TextRequestTypeId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TextRequestTypeId");
 
                     b.ToTable("TextRequestTypes");
 
@@ -357,6 +416,16 @@ namespace TB.Database.Migrations
                         {
                             Id = 2,
                             Name = "DetectLanguage"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Synonyms"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Meaning"
                         });
                 });
 
@@ -3508,6 +3577,36 @@ namespace TB.Database.Migrations
                     b.ToTable("UserSettings", "app");
                 });
 
+            modelBuilder.Entity("TB.Database.Entities.Requests.AudioRequest", b =>
+                {
+                    b.HasBaseType("TB.Database.Entities.Requests.BaseRequest");
+
+                    b.Property<int>("AudioRequestTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("ProcessedSeconds")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("SecondCost")
+                        .HasColumnType("double precision");
+
+                    b.HasIndex("AudioRequestTypeId");
+
+                    b.ToTable("AudioRequests", "requests");
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.ImageRequest", b =>
+                {
+                    b.HasBaseType("TB.Database.Entities.Requests.BaseRequest");
+
+                    b.Property<int>("ImageRequestTypeId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("ImageRequestTypeId");
+
+                    b.ToTable("ImageRequests", "requests");
+                });
+
             modelBuilder.Entity("TB.Database.Entities.Requests.TextRequest", b =>
                 {
                     b.HasBaseType("TB.Database.Entities.Requests.BaseRequest");
@@ -3515,11 +3614,7 @@ namespace TB.Database.Migrations
                     b.Property<string[]>("LanguageCodes")
                         .HasColumnType("jsonb");
 
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("jsonb");
-
-                    b.Property<int>("TextRequestType")
+                    b.Property<int>("TextRequestTypeId")
                         .HasColumnType("integer");
 
                     b.Property<string[]>("Texts")
@@ -3528,6 +3623,8 @@ namespace TB.Database.Migrations
 
                     b.Property<int>("TotalChars")
                         .HasColumnType("integer");
+
+                    b.HasIndex("TextRequestTypeId");
 
                     b.ToTable("TextRequests", "requests");
                 });
@@ -3539,6 +3636,13 @@ namespace TB.Database.Migrations
                         .HasForeignKey("ApiTypeId");
 
                     b.Navigation("ApiType");
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.TextRequestType", b =>
+                {
+                    b.HasOne("TB.Database.Entities.Requests.TextRequestType", null)
+                        .WithMany("TextRequestTypes")
+                        .HasForeignKey("TextRequestTypeId");
                 });
 
             modelBuilder.Entity("TB.Database.Entities.TelegramUser", b =>
@@ -3602,6 +3706,40 @@ namespace TB.Database.Migrations
                     b.Navigation("TelegramUser");
                 });
 
+            modelBuilder.Entity("TB.Database.Entities.Requests.AudioRequest", b =>
+                {
+                    b.HasOne("TB.Database.Entities.Requests.AudioRequestType", "AudioRequestType")
+                        .WithMany()
+                        .HasForeignKey("AudioRequestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TB.Database.Entities.Requests.BaseRequest", null)
+                        .WithOne()
+                        .HasForeignKey("TB.Database.Entities.Requests.AudioRequest", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AudioRequestType");
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.ImageRequest", b =>
+                {
+                    b.HasOne("TB.Database.Entities.Requests.BaseRequest", null)
+                        .WithOne()
+                        .HasForeignKey("TB.Database.Entities.Requests.ImageRequest", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TB.Database.Entities.Requests.ImageRequestType", "ImageRequestType")
+                        .WithMany("ImageRequests")
+                        .HasForeignKey("ImageRequestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ImageRequestType");
+                });
+
             modelBuilder.Entity("TB.Database.Entities.Requests.TextRequest", b =>
                 {
                     b.HasOne("TB.Database.Entities.Requests.BaseRequest", null)
@@ -3609,6 +3747,14 @@ namespace TB.Database.Migrations
                         .HasForeignKey("TB.Database.Entities.Requests.TextRequest", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("TB.Database.Entities.Requests.TextRequestType", "TextRequestType")
+                        .WithMany()
+                        .HasForeignKey("TextRequestTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TextRequestType");
                 });
 
             modelBuilder.Entity("TB.Database.Entities.Language", b =>
@@ -3632,6 +3778,16 @@ namespace TB.Database.Migrations
             modelBuilder.Entity("TB.Database.Entities.Requests.ApiType", b =>
                 {
                     b.Navigation("BaseRequests");
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.ImageRequestType", b =>
+                {
+                    b.Navigation("ImageRequests");
+                });
+
+            modelBuilder.Entity("TB.Database.Entities.Requests.TextRequestType", b =>
+                {
+                    b.Navigation("TextRequestTypes");
                 });
 
             modelBuilder.Entity("TB.Database.Entities.TelegramUser", b =>

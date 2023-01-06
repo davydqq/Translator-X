@@ -46,7 +46,9 @@ public class TranslateTextsCommandHandler : ICommandHandler<TranslateTextsComman
 
         var resp = await translateService.TranslateTextsAsync(texts, languages);
 
-        request.InitResponse(JsonConvert.SerializeObject(resp));
+        var isSuccess = resp == null ? false : true;
+        var resJson = isSuccess ? JsonConvert.SerializeObject(resp) : null;
+        request.InitResponse(resJson, isSuccess);
         await textRequestRepository.AddAsync(request);
 
         return resp;

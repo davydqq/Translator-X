@@ -38,7 +38,9 @@ public class DetectLanguagesCommandHandler : ICommandHandler<DetectLanguagesComm
 
         var resp = await translateService.DetectLanguagesAsync(texts);
 
-        request.InitResponse(JsonConvert.SerializeObject(resp));
+        var isSuccess = resp == null ? false : true;
+        var resJson = isSuccess ? JsonConvert.SerializeObject(resp) : null;
+        request.InitResponse(resJson, isSuccess);
         await textRequestRepository.AddAsync(request);
 
         return resp;

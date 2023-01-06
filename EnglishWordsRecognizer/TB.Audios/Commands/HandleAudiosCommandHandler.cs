@@ -1,13 +1,14 @@
 ﻿using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
-using TB.Audios.Entities;
 using TB.Common;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
+using TB.SpeechToText.Commands;
+using TB.SpeechToText.Entities;
 using TB.User;
 using Telegram.Bot.Types.Enums;
 namespace TB.Audios.Commands;
@@ -17,7 +18,6 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
     private readonly ILogger<HandleAudiosCommandHandler> logger;
     private readonly IUserService userService;
     private readonly IQueryDispatcher queryDispatcher;
-    private readonly ISpeechToTextService speechToTextService;
     private readonly UserSettingsRepository userSettingsRepository;
     private readonly ILocalizationService localizationService;
     private readonly ICommandDispatcher commandDispatcher;
@@ -28,7 +28,6 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
         ILogger<HandleAudiosCommandHandler> logger,
         IUserService userService,
         IQueryDispatcher queryDispatcher,
-        ISpeechToTextService speechToTextService,
         UserSettingsRepository userSettingsRepository,
         ILocalizationService localizationService,
         ICommandDispatcher commandDispatcher)
@@ -36,7 +35,6 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
         this.logger = logger;
         this.userService = userService;
         this.queryDispatcher = queryDispatcher;
-        this.speechToTextService = speechToTextService;
         this.userSettingsRepository = userSettingsRepository;
         this.localizationService = localizationService;
         this.commandDispatcher = commandDispatcher;
@@ -72,7 +70,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
 
         var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
 
-        var result = await speechToTextService.RecognizeAsync(downloadFile.File, settings.AudioLanguageId.Value, command.File.MimeType);
+        var result = await commandDispatcher.DispatchAsync(new AudioToTextCommand(downloadFile.File, settings.AudioLanguageId.Value, command.File.MimeType));
 
         if (!result.IsSuccess)
         {

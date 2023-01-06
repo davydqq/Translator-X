@@ -37,7 +37,7 @@ public class OCRImageCommandHandler : ICommandHandler<OCRImageCommand, OCR_Resul
 
         var results = await computerVisionService.OCRImageAsync(command.Bytes);
 
-        request.InitResponse(JsonConvert.SerializeObject(results));
+        request.InitResponse(JsonConvert.SerializeObject(results), results.IsSuccess);
 		await imageRequestRepository.AddAsync(request);
 
         return results;

@@ -1,10 +1,7 @@
 using CQRS;
-using Polly.Extensions.Http;
 using Microsoft.Extensions.Options;
 using TB.API.Jobs;
 using TB.API.Middlewares;
-using TB.Audios;
-using TB.Audios.Entities;
 using TB.ComputerVision;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
@@ -18,6 +15,8 @@ using TB.Translator.Entities.Azure;
 using TB.User;
 using Telegram.Bot;
 using Polly;
+using TB.SpeechToText;
+using TB.SpeechToText.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

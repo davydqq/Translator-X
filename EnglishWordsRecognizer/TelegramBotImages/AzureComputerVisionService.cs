@@ -32,6 +32,8 @@ public class AzureComputerVisionService : IComputerVisionService
             using Stream imageSteam = new MemoryStream(bytes);
             ImageAnalysis results = await client.AnalyzeImageInStreamAsync(imageSteam, visualFeatures: features);
 
+            if(results == null) return new VisionResult();
+
             return new VisionResult
             {
                 Tags = results.Tags.Select(x => new Tag(x.Name, x.Confidence, x.Hint)).ToList(),
@@ -76,6 +78,11 @@ public class AzureComputerVisionService : IComputerVisionService
                 results = await client.GetReadResultAsync(Guid.Parse(operationId));
             }
             while (results.Status == OperationStatusCodes.Running || results.Status == OperationStatusCodes.NotStarted);
+
+            if (results.Status == OperationStatusCodes.Failed)
+            {
+                return new OCR_Result();
+            }
 
             return new OCR_Result 
             {

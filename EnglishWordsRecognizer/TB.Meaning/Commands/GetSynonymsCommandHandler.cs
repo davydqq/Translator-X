@@ -38,7 +38,10 @@ public class GetSynonymsCommandHandler : ICommandHandler<GetSynonymsCommand, IEn
 
         var synonyms = await thesaurusService.GetSynonymsAsync(command.Text);
 
-        request.InitResponse(JsonConvert.SerializeObject(synonyms));
+        var isSuccess = synonyms == null ? false : true;
+        var resJson = isSuccess ? JsonConvert.SerializeObject(synonyms) : null;
+        request.InitResponse(resJson, isSuccess);
+
         await textRequestRepository.AddAsync(request);
 
         return synonyms;

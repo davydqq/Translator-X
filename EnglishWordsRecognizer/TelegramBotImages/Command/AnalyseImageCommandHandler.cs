@@ -37,7 +37,7 @@ public class AnalyseImageCommandHandler : ICommandHandler<AnalyzeImageCommand, V
 
         var results = await computerVisionService.AnalyzeImageAsync(command.Bytes);
 
-        request.InitResponse(JsonConvert.SerializeObject(results));
+        request.InitResponse(JsonConvert.SerializeObject(results), results.isSuccess);
         await imageRequestRepository.AddAsync(request);
 
         return results;
