@@ -13,36 +13,29 @@ public class TextRequest : BaseRequest
     [Column(TypeName = "jsonb")]
     public string[]? LanguageCodes { set; get; }
 
-    public ApiTypeENUM ApiType { set; get; }
-
     public TextRequestTypeENUM TextRequestType { set; get; }
 
     [Column(TypeName = "jsonb")]
     public string Response { set; get; }
 
-    public TextRequest():base(DateTimeOffset.UtcNow)
-    {
-
-    }
-
-    public TextRequest InitTranslateTexts(string[] texts, string[] languageCodes, ApiTypeENUM apiType)
+    public TextRequest(ApiTypeENUM apiType, string[] texts, double cost) : base(DateTimeOffset.UtcNow, apiType)
     {
         Texts = texts;
         TotalChars = texts.Sum(x => x.Length);
+        RequestCost = TotalChars * cost;
+    }
+
+    public TextRequest InitTranslateTexts(string[] languageCodes)
+    {
         LanguageCodes = languageCodes;
-        ApiType = apiType;
         TextRequestType = TextRequestTypeENUM.Translate;
 
         return this;
     }
 
-    public TextRequest InitDetectLanguages(string[] texts, ApiTypeENUM apiType)
+    public TextRequest InitDetectLanguages()
     {
-        Texts = texts;
-        TotalChars = texts.Sum(x => x.Length);
-        ApiType = apiType;
         TextRequestType = TextRequestTypeENUM.DetectLanguage;
-
         return this;
     }
 

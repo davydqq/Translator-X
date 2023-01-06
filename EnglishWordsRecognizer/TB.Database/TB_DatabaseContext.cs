@@ -26,6 +26,10 @@ public class TBDatabaseContext : DbContext
 
     public DbSet<TextRequest> TextRequests { set; get; }
 
+    public DbSet<ApiType> ApiTypes { set; get; }
+
+    public DbSet<TextRequestType> TextRequestTypes { set; get; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,6 +64,18 @@ public class TBDatabaseContext : DbContext
             .HasForeignKey(m => m.AudioLanguageId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired(false);
+
+        modelBuilder.Entity<TextRequestType>().HasData(
+            new TextRequestType { Id = TextRequestTypeENUM.Translate, Name = nameof(TextRequestTypeENUM.Translate) },
+            new TextRequestType { Id = TextRequestTypeENUM.DetectLanguage, Name = nameof(TextRequestTypeENUM.DetectLanguage) }
+            );
+
+        modelBuilder.Entity<ApiType>().HasData(
+            new ApiType { Id = ApiTypeENUM.Google, Name = nameof(ApiTypeENUM.Google) },
+            new ApiType { Id = ApiTypeENUM.Azure, Name = nameof(ApiTypeENUM.Azure) },
+            new ApiType { Id = ApiTypeENUM.Cambridge, Name = nameof(ApiTypeENUM.Cambridge) },
+            new ApiType { Id = ApiTypeENUM.Thesaurus, Name = nameof(ApiTypeENUM.Thesaurus) }
+        );
 
         modelBuilder.Entity<Plan>().HasData(
             new Plan

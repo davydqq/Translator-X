@@ -41,7 +41,8 @@ public class TranslateTextsCommandHandler : ICommandHandler<TranslateTextsComman
 
         var texts = command.TextsToTranslate.ToArray();
         var languages = command.LanguagesToTranslate.ToArray();
-        var request = new TextRequest().InitTranslateTexts(texts, languages, translateService.apiTypeENUM);
+
+        var request = new TextRequest(translateService.apiTypeENUM, texts, Costs.AzureCharTranslatePrice).InitTranslateTexts(languages);
 
         var resp = await translateService.TranslateTextsAsync(texts, languages);
 
