@@ -13,11 +13,9 @@ public class TextRequest : BaseRequest
     [Column(TypeName = "jsonb")]
     public string[]? LanguageCodes { set; get; }
 
-    public TextRequestTypeENUM TextRequestType { set; get; }
 
-    [Column(TypeName = "jsonb")]
-    public string Response { set; get; }
-
+    public TextRequestTypeENUM TextRequestTypeId { set; get; }
+    public TextRequestType TextRequestType { set; get; }
 
     public TextRequest(): base(DateTimeOffset.UtcNow, null)
     {
@@ -34,33 +32,26 @@ public class TextRequest : BaseRequest
     public TextRequest InitTranslateTexts(string[] languageCodes)
     {
         LanguageCodes = languageCodes;
-        TextRequestType = TextRequestTypeENUM.Translate;
+        TextRequestTypeId = TextRequestTypeENUM.Translate;
 
         return this;
     }
 
     public TextRequest InitDetectLanguages()
     {
-        TextRequestType = TextRequestTypeENUM.DetectLanguage;
+        TextRequestTypeId = TextRequestTypeENUM.DetectLanguage;
         return this;
     }
 
     public TextRequest InitSynonyms()
     {
-        TextRequestType = TextRequestTypeENUM.Synonyms;
+        TextRequestTypeId = TextRequestTypeENUM.Synonyms;
         return this;
     }
 
     public TextRequest InitMeaning()
     {
-        TextRequestType = TextRequestTypeENUM.Meaning;
-        return this;
-    }
-
-    public TextRequest InitResponse(string response)
-    {
-        Response = response;
-
+        TextRequestTypeId = TextRequestTypeENUM.Meaning;
         return this;
     }
 }

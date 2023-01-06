@@ -31,6 +31,8 @@ public class AzureTranslateService : ITranslateService
 
         var resp = await SendRequestAsync<List<AzureDetectLanguageResponse>>(requestBody, route);
 
+        if (resp == null) return null;
+
         return resp.Select(x => new DetectLanguageResponse
         {
             Language = x.Language,
@@ -51,6 +53,8 @@ public class AzureTranslateService : ITranslateService
         var requestBody = JsonConvert.SerializeObject(body);
 
         var resp = await SendRequestAsync<List<AzureTranslateResponse>>(requestBody, route);
+
+        if (resp == null) return null;
 
         return resp.Select(x => new TranslateResponse
         {
@@ -82,6 +86,9 @@ public class AzureTranslateService : ITranslateService
 
         // Send the request and get response.
         HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
+
+        if (!response.IsSuccessStatusCode) return default(T)!;
+
         // Read response as a string.
         string result = await response.Content.ReadAsStringAsync();
 

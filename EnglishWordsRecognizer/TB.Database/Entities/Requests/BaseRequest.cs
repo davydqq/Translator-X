@@ -12,9 +12,23 @@ public class BaseRequest : BaseEntity<int>
     public ApiTypeENUM? ApiTypeId { set; get; }
     public ApiType ApiType { set; get; }
 
-	public BaseRequest(DateTimeOffset requestTime, ApiTypeENUM? apiTypeId)
+
+    [Column(TypeName = "jsonb")]
+    public string Response { set; get; }
+
+    public bool IsSuccess { set; get; }
+
+    public BaseRequest(DateTimeOffset requestTime, ApiTypeENUM? apiTypeId)
 	{
 		RequestTime = requestTime;
 		ApiTypeId = apiTypeId;
 	}
+
+    public virtual BaseRequest InitResponse(string response, bool isSuccess)
+    {
+        Response = response;
+        IsSuccess = isSuccess;  
+
+        return this;
+    }
 }

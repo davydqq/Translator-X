@@ -22,13 +22,23 @@ public class TBDatabaseContext : DbContext
 
     public DbSet<Plan> Plans { set; get; }
 
+    // Requests
     public DbSet<BaseRequest> BasePayableRequests { set; get; }
 
     public DbSet<TextRequest> TextRequests { set; get; }
 
+    public DbSet<ImageRequest> ImageRequests { set; get; }
+
+    public DbSet<AudioRequest> AudioRequests { set; get; }
+
+    //
     public DbSet<ApiType> ApiTypes { set; get; }
 
     public DbSet<TextRequestType> TextRequestTypes { set; get; }
+
+    public DbSet<ImageRequestType> ImageRequestTypes { set; get; }
+
+    public DbSet<AudioRequestType> AudioRequestTypes { set; get; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -66,10 +76,19 @@ public class TBDatabaseContext : DbContext
             .IsRequired(false);
 
         modelBuilder.Entity<TextRequestType>().HasData(
-            new TextRequestType { Id = TextRequestTypeENUM.Translate, Name = nameof(TextRequestTypeENUM.Translate) },
-            new TextRequestType { Id = TextRequestTypeENUM.DetectLanguage, Name = nameof(TextRequestTypeENUM.DetectLanguage) },
-            new TextRequestType { Id = TextRequestTypeENUM.Synonyms, Name = nameof(TextRequestTypeENUM.Synonyms) },
-            new TextRequestType { Id = TextRequestTypeENUM.Meaning, Name = nameof(TextRequestTypeENUM.Meaning) }
+                new TextRequestType { Id = TextRequestTypeENUM.Translate, Name = nameof(TextRequestTypeENUM.Translate) },
+                new TextRequestType { Id = TextRequestTypeENUM.DetectLanguage, Name = nameof(TextRequestTypeENUM.DetectLanguage) },
+                new TextRequestType { Id = TextRequestTypeENUM.Synonyms, Name = nameof(TextRequestTypeENUM.Synonyms) },
+                new TextRequestType { Id = TextRequestTypeENUM.Meaning, Name = nameof(TextRequestTypeENUM.Meaning) }
+            );
+
+        modelBuilder.Entity<ImageRequestType>().HasData(
+                new ImageRequestType { Id = ImageRequestTypeENUM.OCR, Name = nameof(ImageRequestTypeENUM.OCR) },
+                new ImageRequestType { Id = ImageRequestTypeENUM.ImageAnalysis, Name = nameof(ImageRequestTypeENUM.ImageAnalysis) }
+            );
+
+        modelBuilder.Entity<AudioRequestType>().HasData(
+                new AudioRequestType { Id = AudioRequestTypeENUM.Transcription, Name = nameof(AudioRequestTypeENUM.Transcription) }
             );
 
         modelBuilder.Entity<ApiType>().HasData(
