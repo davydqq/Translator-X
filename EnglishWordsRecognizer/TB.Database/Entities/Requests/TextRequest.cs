@@ -45,6 +45,18 @@ public class TextRequest : BaseRequest
         return this;
     }
 
+    public TextRequest InitSynonyms()
+    {
+        TextRequestType = TextRequestTypeENUM.Synonyms;
+        return this;
+    }
+
+    public TextRequest InitMeaning()
+    {
+        TextRequestType = TextRequestTypeENUM.Meaning;
+        return this;
+    }
+
     public TextRequest InitResponse(string response)
     {
         Response = response;

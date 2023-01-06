@@ -67,7 +67,9 @@ public class TBDatabaseContext : DbContext
 
         modelBuilder.Entity<TextRequestType>().HasData(
             new TextRequestType { Id = TextRequestTypeENUM.Translate, Name = nameof(TextRequestTypeENUM.Translate) },
-            new TextRequestType { Id = TextRequestTypeENUM.DetectLanguage, Name = nameof(TextRequestTypeENUM.DetectLanguage) }
+            new TextRequestType { Id = TextRequestTypeENUM.DetectLanguage, Name = nameof(TextRequestTypeENUM.DetectLanguage) },
+            new TextRequestType { Id = TextRequestTypeENUM.Synonyms, Name = nameof(TextRequestTypeENUM.Synonyms) },
+            new TextRequestType { Id = TextRequestTypeENUM.Meaning, Name = nameof(TextRequestTypeENUM.Meaning) }
             );
 
         modelBuilder.Entity<ApiType>().HasData(

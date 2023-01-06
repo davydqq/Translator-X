@@ -3,5 +3,7 @@
 public enum TextRequestTypeENUM
 {
     Translate = 1,
-    DetectLanguage
+    DetectLanguage,
+    Synonyms,
+    Meaning
 }

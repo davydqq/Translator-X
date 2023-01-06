@@ -5,6 +5,7 @@ using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Meaning;
+using TB.Meaning.Commands;
 using TB.Meaning.Entities;
 using TB.Translator.Commands;
 using TB.User;
@@ -20,8 +21,6 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
 
     private readonly IUserService userService;
 
-    private readonly CambridgeDictionaryService cambridgeDictionaryService;
-    private readonly ThesaurusService thesaurusService;
     private readonly UserSettingsRepository repositoryUserSettings;
 
     private readonly ILocalizationService localizationService;
@@ -30,16 +29,12 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         ILogger<HandleTextsCommandHandler> logger,
         ICommandDispatcher commandDispatcher,
         IUserService userService,
-        CambridgeDictionaryService cambridgeDictionaryService,
-        ThesaurusService thesaurusService,
         UserSettingsRepository repositoryUserSettings,
         ILocalizationService localizationService)
     {
         this.logger = logger;
         this.commandDispatcher = commandDispatcher;
         this.userService = userService;
-        this.cambridgeDictionaryService = cambridgeDictionaryService;
-        this.thesaurusService = thesaurusService;
         this.repositoryUserSettings = repositoryUserSettings;
         this.localizationService = localizationService;
     }
@@ -111,15 +106,15 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
                     if (meaningActive)
                     {
                         // meaning
-                        var result = await cambridgeDictionaryService.GetCambridgeEnglishAsync(text);
+                        var result = await commandDispatcher.DispatchAsync(new GetPhraseMeaningCommand(text));
                         var message = await GetMessageMeaning(result, userId);
                         if (!string.IsNullOrEmpty(message))
                         {
                             await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, message, replyToMessageId: replyId, parseMode: ParseMode.Html));
                         }
                         // synonyms
-                        var synonyms = await thesaurusService.GetSynonymsAsync(text);
-                        if(synonyms != null && synonyms.Count() > 0)
+                        var synonyms = await commandDispatcher.DispatchAsync(new GetSynonymsCommand(text));
+                        if (synonyms != null && synonyms.Count() > 0)
                         {
                             var synonumKey = "<b>Synonyms</b>\n\n";
                             synonyms = synonyms.Take(10);
