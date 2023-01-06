@@ -3,27 +3,23 @@ using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
 using TB.Common;
-using TB.ComputerVision;
+using TB.ComputerVision.Command;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Texts.Commands;
-using TB.Translator;
 using TB.Translator.Commands;
 using TB.User;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TB.Images.Commands;
 
 public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, bool>
 {
     private readonly ILogger<HandleImagesCommandHandler> logger;
-
-    private readonly IComputerVisionService computerVisionService;
 
     private readonly IQueryDispatcher queryDispatcher;
 
@@ -41,7 +37,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
 
     public HandleImagesCommandHandler(
         ILogger<HandleImagesCommandHandler> logger, 
-        IComputerVisionService computerVisionService,
         IQueryDispatcher queryDispatcher,
         ICommandDispatcher commandDispatcher,
         IUserService userService,
@@ -49,7 +44,6 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         UserSettingsRepository userSettingsRepository)
     {
         this.logger = logger;
-        this.computerVisionService = computerVisionService;
         this.queryDispatcher = queryDispatcher;
         this.commandDispatcher = commandDispatcher;
         this.userService = userService;
@@ -118,7 +112,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
 
     private async Task<bool> ProcessAndSendPhotoAnalysisAsync(byte[] bytes, long chatId, long userId, int replyId)
     {
-        var results = await computerVisionService.AnalyzeImageAsync(bytes);
+        var results = await commandDispatcher.DispatchAsync(new AnalyzeImageCommand(bytes));
 
         if (results == null || !results.isSuccess) return false;
 
@@ -283,7 +277,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
 
     private async Task<bool> ProcessAndSendOCRResultsAsync(byte[] bytes, long chatId, long userId, int replyId)
     {
-        var results = await computerVisionService.OCRImageAsync(bytes);
+        var results = await commandDispatcher.DispatchAsync(new OCRImageCommand(bytes));
 
         if (results == null || !results.IsSuccess || results.TextResults.Count == 0)
         {
