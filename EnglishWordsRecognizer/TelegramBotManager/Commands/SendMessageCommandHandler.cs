@@ -20,6 +20,7 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
     {
         try
         {
+            // TODO RETRY
             var message = await telegramBotClient.SendTextMessageAsync(
                 command.ChatId, 
                 command.Message, 

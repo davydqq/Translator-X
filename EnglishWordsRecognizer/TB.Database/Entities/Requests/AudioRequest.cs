@@ -28,7 +28,7 @@ public class AudioRequest: BaseRequest
         AudioRequestTypeId = AudioRequestTypeENUM.Transcription;
         ProcessedSeconds = durationSeconds;
         SecondCost = costSecond;
-        RequestCost = durationSeconds * costSecond;
+        InitCost(durationSeconds * costSecond);
 
         return this;
     }

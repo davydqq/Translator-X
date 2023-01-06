@@ -16,7 +16,7 @@ public class ImageRequest : BaseRequest
 
     public ImageRequest(ApiTypeENUM? apiTypeId, double cost) : base(DateTimeOffset.UtcNow, apiTypeId)
     {
-        RequestCost = cost;
+        InitCost(cost);
     }
 
     public ImageRequest InitOCR()

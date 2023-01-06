@@ -19,6 +19,7 @@ public class DeleteMessageCommandHandler : ICommandHandler<DeleteMessageCommand,
     {
         try
         {
+            // TODO RETRY
             await telegramBotClient.DeleteMessageAsync(command.ChatId, command.MessageId);
             return true;
         }

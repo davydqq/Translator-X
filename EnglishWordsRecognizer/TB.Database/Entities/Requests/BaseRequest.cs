@@ -31,4 +31,9 @@ public class BaseRequest : BaseEntity<int>
 
         return this;
     }
+
+    protected void InitCost(double cost)
+    {
+        RequestCost = Math.Round(cost, 7);
+    }
 }

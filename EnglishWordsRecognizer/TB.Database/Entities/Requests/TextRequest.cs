@@ -26,7 +26,7 @@ public class TextRequest : BaseRequest
     {
         Texts = texts;
         TotalChars = texts.Sum(x => x.Length);
-        RequestCost = TotalChars * cost;
+        InitCost(TotalChars * cost);
     }
 
     public TextRequest InitTranslateTexts(string[] languageCodes)
