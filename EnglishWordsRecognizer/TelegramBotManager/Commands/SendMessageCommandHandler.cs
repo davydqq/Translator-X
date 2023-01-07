@@ -1,5 +1,7 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Retry;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -9,6 +11,9 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
 {
     private readonly TelegramBotClient telegramBotClient;
     private readonly ILogger<SendMessageCommandHandler> logger;
+
+    private readonly AsyncRetryPolicy retryPolicy = Policy.Handle<Exception>()
+                        .WaitAndRetryAsync(retryCount: 2, sleepDurationProvider: _ => TimeSpan.FromSeconds(1));
 
     public SendMessageCommandHandler(TelegramBotClient telegramBotClient, ILogger<SendMessageCommandHandler> logger)
     {
@@ -20,14 +25,14 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
     {
         try
         {
-            // TODO RETRY
-            var message = await telegramBotClient.SendTextMessageAsync(
-                command.ChatId, 
-                command.Message, 
+
+            var message = await retryPolicy.ExecuteAsync(() => telegramBotClient.SendTextMessageAsync(
+                command.ChatId,
+                command.Message,
                 parseMode: command.ParseMode,
                 replyMarkup: command.ReplyMarkup,
                 replyToMessageId: command.ReplyToMessageId
-            );
+            ));
 
             return message;
         }
