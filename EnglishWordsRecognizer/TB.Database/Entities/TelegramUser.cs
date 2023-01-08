@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using TB.Database.Entities.Requests;
 
 namespace TB.Database.Entities;
 
@@ -25,7 +26,5 @@ public class TelegramUser: BaseEntity<int>
 
     public UserSettings UserSettings { set; get; }
 
-
-    public PlanENUM PlanId { set; get; }
-    public Plan Plan { set; get; }
+    public List<BaseRequest> BaseRequests { set; get; }
 }

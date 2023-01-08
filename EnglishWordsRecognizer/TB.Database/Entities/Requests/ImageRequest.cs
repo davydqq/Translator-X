@@ -9,12 +9,12 @@ public class ImageRequest : BaseRequest
     public ImageRequestTypeENUM ImageRequestTypeId { set; get; }
     public ImageRequestType ImageRequestType { set; get; }
 
-    public ImageRequest() : base(DateTimeOffset.UtcNow, null)
+    public ImageRequest() : base(DateTimeOffset.UtcNow, null, 0)
     {
 
     }
 
-    public ImageRequest(ApiTypeENUM? apiTypeId, double cost) : base(DateTimeOffset.UtcNow, apiTypeId)
+    public ImageRequest(ApiTypeENUM? apiTypeId, double cost, long userId) : base(DateTimeOffset.UtcNow, apiTypeId, userId)
     {
         InitCost(cost);
     }

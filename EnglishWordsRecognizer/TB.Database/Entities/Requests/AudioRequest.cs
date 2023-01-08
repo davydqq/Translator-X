@@ -14,12 +14,12 @@ public class AudioRequest: BaseRequest
 
     public double SecondCost { set; get; }
 
-    public AudioRequest() : base(DateTimeOffset.UtcNow, null)
+    public AudioRequest() : base(DateTimeOffset.UtcNow, null, 0)
     {
 
 	}
 
-    public AudioRequest(ApiTypeENUM? apiTypeId) : base(DateTimeOffset.UtcNow, apiTypeId)
+    public AudioRequest(ApiTypeENUM? apiTypeId, long userId) : base(DateTimeOffset.UtcNow, apiTypeId, userId)
     {
     }
 

@@ -63,8 +63,8 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
             return false;
         }
 
-        var detectLCommand = new DetectLanguagesCommand();
-        detectLCommand.TextToDetect = command.Text;
+        var detectLCommand = new DetectLanguagesCommand(command.Text, command.UserId);
+
         var resDetect = await commandDispatcher.DispatchAsync(detectLCommand);
 
         if(resDetect == null)
@@ -76,7 +76,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         {
             var languageFrom = userSettings.NativeLanguage;
 
-            var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code);
+            var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code, command.UserId);
             if (string.IsNullOrEmpty(resTextFrom)) return false;
 
             var sentMessage = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom, replyToMessageId: command.ReplyId));
@@ -86,7 +86,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
             return true;
         }
 
-        var resText = await GetTranslationsAsync(command.Text, languageTo.Code);
+        var resText = await GetTranslationsAsync(command.Text, languageTo.Code, command.UserId);
         if (string.IsNullOrEmpty(resText)) return false;
         
         var message = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
@@ -106,14 +106,14 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
                     if (meaningActive)
                     {
                         // meaning
-                        var result = await commandDispatcher.DispatchAsync(new GetPhraseMeaningCommand(text));
+                        var result = await commandDispatcher.DispatchAsync(new GetPhraseMeaningCommand(text, userId));
                         var message = await GetMessageMeaning(result, userId);
                         if (!string.IsNullOrEmpty(message))
                         {
                             await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, message, replyToMessageId: replyId, parseMode: ParseMode.Html));
                         }
                         // synonyms
-                        var synonyms = await commandDispatcher.DispatchAsync(new GetSynonymsCommand(text));
+                        var synonyms = await commandDispatcher.DispatchAsync(new GetSynonymsCommand(text, userId));
                         if (synonyms != null && synonyms.Count() > 0)
                         {
                             var synonumKey = "<b>Synonyms</b>\n\n";
@@ -160,12 +160,13 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         return message;
     }
 
-    private async Task<string> GetTranslationsAsync(string text, string langCode)
+    private async Task<string> GetTranslationsAsync(string text, string langCode, long userId)
     {
-        var command = new TranslateTextsCommand();
-        command.TextsToTranslate = new List<string> { text };
-        command.LanguagesToTranslate = new List<string> { langCode };
+        var textsToTranslate = new List<string> { text };
+        var languagesToTranslate = new List<string> { langCode };
 
+        var command = new TranslateTextsCommand(textsToTranslate, languagesToTranslate, userId);
+  
         var res = await commandDispatcher.DispatchAsync(command);
 
         if (res == null) return null;

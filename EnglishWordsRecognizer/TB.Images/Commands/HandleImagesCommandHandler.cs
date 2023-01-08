@@ -112,7 +112,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
 
     private async Task<bool> ProcessAndSendPhotoAnalysisAsync(byte[] bytes, long chatId, long userId, int replyId)
     {
-        var results = await commandDispatcher.DispatchAsync(new AnalyzeImageCommand(bytes));
+        var results = await commandDispatcher.DispatchAsync(new AnalyzeImageCommand(bytes, userId));
 
         if (results == null || !results.isSuccess) return false;
 
@@ -131,7 +131,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
             var imageObjectsMessage = await localizationService.GetTranslateByInterface("app.images.objects", userId);
             var text = $"{imageObjectsMessage}\n\n";
 
-            text += await ProccessTagsResponse(resTags, settings);
+            text += await ProccessTagsResponse(resTags, settings, userId);
 
             resText += text;
         }
@@ -151,7 +151,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
                 resText += text;
 
                 var languagesToTranslate = GetLanguagesToTranslate(settings);
-                var resp = await TranslateImageRecognitionResponse(languagesToTranslate, new string[] { captionsRes });
+                var resp = await TranslateImageRecognitionResponse(languagesToTranslate, new string[] { captionsRes }, userId);
 
                 if (resp.zippedWords != null && resp.isOnlyOneLanguage)
                 {
@@ -187,7 +187,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         return true;
     }
 
-    private async Task<string> ProccessTagsResponse(IEnumerable<string> en_tags, UserSettings settings)
+    private async Task<string> ProccessTagsResponse(IEnumerable<string> en_tags, UserSettings settings, long userId)
     {
         if (settings == null)
         {
@@ -196,7 +196,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         }
 
         var languagesToTranslate = GetLanguagesToTranslate(settings);
-        var res = await TranslateImageRecognitionResponse(languagesToTranslate, en_tags.ToArray());
+        var res = await TranslateImageRecognitionResponse(languagesToTranslate, en_tags.ToArray(), userId);
 
         ConsoleTable onePhrasesTable = null; 
         if (res.isOnlyOneLanguage)
@@ -231,11 +231,9 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
     }
 
     private async Task<(List<(string fTarget, string sNative)> zippedWords, bool isOnlyOneLanguage)> TranslateImageRecognitionResponse(
-        List<Language> languagesToTranslate, string[] textToTranslate)
+        List<Language> languagesToTranslate, string[] textToTranslate, long userId)
     {
-        var command = new TranslateTextsCommand();
-        command.TextsToTranslate = textToTranslate.ToList();
-        command.LanguagesToTranslate = languagesToTranslate.Select(x => x.Code).ToList();
+        var command = new TranslateTextsCommand(textToTranslate.ToList(), languagesToTranslate.Select(x => x.Code).ToList(), userId);
         var resp = await commandDispatcher.DispatchAsync(command);
 
         if(resp == null)
@@ -277,7 +275,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
 
     private async Task<bool> ProcessAndSendOCRResultsAsync(byte[] bytes, long chatId, long userId, int replyId)
     {
-        var results = await commandDispatcher.DispatchAsync(new OCRImageCommand(bytes));
+        var results = await commandDispatcher.DispatchAsync(new OCRImageCommand(bytes, userId));
 
         if (results == null || !results.IsSuccess || results.TextResults.Count == 0)
         {

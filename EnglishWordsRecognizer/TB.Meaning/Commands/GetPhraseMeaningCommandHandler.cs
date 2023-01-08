@@ -34,7 +34,7 @@ public class GetPhraseMeaningCommandHandler : ICommandHandler<GetPhraseMeaningCo
         }
 
         var texts = new string[] { command.Text };
-        var request = new TextRequest(ApiTypeENUM.Cambridge, texts, 0).InitMeaning();
+        var request = new TextRequest(ApiTypeENUM.Cambridge, texts, 0, command.UserId).InitMeaning();
 
         var resp = await cambridgeDictionaryService.GetCambridgeEnglishAsync(command.Text);
 

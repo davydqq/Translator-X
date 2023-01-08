@@ -19,5 +19,5 @@ public class Plan : BaseEntity<PlanENUM>
 
     public bool IsCustomPlan { set; get; }
 
-    public List<TelegramUser> TelegramUsers { set; get; }
+    public List<Payment> Payments { set; get; }
 }

@@ -34,7 +34,7 @@ public class DetectLanguagesCommandHandler : ICommandHandler<DetectLanguagesComm
         }
 
         var texts = new string[] { command.TextToDetect };
-        var request = new TextRequest(translateService.apiTypeENUM, texts, Costs.AzureCharTranslatePrice).InitDetectLanguages();
+        var request = new TextRequest(translateService.apiTypeENUM, texts, Costs.AzureCharTranslatePrice, command.UserId).InitDetectLanguages();
 
         var resp = await translateService.DetectLanguagesAsync(texts);
 

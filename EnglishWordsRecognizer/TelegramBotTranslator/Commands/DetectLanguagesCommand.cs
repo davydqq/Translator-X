@@ -5,5 +5,13 @@ namespace TB.Translator.Commands;
 
 public class DetectLanguagesCommand : ICommand<List<DetectLanguageResponse>>
 {
-    public string TextToDetect { set; get; }
+	public DetectLanguagesCommand(string textToDetect, long userId)
+	{
+		TextToDetect = textToDetect;
+		UserId = userId;
+	}
+
+    public string TextToDetect { get; }
+
+	public long UserId { get; }
 }

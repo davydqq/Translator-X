@@ -33,7 +33,7 @@ public class OCRImageCommandHandler : ICommandHandler<OCRImageCommand, OCR_Resul
             return null;
         }
 
-		var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage).InitOCR();
+		var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId).InitOCR();
 
         var results = await computerVisionService.OCRImageAsync(command.Bytes);
 

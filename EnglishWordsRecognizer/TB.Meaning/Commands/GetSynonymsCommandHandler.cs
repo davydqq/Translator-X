@@ -34,7 +34,7 @@ public class GetSynonymsCommandHandler : ICommandHandler<GetSynonymsCommand, IEn
         }
 
         var texts = new string[] { command.Text };
-        var request = new TextRequest(ApiTypeENUM.Thesaurus, texts, 0).InitSynonyms();
+        var request = new TextRequest(ApiTypeENUM.Thesaurus, texts, 0, command.UserId).InitSynonyms();
 
         var synonyms = await thesaurusService.GetSynonymsAsync(command.Text);
 

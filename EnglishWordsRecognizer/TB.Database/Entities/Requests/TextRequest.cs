@@ -17,12 +17,13 @@ public class TextRequest : BaseRequest
     public TextRequestTypeENUM TextRequestTypeId { set; get; }
     public TextRequestType TextRequestType { set; get; }
 
-    public TextRequest(): base(DateTimeOffset.UtcNow, null)
+    public TextRequest(): base(DateTimeOffset.UtcNow, null, 0)
     {
 
     }
 
-    public TextRequest(ApiTypeENUM apiType, string[] texts, double cost) : base(DateTimeOffset.UtcNow, apiType)
+    public TextRequest(ApiTypeENUM apiType, string[] texts, double cost, long userId) 
+        : base(DateTimeOffset.UtcNow, apiType, userId)
     {
         Texts = texts;
         TotalChars = texts.Sum(x => x.Length);

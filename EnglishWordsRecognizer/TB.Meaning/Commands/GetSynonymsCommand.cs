@@ -6,8 +6,11 @@ public class GetSynonymsCommand : ICommand<IEnumerable<string>>
 {
     public string Text { set; get; }
 
-	public GetSynonymsCommand(string text)
+	public long UserId { get; }
+
+	public GetSynonymsCommand(string text, long userId)
 	{
 		Text = text;
+		UserId = userId;
 	}
 }

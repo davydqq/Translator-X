@@ -17,8 +17,12 @@ public static class DatabaseContextModules
         );
 
         services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
+
         services.AddSingleton<TranslateCacheRepository>();
+        services.AddSingleton<PlanCacheRepository>();
 
         services.AddTransient<UserSettingsRepository>();
+
+        services.AddTransient<TelegramUserRepository>();
     }
 }

@@ -70,7 +70,8 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
 
         var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
 
-        var result = await commandDispatcher.DispatchAsync(new AudioToTextCommand(downloadFile.File, settings.AudioLanguageId.Value, command.File.MimeType));
+        var commandToSend = new AudioToTextCommand(downloadFile.File, settings.AudioLanguageId.Value, command.File.MimeType, command.UserId);
+        var result = await commandDispatcher.DispatchAsync(commandToSend);
 
         if (!result.IsSuccess)
         {

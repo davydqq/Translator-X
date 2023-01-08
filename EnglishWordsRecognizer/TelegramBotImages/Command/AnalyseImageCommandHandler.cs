@@ -33,7 +33,7 @@ public class AnalyseImageCommandHandler : ICommandHandler<AnalyzeImageCommand, V
             return null;
         }
 
-        var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage).InitImageAnalysis();
+        var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId).InitImageAnalysis();
 
         var results = await computerVisionService.AnalyzeImageAsync(command.Bytes);
 
