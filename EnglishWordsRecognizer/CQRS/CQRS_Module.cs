@@ -1,4 +1,5 @@
 ﻿using CQRS.Commands;
+using CQRS.Decorators;
 using CQRS.Events;
 using CQRS.Queries;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,9 @@ public static class CQRS_Module
 {
     public static void RegisterCQRS(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandDispatcher, CommandDispatcher>();
+        services.AddSingleton<ICommandDispatcher, CommandDispatcher>()
+                 .Decorate<ICommandDispatcher, CommandDispatcherDecorator>();
+
         services.TryAddSingleton<IQueryDispatcher, QueryDispatcher>();
         services.TryAddSingleton<IEventDispatcher, EventDispatcher>();
 

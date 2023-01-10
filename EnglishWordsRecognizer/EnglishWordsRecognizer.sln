@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Localization", "TB.Local
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.SpeechToText", "TB.SpeechToText\TB.SpeechToText.csproj", "{DFF71A22-18A6-4DC3-9C2B-6E98E39E303E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.BillingPlans", "TB.BillingPlans\TB.BillingPlans.csproj", "{154AD723-5AD2-4917-8930-3CEE40B05AA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Payments", "TB.BillingPlans\TB.Payments.csproj", "{154AD723-5AD2-4917-8930-3CEE40B05AA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

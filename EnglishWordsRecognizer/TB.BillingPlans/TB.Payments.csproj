@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CQRS\CQRS.csproj" />
     <ProjectReference Include="..\TB.Database\TB.Database.csproj" />
   </ItemGroup>
 
