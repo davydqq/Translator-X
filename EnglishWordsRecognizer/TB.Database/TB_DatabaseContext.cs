@@ -43,9 +43,6 @@ public class TBDatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TelegramUser>()
-            .Property(x => x.PlanId).HasDefaultValue(PlanENUM.Standart);
-
         modelBuilder.Entity<Language>()
             .HasMany(m => m.UserSettingsNativeLangs)
             .WithOne(t => t.NativeLanguage)

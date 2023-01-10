@@ -24,7 +24,10 @@ public class TelegramUser: BaseEntity<int>
 
     public string? LanguageCode { get; set; }
 
+
     public UserSettings UserSettings { set; get; }
 
     public List<BaseRequest> BaseRequests { set; get; }
+
+    public List<Payment> Payments { set; get; }
 }

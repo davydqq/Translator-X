@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\TB.BillingPlans\TB.BillingPlans.csproj" />
     <ProjectReference Include="..\TB.Localization\TB.Localization.csproj" />
     <ProjectReference Include="..\TB.Meaning\TB.Meaning.csproj" />
     <ProjectReference Include="..\TB.User\TB.User.csproj" />

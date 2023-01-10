@@ -17,6 +17,7 @@ using Telegram.Bot;
 using Polly;
 using TB.SpeechToText;
 using TB.SpeechToText.Entities;
+using TB.BillingPlans;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +65,7 @@ builder.Services.AddSingleton<IComputerVisionService, AzureComputerVisionService
 builder.Services.AddSingleton<ISpeechToTextService, GoogleSpeechToTextService>();
 
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IBillingPlanService, BillingPlanService>();
 
 builder.Services.ApplyLocalizationModules();
 

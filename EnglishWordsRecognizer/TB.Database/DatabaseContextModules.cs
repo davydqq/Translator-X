@@ -24,5 +24,6 @@ public static class DatabaseContextModules
         services.AddTransient<UserSettingsRepository>();
 
         services.AddTransient<TelegramUserRepository>();
+        services.AddTransient<PaymentsRepository>();
     }
 }

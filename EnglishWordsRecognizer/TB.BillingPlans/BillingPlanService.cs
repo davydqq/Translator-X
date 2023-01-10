@@ -17,7 +17,7 @@ public class BillingPlanService : IBillingPlanService
 
 	private readonly PlanCacheRepository planCacheRepository;
 
-	private readonly IRepository<Payment, int> paymentRepository;
+	private readonly PaymentsRepository paymentRepository;
 
 	public BillingPlanService(
 		IRepository<ImageRequest, int> imageRequestRepository,
@@ -25,7 +25,7 @@ public class BillingPlanService : IBillingPlanService
         IRepository<AudioRequest, int> audioRequestRepository,
         TelegramUserRepository telegramUserRepository,
         PlanCacheRepository planCacheRepository,
-		IRepository<Payment, int> paymentRepository)
+        PaymentsRepository paymentRepository)
 	{
 		this.imageRequestRepository = imageRequestRepository;
 		this.textRequestRepository = textRequestRepository;
@@ -38,15 +38,32 @@ public class BillingPlanService : IBillingPlanService
 	public async Task<bool> IsCanProcessImageAsync(long userId)
 	{
 		var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
-		var plan = user != null ? (await planCacheRepository.FirstOrDefaultAsync(x => x.Id == user.PlanId)) : null;
 
-        if (plan != null)
+        if (user != null)
 		{
-			var countRequests = await imageRequestRepository.GetCountAsync(x => x.UserId == userId);
+			var imageCountRequests = await imageRequestRepository.GetCountAsync(x => x.UserId == userId); // todo per month
+			var userPlan = await GetUserPlanAsync(userId);
+            var plan = planCacheRepository.GetByKeyOrDefault(userPlan);
 
+			if(imageCountRequests >= plan.MaxAnalysisPhotoCountMonth)
+			{
+
+			}
 			// TODO
         }
 
 		return false;
+    }
+
+	private async Task<PlanENUM> GetUserPlanAsync(long userId)
+	{
+        var payment = await paymentRepository.GetPayment(userId, DateTimeOffset.UtcNow);
+
+		if(payment != null)
+		{
+            return payment.PlanId;
+        }
+
+		return PlanENUM.Standart;
     }
 }
