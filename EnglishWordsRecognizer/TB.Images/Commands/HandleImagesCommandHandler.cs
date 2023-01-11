@@ -2,7 +2,8 @@
 using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
-using TB.Common;
+using TB.BillingPlans;
+using TB.Common.Telegram;
 using TB.ComputerVision.Command;
 using TB.Core.Commands;
 using TB.Core.Queries;
@@ -31,6 +32,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
 
     private readonly UserSettingsRepository userSettingsRepository;
 
+    private readonly IBillingPlanService billingPlanService;
+
     private readonly string[] supportedFormats = PhotosExtension.GetFormats();
 
     private int four_mb = 4194304;
@@ -41,7 +44,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         ICommandDispatcher commandDispatcher,
         IUserService userService,
         ILocalizationService localizationService,
-        UserSettingsRepository userSettingsRepository)
+        UserSettingsRepository userSettingsRepository,
+        IBillingPlanService billingPlanService)
     {
         this.logger = logger;
         this.queryDispatcher = queryDispatcher;
@@ -49,12 +53,20 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         this.userService = userService;
         this.localizationService = localizationService;
         this.userSettingsRepository = userSettingsRepository;
+        this.billingPlanService = billingPlanService;
     }
 
     public async Task<bool> HandleAsync(HandleImagesCommand command, CancellationToken cancellation = default)
     {
         var res = await userService.ValidateThatUserSelectLanguages(command);
         if (!res) return false;
+
+        var isCanProcessRequest = await billingPlanService.IsCanProcessImageAsync(command.UserId);
+        if (!isCanProcessRequest)
+        {
+            // TODO MESSAGE
+            return false;
+        }
 
         var file = command.Files.Where(x => x.Size < four_mb).MaxBy(x => x.Size);
         if(file == null)

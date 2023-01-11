@@ -1,5 +1,4 @@
-﻿using TB.Database.Entities;
-using TB.Database.Entities.Requests;
+﻿using TB.Database.Entities.Requests;
 using TB.Database.GenericRepositories;
 using TB.Database.Repositories;
 
@@ -17,7 +16,7 @@ public class BillingPlanService : IBillingPlanService
 
 	private readonly PlanCacheRepository planCacheRepository;
 
-	private readonly PaymentsRepository paymentRepository;
+	private readonly UserPlansRepository paymentRepository;
 
 	public BillingPlanService(
 		IRepository<ImageRequest, int> imageRequestRepository,
@@ -25,7 +24,7 @@ public class BillingPlanService : IBillingPlanService
         IRepository<AudioRequest, int> audioRequestRepository,
         TelegramUserRepository telegramUserRepository,
         PlanCacheRepository planCacheRepository,
-        PaymentsRepository paymentRepository)
+        UserPlansRepository paymentRepository)
 	{
 		this.imageRequestRepository = imageRequestRepository;
 		this.textRequestRepository = textRequestRepository;
@@ -37,33 +36,84 @@ public class BillingPlanService : IBillingPlanService
 
 	public async Task<bool> IsCanProcessImageAsync(long userId)
 	{
-		var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
-
-        if (user != null)
-		{
-			var imageCountRequests = await imageRequestRepository.GetCountAsync(x => x.UserId == userId); // todo per month
-			var userPlan = await GetUserPlanAsync(userId);
-            var plan = planCacheRepository.GetByKeyOrDefault(userPlan);
-
-			if(imageCountRequests >= plan.MaxAnalysisPhotoCountMonth)
-			{
-
-			}
-			// TODO
+        var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
+        var userPlan = await paymentRepository.GetUserPlan(userId, DateTimeOffset.UtcNow);
+        if (userPlan == null)
+        {
+            throw new Exception("Payment cannot be null");
         }
 
-		return false;
+        var plan = planCacheRepository.GetByKeyOrDefault(userPlan.PlanId);
+
+		var imageCountRequests = await imageRequestRepository.GetCountAsync(
+                x => x.UserId == userId && 
+				x.RequestTime > userPlan.StartDate && x.RequestTime < userPlan.ExpireDate &&
+                x.IsSuccess &&
+                x.RequestCost != 0);
+
+        if (imageCountRequests >= plan.MaxAnalysisPhotoCountMonth)
+        {
+            return false;
+        }
+
+        return true;
     }
 
-	private async Task<PlanENUM> GetUserPlanAsync(long userId)
-	{
-        var payment = await paymentRepository.GetPayment(userId, DateTimeOffset.UtcNow);
-
-		if(payment != null)
-		{
-            return payment.PlanId;
+    public async Task<bool> IsCanProcessTextAsync(long userId)
+    {
+        var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
+        var userPlan = await paymentRepository.GetUserPlan(userId, DateTimeOffset.UtcNow);
+        if (userPlan == null)
+        {
+            throw new Exception("Payment cannot be null");
         }
 
-		return PlanENUM.Standart;
+        var plan = planCacheRepository.GetByKeyOrDefault(userPlan.PlanId);
+
+        var textCountRequests = await textRequestRepository.GetWhereAsync(
+                x => x.UserId == userId &&
+                x.RequestTime > userPlan.StartDate && x.RequestTime < userPlan.ExpireDate &&
+                x.IsSuccess &&
+                x.RequestCost != 0);
+
+        if (textCountRequests.Count == 0) return false;
+
+        var totalChars = textCountRequests.Sum(x => x.TotalChars);
+
+        if (totalChars >= plan.MaxTranslateCharsMonth)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public async Task<bool> IsCanProcessAudioAsync(long userId)
+    {
+        var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
+        var userPlan = await paymentRepository.GetUserPlan(userId, DateTimeOffset.UtcNow);
+        if (userPlan == null)
+        {
+            throw new Exception("Payment cannot be null");
+        }
+
+        var plan = planCacheRepository.GetByKeyOrDefault(userPlan.PlanId);
+
+        var audioRequests = await audioRequestRepository.GetWhereAsync(
+                x => x.UserId == userId &&
+                x.RequestTime > userPlan.StartDate && x.RequestTime < userPlan.ExpireDate &&
+                x.IsSuccess &&
+                x.RequestCost != 0);
+
+        if (audioRequests.Count == 0) return false;
+
+        var sumSeconds = audioRequests.Sum(x => x.ProcessedSeconds);
+
+        if (sumSeconds >= plan.MaxAudioTranscriptionSecondsMonth)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

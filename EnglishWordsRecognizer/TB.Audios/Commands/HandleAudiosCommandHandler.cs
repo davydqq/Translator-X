@@ -1,14 +1,15 @@
 ﻿using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
-using TB.Common;
+using TB.BillingPlans;
+using TB.Common.SpeechToText;
+using TB.Common.Telegram;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.SpeechToText.Commands;
-using TB.SpeechToText.Entities;
 using TB.User;
 using Telegram.Bot.Types.Enums;
 namespace TB.Audios.Commands;
@@ -21,7 +22,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
     private readonly UserSettingsRepository userSettingsRepository;
     private readonly ILocalizationService localizationService;
     private readonly ICommandDispatcher commandDispatcher;
-
+    private readonly IBillingPlanService billingPlanService;
     private readonly string[] supportedAudioFormats = AudiosFormats.GetFormats();
 
     public HandleAudiosCommandHandler(
@@ -30,7 +31,8 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
         IQueryDispatcher queryDispatcher,
         UserSettingsRepository userSettingsRepository,
         ILocalizationService localizationService,
-        ICommandDispatcher commandDispatcher)
+        ICommandDispatcher commandDispatcher,
+        IBillingPlanService billingPlanService)
     {
         this.logger = logger;
         this.userService = userService;
@@ -38,12 +40,26 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
         this.userSettingsRepository = userSettingsRepository;
         this.localizationService = localizationService;
         this.commandDispatcher = commandDispatcher;
+        this.billingPlanService = billingPlanService;
     }
 
     public async Task<bool> HandleAsync(HandleAudiosCommand command, CancellationToken cancellation = default)
     {
+        var res = await userService.ValidateThatUserSelectLanguages(command);
+        if (!res) return false;
+
+        var res2 = await userService.ValidateThatAudioLanguageSelected(command);
+        if (!res2) return false;
+
+        var isCanProcessRequest = await billingPlanService.IsCanProcessAudioAsync(command.UserId);
+        if (!isCanProcessRequest)
+        {
+            // TODO MESSAGE
+            return false;
+        }
+
         // VALIDATIONS
-        if(command.File.Duration > 59)
+        if (command.File.Duration > 59)
         {
             var text = await localizationService.GetTranslateByInterface("app.audio.noExceedDuration", command.UserId);
             var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
@@ -59,13 +75,6 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
             return false;
         }
 
-        var res = await userService.ValidateThatUserSelectLanguages(command);
-        if (!res) return false;
-
-        var res2 = await userService.ValidateThatAudioLanguageSelected(command);
-        if (!res2) return false;
-
-        // 
         var downloadFile = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
 
         var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);

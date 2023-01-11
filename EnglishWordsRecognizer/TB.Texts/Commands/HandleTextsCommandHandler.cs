@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Logging;
+using TB.BillingPlans;
 using TB.Core.Commands;
 using TB.Database.Entities;
 using TB.Database.Repositories;
@@ -25,18 +26,22 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
 
     private readonly ILocalizationService localizationService;
 
+    private readonly IBillingPlanService billingPlanService;
+
     public HandleTextsCommandHandler(
         ILogger<HandleTextsCommandHandler> logger,
         ICommandDispatcher commandDispatcher,
         IUserService userService,
         UserSettingsRepository repositoryUserSettings,
-        ILocalizationService localizationService)
+        ILocalizationService localizationService,
+        IBillingPlanService billingPlanService)
     {
         this.logger = logger;
         this.commandDispatcher = commandDispatcher;
         this.userService = userService;
         this.repositoryUserSettings = repositoryUserSettings;
         this.localizationService = localizationService;
+        this.billingPlanService = billingPlanService;
     }
 
     public async Task<bool> HandleAsync(HandleTextsCommand command, CancellationToken cancellation = default)
@@ -45,9 +50,15 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
 
         if (!res) return false;
 
+        var isCanProcessRequest = await billingPlanService.IsCanProcessTextAsync(command.UserId);
+        if (!isCanProcessRequest)
+        {
+            // TODO MESSAGE
+            return false;
+        }
+
         var userSettings = await repositoryUserSettings.GetSettingsIncludeTargetNativeLanguagesAsync(command.UserId);
         var languageTo = userSettings.TargetLanguage;
-        // PROCESSING
 
         if (string.IsNullOrEmpty(command.Text))
         {

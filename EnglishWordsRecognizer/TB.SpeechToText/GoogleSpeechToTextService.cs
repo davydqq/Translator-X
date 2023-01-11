@@ -1,8 +1,10 @@
 ﻿using Google.Cloud.Speech.V1;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TB.Common;
+using TB.Common.SpeechToText;
+using TB.Common.Telegram;
 using TB.Database.Entities;
+using TB.Database.Entities.Requests;
 using TB.SpeechToText.Entities;
 using static Google.Cloud.Speech.V1.RecognitionConfig.Types;
 
@@ -13,6 +15,7 @@ public class GoogleSpeechToTextService : ISpeechToTextService
     private readonly IOptions<GoogleConfig> options;
 
     private readonly ILogger<GoogleSpeechToTextService> logger;
+
 
     private readonly string[] languages = new string[]
     {
@@ -32,6 +35,8 @@ public class GoogleSpeechToTextService : ISpeechToTextService
         LanguageCodes.Polish.Poland,
         LanguageCodes.Turkish.Turkey
     };
+
+    public ApiTypeENUM ApiType => ApiTypeENUM.Google;
 
     public GoogleSpeechToTextService(IOptions<GoogleConfig> options, ILogger<GoogleSpeechToTextService> logger)
     {

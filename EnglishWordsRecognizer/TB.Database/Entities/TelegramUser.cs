@@ -29,5 +29,5 @@ public class TelegramUser: BaseEntity<int>
 
     public List<BaseRequest> BaseRequests { set; get; }
 
-    public List<Payment> Payments { set; get; }
+    public List<UserPlan> UserPlans { set; get; }
 }
