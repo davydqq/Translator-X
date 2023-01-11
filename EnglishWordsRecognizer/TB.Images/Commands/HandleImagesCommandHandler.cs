@@ -3,7 +3,7 @@ using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
 using TB.BillingPlans;
-using TB.Common.Telegram;
+using TB.Common;
 using TB.ComputerVision.Command;
 using TB.Core.Commands;
 using TB.Core.Queries;

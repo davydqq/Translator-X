@@ -1,8 +1,7 @@
 ﻿using Google.Cloud.Speech.V1;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TB.Common.SpeechToText;
-using TB.Common.Telegram;
+using TB.Common;
 using TB.Database.Entities;
 using TB.Database.Entities.Requests;
 using TB.SpeechToText.Entities;

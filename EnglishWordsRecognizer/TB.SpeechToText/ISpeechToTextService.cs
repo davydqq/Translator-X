@@ -1,6 +1,6 @@
-﻿using TB.Common.SpeechToText;
-using TB.Database.Entities;
+﻿using TB.Database.Entities;
 using TB.Database.Entities.Requests;
+using TB.SpeechToText.Entities;
 
 namespace TB.SpeechToText;
 

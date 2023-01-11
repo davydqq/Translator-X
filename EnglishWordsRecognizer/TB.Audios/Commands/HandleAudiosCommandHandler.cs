@@ -2,14 +2,14 @@
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
 using TB.BillingPlans;
-using TB.Common.SpeechToText;
-using TB.Common.Telegram;
+using TB.Common;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.SpeechToText.Commands;
+using TB.SpeechToText.Entities;
 using TB.User;
 using Telegram.Bot.Types.Enums;
 namespace TB.Audios.Commands;

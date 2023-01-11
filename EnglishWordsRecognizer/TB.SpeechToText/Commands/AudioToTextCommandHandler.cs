@@ -35,7 +35,7 @@ public class AudioToTextCommandHandler : ICommandHandler<AudioToTextCommand, Aud
             return null;
         }
 
-        var request = new AudioRequest(ApiTypeENUM.Google, command.UserId);
+        var request = new AudioRequest(speechToTextService.ApiType, command.UserId);
 
         var results = await speechToTextService.RecognizeAsync(command.Bytes, command.Language, command.MimeType);
 
