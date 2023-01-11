@@ -8,5 +8,6 @@ public enum BotMenuId
     Info = 4,
     EnglishMeaning = 5,
     IntefaceLanguage = 6,
-    AudioTranscriptionLanguage = 7
+    AudioTranscriptionLanguage = 7,
+    Stats = 8
 }

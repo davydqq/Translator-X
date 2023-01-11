@@ -192,29 +192,30 @@ namespace TB.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
+                name: "UserPlans",
                 schema: "app",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PaymentDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ExpireDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    PaymentDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     PlanId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.PrimaryKey("PK_UserPlans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payments_Plan_PlanId",
+                        name: "FK_UserPlans_Plan_PlanId",
                         column: x => x.PlanId,
                         principalSchema: "billing",
                         principalTable: "Plan",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Payments_TelegramUser_UserId",
+                        name: "FK_UserPlans_TelegramUser_UserId",
                         column: x => x.UserId,
                         principalSchema: "app",
                         principalTable: "TelegramUser",
@@ -904,18 +905,6 @@ namespace TB.Database.Migrations
                 column: "ImageRequestTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_PlanId",
-                schema: "app",
-                table: "Payments",
-                column: "PlanId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_UserId",
-                schema: "app",
-                table: "Payments",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TextRequests_TextRequestTypeId",
                 schema: "requests",
                 table: "TextRequests",
@@ -932,6 +921,18 @@ namespace TB.Database.Migrations
                 schema: "app",
                 table: "Translation",
                 column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPlans_PlanId",
+                schema: "app",
+                table: "UserPlans",
+                column: "PlanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPlans_UserId",
+                schema: "app",
+                table: "UserPlans",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSettings_AudioLanguageId",
@@ -977,15 +978,15 @@ namespace TB.Database.Migrations
                 schema: "requests");
 
             migrationBuilder.DropTable(
-                name: "Payments",
-                schema: "app");
-
-            migrationBuilder.DropTable(
                 name: "TextRequests",
                 schema: "requests");
 
             migrationBuilder.DropTable(
                 name: "Translation",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "UserPlans",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -1001,16 +1002,16 @@ namespace TB.Database.Migrations
                 schema: "requests");
 
             migrationBuilder.DropTable(
-                name: "Plan",
-                schema: "billing");
-
-            migrationBuilder.DropTable(
                 name: "BaseRequest",
                 schema: "requests");
 
             migrationBuilder.DropTable(
                 name: "TextRequestTypes",
                 schema: "requests");
+
+            migrationBuilder.DropTable(
+                name: "Plan",
+                schema: "billing");
 
             migrationBuilder.DropTable(
                 name: "Language",

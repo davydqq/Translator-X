@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TB.Database;
@@ -11,9 +12,11 @@ using TB.Database;
 namespace TB.Database.Migrations
 {
     [DbContext(typeof(TBDatabaseContext))]
-    partial class TBDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230111112510_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -353,16 +356,11 @@ namespace TB.Database.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("UserPlanId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApiTypeId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserPlanId");
 
                     b.ToTable("BaseRequest", "requests");
 
@@ -3532,111 +3530,6 @@ namespace TB.Database.Migrations
                             Key = "app.audio.EmptyResult",
                             LanguageId = 15,
                             Translate = "Metne dönüştürülemedi, lütfen farklı bir transkripsiyon dili /audio_language seçmeyi deneyin veya farklı bir ses formatı gönderin."
-                        },
-                        new
-                        {
-                            Id = 436,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 1,
-                            Translate = "Перевищено ліміт цього місяця надішліть /stats для деталей."
-                        },
-                        new
-                        {
-                            Id = 437,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 2,
-                            Translate = "Превышенный предел этого месяца отправьте /stats для деталей."
-                        },
-                        new
-                        {
-                            Id = 438,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 3,
-                            Translate = "This month's limit has been exceeded, send /stats for details."
-                        },
-                        new
-                        {
-                            Id = 439,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 4,
-                            Translate = "Se superó el límite de este mes, envíe /stats para obtener más detalles."
-                        },
-                        new
-                        {
-                            Id = 440,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 5,
-                            Translate = "La limite de ce mois a été dépassée, envoyez /stats pour plus de détails."
-                        },
-                        new
-                        {
-                            Id = 441,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 6,
-                            Translate = "今月の制限を超えました。詳細については /stats を送信してください。"
-                        },
-                        new
-                        {
-                            Id = 442,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 7,
-                            Translate = "已超过本月的限制，请发送 /stats 了解详情。"
-                        },
-                        new
-                        {
-                            Id = 443,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 8,
-                            Translate = "Limit pro tento měsíc byl překročen, pro podrobnosti zašlete /stats ."
-                        },
-                        new
-                        {
-                            Id = 444,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 9,
-                            Translate = "Denne måneds grænse er overskredet, send /stats for detaljer."
-                        },
-                        new
-                        {
-                            Id = 445,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 10,
-                            Translate = "इस माह की सीमा पार हो गई है, विवरण के लिए /stats भेजें।"
-                        },
-                        new
-                        {
-                            Id = 446,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 11,
-                            Translate = "Il limite di questo mese è stato superato, invia /stats per i dettagli."
-                        },
-                        new
-                        {
-                            Id = 447,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 12,
-                            Translate = "Denna månads gräns har överskridits, skicka /stats för mer information."
-                        },
-                        new
-                        {
-                            Id = 448,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 13,
-                            Translate = "Das Limit dieses Monats wurde überschritten, senden Sie /stats für Details."
-                        },
-                        new
-                        {
-                            Id = 449,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 14,
-                            Translate = "Limit w tym miesiącu został przekroczony, wyślij /stats, aby uzyskać szczegółowe informacje."
-                        },
-                        new
-                        {
-                            Id = 450,
-                            Key = "billing.exceedLimit",
-                            LanguageId = 15,
-                            Translate = "Bu ayın limiti aşıldı, detaylar için /stats gönderin."
                         });
                 });
 
@@ -3778,17 +3671,9 @@ namespace TB.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TB.Database.Entities.UserPlan", "UserPlan")
-                        .WithMany()
-                        .HasForeignKey("UserPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ApiType");
 
                     b.Navigation("User");
-
-                    b.Navigation("UserPlan");
                 });
 
             modelBuilder.Entity("TB.Database.Entities.Requests.TextRequestType", b =>

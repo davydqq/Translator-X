@@ -31,15 +31,13 @@ public class TBDatabaseContext : DbContext
 
     public DbSet<AudioRequest> AudioRequests { set; get; }
 
-    //
-    public DbSet<ApiType> ApiTypes { set; get; }
-
     public DbSet<TextRequestType> TextRequestTypes { set; get; }
 
     public DbSet<ImageRequestType> ImageRequestTypes { set; get; }
 
     public DbSet<AudioRequestType> AudioRequestTypes { set; get; }
 
+    public DbSet<ApiType> ApiTypes { set; get; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -317,6 +315,8 @@ public class TBDatabaseContext : DbContext
         var photoLargeFile = "app.photo.tooLargeFile";
 
         var textMaxLengthKey = "app.text.maxLength";
+
+        var billingExceedLimit = "billing.exceedLimit";
 
         var data = new List<KeyTranslationsInitEntity>
         {
@@ -784,6 +784,22 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "Transkription fehlgeschlagen, bitte versuchen Sie es mit der Auswahl einer anderen Transkriptionssprache /audio_language oder senden Sie ein anderes Audioformat.")
                 .AddTranslate(LanguageENUM.Polish, "Transkrypcja nie powiodła się. Spróbuj wybrać inny język transkrypcji /audio_language lub wyślij inny format audio.")
                 .AddTranslate(LanguageENUM.Turkish, "Metne dönüştürülemedi, lütfen farklı bir transkripsiyon dili /audio_language seçmeyi deneyin veya farklı bir ses formatı gönderin."),
+            new KeyTranslationsInitEntity(billingExceedLimit)
+                .AddTranslate(LanguageENUM.Ukrainian, "Перевищено ліміт цього місяця надішліть /stats для деталей.")
+                .AddTranslate(LanguageENUM.Russian, "Превышенный предел этого месяца отправьте /stats для деталей.")
+                .AddTranslate(LanguageENUM.English, "This month's limit has been exceeded, send /stats for details.")
+                .AddTranslate(LanguageENUM.Spanish, "Se superó el límite de este mes, envíe /stats para obtener más detalles.")
+                .AddTranslate(LanguageENUM.French, "La limite de ce mois a été dépassée, envoyez /stats pour plus de détails.")
+                .AddTranslate(LanguageENUM.Japanese, "今月の制限を超えました。詳細については /stats を送信してください。")
+                .AddTranslate(LanguageENUM.Chinese, "已超过本月的限制，请发送 /stats 了解详情。")
+                .AddTranslate(LanguageENUM.Czech, "Limit pro tento měsíc byl překročen, pro podrobnosti zašlete /stats .")
+                .AddTranslate(LanguageENUM.Danish, "Denne måneds grænse er overskredet, send /stats for detaljer.")
+                .AddTranslate(LanguageENUM.Hindi, "इस माह की सीमा पार हो गई है, विवरण के लिए /stats भेजें।")
+                .AddTranslate(LanguageENUM.Italian, "Il limite di questo mese è stato superato, invia /stats per i dettagli.")
+                .AddTranslate(LanguageENUM.Swedish, "Denna månads gräns har överskridits, skicka /stats för mer information.")
+                .AddTranslate(LanguageENUM.German, "Das Limit dieses Monats wurde überschritten, senden Sie /stats für Details.")
+                .AddTranslate(LanguageENUM.Polish, "Limit w tym miesiącu został przekroczony, wyślij /stats, aby uzyskać szczegółowe informacje.")
+                .AddTranslate(LanguageENUM.Turkish, "Bu ayın limiti aşıldı, detaylar için /stats gönderin."),
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")

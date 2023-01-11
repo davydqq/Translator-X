@@ -53,7 +53,9 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         var isCanProcessRequest = await billingPlanService.IsCanProcessTextAsync(command.UserId);
         if (!isCanProcessRequest)
         {
-            // TODO MESSAGE
+            var text = await localizationService.GetTranslateByInterface("billing.exceedLimit", command.UserId);
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
             return false;
         }
 

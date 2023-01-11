@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using TB.ComputerVision.Entities;
 using TB.Database.Entities.Requests;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 
 namespace TB.ComputerVision.Command;
 
@@ -13,16 +14,20 @@ public class OCRImageCommandHandler : ICommandHandler<OCRImageCommand, OCR_Resul
 
 	private readonly IComputerVisionService computerVisionService;
 
-	private readonly IRepository<ImageRequest, int> imageRequestRepository;
+	private readonly ImageRequestRepository imageRequestRepository;
+
+	private readonly UserPlansRepository userPlansRepository;
 
 	public OCRImageCommandHandler(
 		ILogger<OCRImageCommandHandler> logger, 
 		IComputerVisionService computerVisionService,
-        IRepository<ImageRequest, int> imageRequestRepository)
+        ImageRequestRepository imageRequestRepository,
+        UserPlansRepository userPlansRepository)
 	{
 		this.logger = logger;
 		this.computerVisionService = computerVisionService;
 		this.imageRequestRepository = imageRequestRepository;
+		this.userPlansRepository = userPlansRepository;
 	}
 
 	public async Task<OCR_Result> HandleAsync(OCRImageCommand command, CancellationToken cancellation = default)
@@ -30,10 +35,11 @@ public class OCRImageCommandHandler : ICommandHandler<OCRImageCommand, OCR_Resul
 		if (command.Bytes ==  null || command.Bytes.Length == 0)
 		{
             logger.LogError("Bytes null");
-            return null;
-        }
+			return null;
+		}
 
-		var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId).InitOCR();
+        var plan = await userPlansRepository.GetUserPlan(command.UserId);
+        var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId, plan.Id).InitOCR();
 
         var results = await computerVisionService.OCRImageAsync(command.Bytes);
 

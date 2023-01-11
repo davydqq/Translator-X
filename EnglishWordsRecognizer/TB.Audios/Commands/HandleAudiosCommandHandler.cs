@@ -54,7 +54,9 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
         var isCanProcessRequest = await billingPlanService.IsCanProcessAudioAsync(command.UserId);
         if (!isCanProcessRequest)
         {
-            // TODO MESSAGE
+            var text = await localizationService.GetTranslateByInterface("billing.exceedLimit", command.UserId);
+            var commandTelegram = new SendMessageCommand(command.ChatId, text, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+            await commandDispatcher.DispatchAsync(commandTelegram);
             return false;
         }
 

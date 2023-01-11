@@ -1,6 +1,8 @@
 ﻿using CQRS.Commands;
 using TB.Database.Entities;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
+using Telegram.Bot.Types;
 
 namespace TB.User.Commands;
 
@@ -8,13 +10,16 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, b
 {
     private readonly IRepository<TelegramUser, int> userRepository;
     private readonly IRepository<UserSettings, int> settingsRepository;
+    private readonly UserPlansRepository paymentRepository;
 
     public RegisterUserCommandHandler(
         IRepository<TelegramUser, int> userRepository,
-        IRepository<UserSettings, int> settingsRepository)
+        IRepository<UserSettings, int> settingsRepository,
+        UserPlansRepository paymentRepository)
     {
         this.userRepository = userRepository;
         this.settingsRepository = settingsRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public async Task<bool> HandleAsync(RegisterUserCommand command, CancellationToken cancellation = default)
@@ -44,6 +49,13 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, b
             if (!isSettingsExist)
             {
                 await settingsRepository.AddAsync(new UserSettings { TelegramUserId = user.Id, InterfaceLanguageId = LanguageENUM.English });
+            }
+
+            var userDb = await userRepository.FirstOrDefaultAsync(x => x.TelegramUserId == user.Id);
+            var userPlan = await paymentRepository.GetUserPlan(user.Id);
+            if(userPlan == null)
+            {
+                await paymentRepository.AddAsync(new UserPlan().InitBase(user.Id));
             }
         }
 

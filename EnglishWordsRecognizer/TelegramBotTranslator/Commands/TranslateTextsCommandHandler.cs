@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TB.Database.Entities.Requests;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 using TB.Translator.Entities;
 
 namespace TB.Translator.Commands;
@@ -13,16 +14,20 @@ public class TranslateTextsCommandHandler : ICommandHandler<TranslateTextsComman
 
     private readonly ITranslateService translateService;
 
-    private readonly IRepository<TextRequest, int> textRequestRepository;
+    private readonly TextRequestRepository textRequestRepository;
+
+    private readonly UserPlansRepository userPlansRepository;
 
     public TranslateTextsCommandHandler(
         ILogger<TranslateTextsCommandHandler> logger, 
         ITranslateService translateService,
-        IRepository<TextRequest, int> textRequestRepository)
+        TextRequestRepository textRequestRepository,
+        UserPlansRepository userPlansRepository)
     {
         this.logger = logger;
         this.translateService = translateService;
         this.textRequestRepository = textRequestRepository;
+        this.userPlansRepository = userPlansRepository;
     }
 
     public async Task<List<TranslateResponse>> HandleAsync(TranslateTextsCommand command, CancellationToken cancellation = default)
@@ -39,10 +44,12 @@ public class TranslateTextsCommandHandler : ICommandHandler<TranslateTextsComman
             return null;
         }
 
+        var plan = await userPlansRepository.GetUserPlan(command.UserId);
+
         var texts = command.TextsToTranslate.ToArray();
         var languages = command.LanguagesToTranslate.ToArray();
 
-        var request = new TextRequest(translateService.apiTypeENUM, texts, Costs.AzureCharTranslatePrice, command.UserId)
+        var request = new TextRequest(translateService.apiTypeENUM, texts, Costs.AzureCharTranslatePrice, command.UserId, plan.Id)
                             .InitTranslateTexts(languages);
 
         var resp = await translateService.TranslateTextsAsync(texts, languages);

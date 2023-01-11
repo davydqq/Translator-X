@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TB.Database.Entities.Requests;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 using TB.Meaning.Entities;
 
 namespace TB.Meaning.Commands;
@@ -11,18 +12,22 @@ public class GetPhraseMeaningCommandHandler : ICommandHandler<GetPhraseMeaningCo
 {
     private readonly ILogger<GetPhraseMeaningCommandHandler> logger;
 
-    private readonly IRepository<TextRequest, int> textRequestRepository;
+    private readonly TextRequestRepository textRequestRepository;
 
     private readonly CambridgeDictionaryService cambridgeDictionaryService;
 
+    private readonly UserPlansRepository userPlansRepository;
+
     public GetPhraseMeaningCommandHandler(
         ILogger<GetPhraseMeaningCommandHandler> logger,
-        IRepository<TextRequest, int> textRequestRepository,
-        CambridgeDictionaryService cambridgeDictionaryService)
+        TextRequestRepository textRequestRepository,
+        CambridgeDictionaryService cambridgeDictionaryService,
+        UserPlansRepository userPlansRepository)
     {
         this.logger = logger;
         this.textRequestRepository = textRequestRepository;
         this.cambridgeDictionaryService = cambridgeDictionaryService;
+        this.userPlansRepository = userPlansRepository;
     }
 
     public async Task<MeaningResult> HandleAsync(GetPhraseMeaningCommand command, CancellationToken cancellation = default)
@@ -33,8 +38,10 @@ public class GetPhraseMeaningCommandHandler : ICommandHandler<GetPhraseMeaningCo
             return null;
         }
 
+        var plan = await userPlansRepository.GetUserPlan(command.UserId);
+
         var texts = new string[] { command.Text };
-        var request = new TextRequest(ApiTypeENUM.Cambridge, texts, 0, command.UserId).InitMeaning();
+        var request = new TextRequest(ApiTypeENUM.Cambridge, texts, 0, command.UserId, plan.Id).InitMeaning();
 
         var resp = await cambridgeDictionaryService.GetCambridgeEnglishAsync(command.Text);
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TB.Database.Entities.Requests;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 using TB.SpeechToText.Entities;
 
 namespace TB.SpeechToText.Commands;
@@ -13,16 +14,20 @@ public class AudioToTextCommandHandler : ICommandHandler<AudioToTextCommand, Aud
 
     private readonly ISpeechToTextService speechToTextService;
 
-    private readonly IRepository<AudioRequest, int> audioRequestRepository;
+    private readonly AudioRequestRepository audioRequestRepository;
+
+    private readonly UserPlansRepository userPlansRepository;
 
     public AudioToTextCommandHandler(
         ILogger<AudioToTextCommandHandler> logger,
         ISpeechToTextService speechToTextService,
-        IRepository<AudioRequest, int> audioRequestRepository)
+        AudioRequestRepository audioRequestRepository,
+        UserPlansRepository userPlansRepository)
     {
         this.logger = logger;
         this.speechToTextService = speechToTextService;
         this.audioRequestRepository = audioRequestRepository;
+        this.userPlansRepository = userPlansRepository;
     }
 
     public async Task<AudioRecognizeResponse> HandleAsync(AudioToTextCommand command, CancellationToken cancellation = default)
@@ -35,7 +40,8 @@ public class AudioToTextCommandHandler : ICommandHandler<AudioToTextCommand, Aud
             return null;
         }
 
-        var request = new AudioRequest(speechToTextService.ApiType, command.UserId);
+        var plan = await userPlansRepository.GetUserPlan(command.UserId);
+        var request = new AudioRequest(speechToTextService.ApiType, command.UserId, plan.Id);
 
         var results = await speechToTextService.RecognizeAsync(command.Bytes, command.Language, command.MimeType);
 

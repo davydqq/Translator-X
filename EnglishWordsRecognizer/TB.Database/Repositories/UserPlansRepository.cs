@@ -11,11 +11,11 @@ public class UserPlansRepository : Repository<UserPlan, int>
 
 	}
 
-	public Task<UserPlan> GetUserPlan(long userId, DateTimeOffset currentDate)
+	public Task<UserPlan> GetUserPlan(long userId)
 	{
 		// TODO CHECK ORDER
 		return entities
 				.OrderByDescending(x => x.PlanId)
-				.FirstOrDefaultAsync(x => x.UserId == userId && currentDate < x.ExpireDate);
+				.FirstOrDefaultAsync(x => x.UserId == userId && DateTimeOffset.UtcNow < x.ExpireDate);
 	}
 }

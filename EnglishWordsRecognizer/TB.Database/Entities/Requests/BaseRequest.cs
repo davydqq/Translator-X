@@ -12,19 +12,26 @@ public class BaseRequest : BaseEntity<int>
     public ApiTypeENUM? ApiTypeId { set; get; }
     public ApiType ApiType { set; get; }
 
+
     public long UserId { set; get; }
     public TelegramUser User { set; get; }
+
+
+    public int UserPlanId { set; get; }
+    public UserPlan UserPlan { set; get; }
+
 
     [Column(TypeName = "jsonb")]
     public string Response { set; get; }
 
     public bool IsSuccess { set; get; }
 
-    public BaseRequest(DateTimeOffset requestTime, ApiTypeENUM? apiTypeId, long userId)
+    public BaseRequest(DateTimeOffset requestTime, ApiTypeENUM? apiTypeId, long userId, int userPlanId)
 	{
 		RequestTime = requestTime;
 		ApiTypeId = apiTypeId;
         UserId = userId;
+        UserPlanId = userPlanId;
     }
 
     public virtual BaseRequest InitResponse(string response, bool isSuccess)

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using TB.ComputerVision.Entities;
 using TB.Database.Entities.Requests;
 using TB.Database.GenericRepositories;
+using TB.Database.Repositories;
 
 namespace TB.ComputerVision.Command;
 
@@ -13,16 +14,20 @@ public class AnalyseImageCommandHandler : ICommandHandler<AnalyzeImageCommand, V
 
     private readonly IComputerVisionService computerVisionService;
 
-    private readonly IRepository<ImageRequest, int> imageRequestRepository;
+    private readonly ImageRequestRepository imageRequestRepository;
+
+    private readonly UserPlansRepository userPlansRepository;
 
     public AnalyseImageCommandHandler(
         ILogger<AnalyseImageCommandHandler> logger,
         IComputerVisionService computerVisionService,
-        IRepository<ImageRequest, int> imageRequestRepository)
+        ImageRequestRepository imageRequestRepository,
+        UserPlansRepository userPlansRepository)
     {
         this.logger = logger;
         this.computerVisionService = computerVisionService;
         this.imageRequestRepository = imageRequestRepository;
+        this.userPlansRepository = userPlansRepository;
     }
 
     public async Task<VisionResult> HandleAsync(AnalyzeImageCommand command, CancellationToken cancellation = default)
@@ -33,7 +38,8 @@ public class AnalyseImageCommandHandler : ICommandHandler<AnalyzeImageCommand, V
             return null;
         }
 
-        var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId).InitImageAnalysis();
+        var plan = await userPlansRepository.GetUserPlan(command.UserId);
+        var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId, plan.Id).InitImageAnalysis();
 
         var results = await computerVisionService.AnalyzeImageAsync(command.Bytes);
 

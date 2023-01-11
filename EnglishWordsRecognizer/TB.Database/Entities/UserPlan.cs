@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using TB.Database.Entities.Requests;
 
 namespace TB.Database.Entities;
 
@@ -16,4 +17,16 @@ public class UserPlan: BaseEntity<int>
 
     public long UserId { set; get; }
     public TelegramUser User { set; get; }
+
+    public List<BaseRequest> Requests { set; get; }
+
+    public UserPlan InitBase(long userId)
+    {
+        StartDate = DateTimeOffset.UtcNow;
+        ExpireDate = StartDate.AddDays(30);
+        PlanId = PlanENUM.Standart;
+        UserId = userId;
+
+        return this;
+    }
 }
