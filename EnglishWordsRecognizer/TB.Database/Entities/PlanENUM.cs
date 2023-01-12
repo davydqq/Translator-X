@@ -2,7 +2,8 @@
 
 public enum PlanENUM
 {
-    Standart = 1,
+    Unlimit = 1,
+    Standart,
     Premium,
-    Unlimit
+    PremiumPlus,
 }

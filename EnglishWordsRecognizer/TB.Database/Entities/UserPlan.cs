@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using TB.Common;
 using TB.Database.Entities.Requests;
 
 namespace TB.Database.Entities;
@@ -22,7 +23,7 @@ public class UserPlan: BaseEntity<int>
 
     public UserPlan InitBase(long userId)
     {
-        StartDate = DateTimeOffset.UtcNow;
+        StartDate = TimeProvider.Get();
         ExpireDate = StartDate.AddDays(30);
         PlanId = PlanENUM.Standart;
         UserId = userId;

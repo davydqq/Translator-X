@@ -19,5 +19,7 @@ public class Plan : BaseEntity<PlanENUM>
 
     public bool IsCustomPlan { set; get; }
 
+    public int Priority { set; get; }
+
     public List<UserPlan> UserPlans { set; get; }
 }

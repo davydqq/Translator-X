@@ -36,7 +36,7 @@ public class BillingPlanService : IBillingPlanService
 	}
 
     // IMAGES
-    public async Task<(List<ImageRequest> request, PlanENUM plan)> GetPlanImageRequestsAsync(long userId)
+    public async Task<(List<ImageRequest> request, UserPlan plan)> GetPaidPlanImageRequestsAsync(long userId)
     {
         var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
         var userPlan = await paymentRepository.GetUserPlan(userId);
@@ -51,18 +51,18 @@ public class BillingPlanService : IBillingPlanService
                 x.IsSuccess &&
                 x.RequestCost != 0);
 
-        return (imageCountRequests, userPlan.PlanId);
+        return (imageCountRequests, userPlan);
     }
 
     public async Task<bool> IsCanProcessImageAsync(long userId)
 	{
-        var resp = await GetPlanImageRequestsAsync(userId);
+        var resp = await GetPaidPlanImageRequestsAsync(userId);
 
         if (resp.request.Count == 0) return true;
 
         var totalRequests = resp.request.Count;
 
-        var plan = planCacheRepository.GetByKeyOrDefault(resp.plan);
+        var plan = planCacheRepository.GetByKeyOrDefault(resp.plan.PlanId);
 
         if (totalRequests >= plan.MaxAnalysisPhotoCountMonth)
         {
@@ -73,7 +73,7 @@ public class BillingPlanService : IBillingPlanService
     }
 
     // TEXTS
-    public async Task<(List<TextRequest> request, PlanENUM plan)> GetPlanTextRequestAsync(long userId)
+    public async Task<(List<TextRequest> request, UserPlan plan)> GetPaidPlanTextRequestAsync(long userId)
     {
         var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
         var userPlan = await paymentRepository.GetUserPlan(userId);
@@ -82,24 +82,27 @@ public class BillingPlanService : IBillingPlanService
             throw new Exception("User plan cannot be null");
         }
 
+        var types = new List<TextRequestTypeENUM> { TextRequestTypeENUM.Translate }; 
+
         var textCountRequests = await textRequestRepository.GetWhereAsync(
                 x => x.UserId == userId &&
                 x.UserPlanId == userPlan.Id &&
                 x.IsSuccess &&
+                types.Contains(x.TextRequestTypeId) &&
                 x.RequestCost != 0);
 
-        return (textCountRequests, userPlan.PlanId);
+        return (textCountRequests, userPlan);
     }
 
     public async Task<bool> IsCanProcessTextAsync(long userId)
     {
-        var resp = await GetPlanTextRequestAsync(userId);
+        var resp = await GetPaidPlanTextRequestAsync(userId);
 
         if (resp.request.Count == 0) return true;
 
         var totalChars = resp.request.Sum(x => x.TotalChars);
 
-        var plan = planCacheRepository.GetByKeyOrDefault(resp.plan);
+        var plan = planCacheRepository.GetByKeyOrDefault(resp.plan.PlanId);
         if (totalChars >= plan.MaxTranslateCharsMonth)
         {
             return false;
@@ -109,7 +112,7 @@ public class BillingPlanService : IBillingPlanService
     }
 
     // AUDIOS
-    public async Task<(List<AudioRequest> request, PlanENUM plan)> GetPlanAudioRequestAsync(long userId)
+    public async Task<(List<AudioRequest> request, UserPlan plan)> GetPaidPlanAudioRequestAsync(long userId)
     {
         var user = await telegramUserRepository.FirstOrDefaultAsync(x => x.TelegramUserId == userId);
         var userPlan = await paymentRepository.GetUserPlan(userId);
@@ -126,18 +129,18 @@ public class BillingPlanService : IBillingPlanService
                 x.IsSuccess &&
                 x.RequestCost != 0);
 
-        return (audioRequests, userPlan.PlanId);
+        return (audioRequests, userPlan);
     }
 
     public async Task<bool> IsCanProcessAudioAsync(long userId)
     {
-        var resp = await GetPlanAudioRequestAsync(userId);
+        var resp = await GetPaidPlanAudioRequestAsync(userId);
 
         if (resp.request.Count == 0) return true;
 
         var sumSeconds = resp.request.Sum(x => x.ProcessedSeconds);
 
-        var plan = planCacheRepository.GetByKeyOrDefault(resp.plan);
+        var plan = planCacheRepository.GetByKeyOrDefault(resp.plan.PlanId);
         if (sumSeconds >= plan.MaxAudioTranscriptionSecondsMonth)
         {
             return false;

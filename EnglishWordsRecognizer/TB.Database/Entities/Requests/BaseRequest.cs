@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using TB.Common;
 
 namespace TB.Database.Entities.Requests;
 
@@ -26,9 +27,9 @@ public class BaseRequest : BaseEntity<int>
 
     public bool IsSuccess { set; get; }
 
-    public BaseRequest(DateTimeOffset requestTime, ApiTypeENUM? apiTypeId, long userId, int userPlanId)
+    public BaseRequest(ApiTypeENUM? apiTypeId, long userId, int userPlanId)
 	{
-		RequestTime = requestTime;
+		RequestTime = TimeProvider.Get();
 		ApiTypeId = apiTypeId;
         UserId = userId;
         UserPlanId = userPlanId;

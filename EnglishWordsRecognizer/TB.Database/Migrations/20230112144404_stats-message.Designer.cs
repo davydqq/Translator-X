@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TB.Database;
@@ -11,9 +12,11 @@ using TB.Database;
 namespace TB.Database.Migrations
 {
     [DbContext(typeof(TBDatabaseContext))]
-    partial class TBDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230112144404_stats-message")]
+    partial class statsmessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3660,14 +3663,14 @@ namespace TB.Database.Migrations
                             Id = 451,
                             Key = "stats.message",
                             LanguageId = 1,
-                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Зображення</b> {1} з {2} використано\n<b>Символов текста для перевода</b> использовано {3} из {4}\n<b>Аудіохвилин</b> використано {5} із {6}\n\nЗалишилося {7} днів підписки\nЗалишилося {8} хвилин підписки"
+                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Зображення</b> {1} з {2} використано\n<b>Символов текста для перевода</b> использовано {3} из {4}\n<b>Аудіохвилин</b> використано {5} із {6}\n\nЗалишилося {7} днів підписки\nОсталось {8} минут подписки"
                         },
                         new
                         {
                             Id = 452,
                             Key = "stats.message",
                             LanguageId = 2,
-                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Изображения</b> {1} из {2} использованных\n<b>Символів тексту для перекладу</b> використано {3} з {4}\n<b>Аудио минут</b> использовано {5} из {6}\n\nОсталось {7} дней подписки\nОсталось {8} минут подписки"
+                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Изображения</b> {1} из {2} использованных\n<b>Символів тексту для перекладу</b> використано {3} з {4}\n<b>Аудио минут</b> использовано {5} из {6}\n\nОсталось {7} дней подписки\nЗалишилося {8} хвилин підписки"
                         },
                         new
                         {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using TB.Common;
 
 namespace TB.Database.Entities.Requests;
 
@@ -14,12 +15,12 @@ public class AudioRequest: BaseRequest
 
     public double SecondCost { set; get; }
 
-    public AudioRequest() : base(DateTimeOffset.UtcNow, null, 0, 0)
+    public AudioRequest() : base(null, 0, 0)
     {
 
 	}
 
-    public AudioRequest(ApiTypeENUM? apiTypeId, long userId, int userPlanId) : base(DateTimeOffset.UtcNow, apiTypeId, userId, userPlanId)
+    public AudioRequest(ApiTypeENUM? apiTypeId, long userId, int userPlanId) : base(apiTypeId, userId, userPlanId)
     {
     }
 

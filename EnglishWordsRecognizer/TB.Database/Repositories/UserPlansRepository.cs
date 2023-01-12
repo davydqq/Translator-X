@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TB.Common;
 using TB.Database.Entities;
 using TB.Database.GenericRepositories;
 
@@ -15,7 +16,8 @@ public class UserPlansRepository : Repository<UserPlan, int>
 	{
 		// TODO CHECK ORDER
 		return entities
-				.OrderByDescending(x => x.PlanId)
-				.FirstOrDefaultAsync(x => x.UserId == userId && DateTimeOffset.UtcNow < x.ExpireDate);
+				.Include(x => x.Plan)
+				.OrderBy(x => x.Plan.Priority)
+				.FirstOrDefaultAsync(x => x.UserId == userId && TimeProvider.Get() < x.ExpireDate);
 	}
 }

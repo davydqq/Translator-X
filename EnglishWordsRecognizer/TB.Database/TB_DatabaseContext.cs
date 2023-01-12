@@ -97,32 +97,46 @@ public class TBDatabaseContext : DbContext
             new Plan
             {
                 Id = PlanENUM.Standart,
-                Name = nameof(PlanENUM.Standart),
+                Name = "Standart",
                 Price = 0,
                 IsCustomPlan = false,
                 MaxAnalysisPhotoCountMonth = 30,
                 MaxAudioTranscriptionSecondsMonth = 300,
-                MaxTranslateCharsMonth = 10000
+                MaxTranslateCharsMonth = 10000,
+                Priority = 1000,
             },
             new Plan
             {
                 Id = PlanENUM.Premium,
-                Name = nameof(PlanENUM.Premium),
+                Name = "Premium",
                 Price = 3.00,
                 IsCustomPlan = false,
                 MaxAnalysisPhotoCountMonth = 150,
                 MaxAudioTranscriptionSecondsMonth = 900,
-                MaxTranslateCharsMonth = 50000
+                MaxTranslateCharsMonth = 50000,
+                Priority = 999,
+            },
+            new Plan
+            {
+                Id = PlanENUM.PremiumPlus,
+                Name = "Premium +",
+                Price = 11.00,
+                IsCustomPlan = false,
+                MaxAnalysisPhotoCountMonth = 500,
+                MaxAudioTranscriptionSecondsMonth = 5000,
+                MaxTranslateCharsMonth = 200000,
+                Priority = 998,
             },
             new Plan
             {
                 Id = PlanENUM.Unlimit,
-                Name = nameof(PlanENUM.Unlimit),
+                Name = "Unlimit",
                 Price = int.MaxValue,
                 IsCustomPlan = true,
                 MaxAudioTranscriptionSecondsMonth = int.MaxValue,
                 MaxAnalysisPhotoCountMonth = int.MaxValue,
-                MaxTranslateCharsMonth = int.MaxValue
+                MaxTranslateCharsMonth = int.MaxValue,
+                Priority = 1,
             }
         );
 
@@ -317,6 +331,8 @@ public class TBDatabaseContext : DbContext
         var textMaxLengthKey = "app.text.maxLength";
 
         var billingExceedLimit = "billing.exceedLimit";
+
+        var statsMessage = "stats.message";
 
         var data = new List<KeyTranslationsInitEntity>
         {
@@ -800,6 +816,22 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "Das Limit dieses Monats wurde überschritten, senden Sie /stats für Details.")
                 .AddTranslate(LanguageENUM.Polish, "Limit w tym miesiącu został przekroczony, wyślij /stats, aby uzyskać szczegółowe informacje.")
                 .AddTranslate(LanguageENUM.Turkish, "Bu ayın limiti aşıldı, detaylar için /stats gönderin."),
+            new KeyTranslationsInitEntity(statsMessage)
+                .AddTranslate(LanguageENUM.Ukrainian, "<b>Статистика</b>\n\n" + "Тариф: {0}\n\n" + "<b>Зображення</b> {1} з {2} використано\n" + "<b>Символов текста для перевода</b> использовано {3} из {4}\n" + "<b>Аудіохвилин</b> використано {5} із {6}\n\n" + "Залишилося {7} днів підписки\n" + "Залишилося {8} хвилин підписки")
+                .AddTranslate(LanguageENUM.Russian, "<b>Статистика</b>\n\n" + "Тариф: {0}\n\n" + "<b>Изображения</b> {1} из {2} использованных\n" + "<b>Символів тексту для перекладу</b> використано {3} з {4}\n" + "<b>Аудио минут</b> использовано {5} из {6}\n\n" + "Осталось {7} дней подписки\n" + "Осталось {8} минут подписки")
+                .AddTranslate(LanguageENUM.English, "<b>Statistic</b>\n\n" + "Plan: {0}\n\n" + "<b>Images</b> {1} of {2} used\n" + "<b>Text characters for translation</b> {3} of {4} used\n" + "<b>Audio minutes</b> {5} of {6} used\n\n" + "{7} days of subscription left\n" + "{8} minutes of subscription left")
+                .AddTranslate(LanguageENUM.Spanish, "<b>Estadística</b>\n\n" + "Tarifa: {0}\n\n" + "<b>Imágenes</b> {1} de {2} usadas\n" + "<b>Caracteres de texto para traducción</b> {3} de {4} utilizados\n" + "<b>Minutos de audio</b> {5} de {6} utilizados\n\n" + "Quedan {7} días de suscripción\n" + "Quedan {8} minutos de suscripción")
+                .AddTranslate(LanguageENUM.French, "<b>Statistique</b>\n\n" + "Tarif : {0}\n\n" + "<b>Images</b> {1} sur {2} utilisées\n" + "<b>Caractères de texte à traduire</b> {3} sur {4} utilisés\n" + "<b>Minutes audio</b> {5} sur {6} utilisées\n\n" + "{7} jours d'abonnement restants\n" + "{8} minutes d'abonnement restantes")
+                .AddTranslate(LanguageENUM.Japanese, "<b>統計</b>\n\n" + "料金: {0}\n\n" + "<b>画像</b> {1}/{2} 使用\n" + "<b>翻訳用テキスト文字</b> {4} 個中 {3} 個使用\n" + "<b>音声時間</b> {6} 中 {5} を使用\n\n" + "サブスクリプションは残り {7} 日\n" + "{8} 分のサブスクリプションが残っています")
+                .AddTranslate(LanguageENUM.Chinese, "<b>统计</b>\n\n" + "关税：{0}\n\n" + "<b>Images</b> {1} of {2} 使用了\n" + "<b>用于翻译的文本字符</b> 使用了 {3} 个，共 {4} 个\n" + "<b>音频分钟数</b>已使用 {5} 分钟，共 {6} 分钟\n\n" + "订阅还剩 {7} 天\n" + "还剩 {8} 分钟的订阅时间")
+                .AddTranslate(LanguageENUM.Czech, "<b>Statistika</b>\n\n" + "Tarif: {0}\n\n" + "<b>Obrázky</b> použité {1} z {2}\n" + "<b>Textové znaky pro překlad</b> Využito {3} z {4}\n" + "<b>Zvukové minuty</b> Využito {5} z {6}\n\n" + "Zbývá {7} dní předplatného\n" + "Zbývá {8} minut předplatného")
+                .AddTranslate(LanguageENUM.Danish, "<b>Statistik</b>\n\n" + "Takst: {0}\n\n" + "<b>Billeder</b> {1} af {2} brugt\n" + "<b>Teksttegn til oversættelse</b> {3} af {4} brugt\n" + "<b>Lydminutter</b> {5} af {6} brugt\n\n" + "{7} dages abonnement tilbage\n" + "{8} minutters abonnement tilbage")
+                .AddTranslate(LanguageENUM.Hindi, "<b>आँकड़ा</b>\n\n" + "शुल्क: {0}\n\n" + "<b>इमेज</b> {2} में से {1} इस्तेमाल की गई\n" + "<b>अनुवाद के लिए पाठ वर्ण</b> {4} में से {3} का उपयोग किया गया\n" + "<b>ऑडियो मिनट</b> {6} में से {5} का उपयोग किया गया\n\n" + "{7} दिनों की सदस्‍यता शेष\n" + "{8} मिनट की सदस्यता बाकी है")
+                .AddTranslate(LanguageENUM.Italian, "<b>Statistica</b>\n\n" + "Tariffa: {0}\n\n" + "<b>Immagini</b> {1} di {2} usate\n" + "<b>Caratteri di testo per la traduzione</b> {3} di {4} utilizzati\n" + "<b>Minuti audio</b> {5} su {6} utilizzati\n\n" + "{7} giorni di abbonamento rimanenti\n" + "{8} minuti di abbonamento rimanenti")
+                .AddTranslate(LanguageENUM.Swedish, "<b>Statistik</b>\n\n" + "Pris: {0}\n\n" + "<b>Bilder</b> {1} av {2} används\n" + "<b>Textecken för översättning</b> {3} av {4} används\n" + "<b>Ljudminuter</b> {5} av {6} används\n\n" + "{7} dagars prenumeration kvar\n" + "{8} minuters prenumeration kvar")
+                .AddTranslate(LanguageENUM.German, "<b>Statistik</b>\n\n" + "Tarif: {0}\n\n" + "<b>Bilder</b> {1} von {2} verwendet\n" + "<b>Textzeichen für die Übersetzung</b> {3} von {4} verwendet\n" + "<b>Audiominuten</b> {5} von {6} verbraucht\n\n" + "{7} Tage Abonnement verbleibend\n" + "{8} Minuten Abonnement verbleiben")
+                .AddTranslate(LanguageENUM.Polish, "<b>Statystyki</b>\n\n" + "Taryfa: {0}\n\n" + "<b>Obrazy</b> użyto {1} z {2}\n" + "<b>Znaki tekstowe do tłumaczenia</b> Użyto {3} z {4}\n" + "<b>Wykorzystano minuty audio</b> {5} z {6}\n\n" + "Pozostało {7} dni subskrypcji\n" + "Pozostało {8} minut subskrypcji")
+                .AddTranslate(LanguageENUM.Turkish, "<b>İstatistik</b>\n\n" + "Tarife: {0}\n\n" + "{2} resimden {1} <b>resim</b> kullanıldı\n" + "<b>Çeviri için metin karakterleri</b> {3} / {4} kullanıldı\n" + "<b>Ses dakikaları</b> {5} / {6} kullanıldı\n\n" + "{7} günlük abonelik kaldı\n" + "{8} dakikalık abonelik kaldı"),
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")

@@ -5,13 +5,13 @@ namespace TB.BillingPlans;
 
 public interface IBillingPlanService
 {
-    Task<(List<ImageRequest> request, PlanENUM plan)> GetPlanImageRequestsAsync(long userId);
+    Task<(List<ImageRequest> request, UserPlan plan)> GetPaidPlanImageRequestsAsync(long userId);
     Task<bool> IsCanProcessImageAsync(long userId);
 
 
-    Task<(List<TextRequest> request, PlanENUM plan)> GetPlanTextRequestAsync(long userId);
+    Task<(List<TextRequest> request, UserPlan plan)> GetPaidPlanTextRequestAsync(long userId);
     Task<bool> IsCanProcessTextAsync(long userId);
 
-    Task<(List<AudioRequest> request, PlanENUM plan)> GetPlanAudioRequestAsync(long userId);
+    Task<(List<AudioRequest> request, UserPlan plan)> GetPaidPlanAudioRequestAsync(long userId);
     Task<bool> IsCanProcessAudioAsync(long userId);
 }

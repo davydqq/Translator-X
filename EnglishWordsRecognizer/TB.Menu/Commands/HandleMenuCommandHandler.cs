@@ -1,11 +1,14 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
+using TB.BillingPlans;
+using TB.Common;
 using TB.Core.Commands;
 using TB.Database.Entities;
 using TB.Database.GenericRepositories;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Menu.Entities;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TB.Menu.Commands;
@@ -22,18 +25,26 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand, bool>
 
     private readonly ILocalizationService localizationService;
 
+    private readonly IBillingPlanService billingPlanService;
+
+    private readonly PlanCacheRepository planCacheRepository;
+
     public HandleMenuCommandHandler(
         ICommandDispatcher commandDispatcher,
         IOptions<BotMenuConfig> menuOptions,
         UserSettingsRepository userSettingsRepository,
         IRepository<Language, LanguageENUM> languageRepository,
-        ILocalizationService localizationService)
+        ILocalizationService localizationService,
+        IBillingPlanService billingPlanService,
+        PlanCacheRepository planCacheRepository)
 	{
         this.commandDispatcher = commandDispatcher;
         this.menuOptions = menuOptions;
         this.userSettingsRepository = userSettingsRepository;
         this.languageRepository = languageRepository;
         this.localizationService = localizationService;
+        this.billingPlanService = billingPlanService;
+        this.planCacheRepository = planCacheRepository;
     }
 
 	public async Task<bool> HandleAsync(HandleMenuCommand command, CancellationToken cancellation = default)
@@ -137,6 +148,39 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand, bool>
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, message, null, inlineKeyboard);
+                    await commandDispatcher.DispatchAsync(commandToSend);
+                    break;
+                }
+            case BotMenuId.Stats:
+                {
+                    var imageRequests = await billingPlanService.GetPaidPlanImageRequestsAsync(command.UserId);
+                    var imageCount = imageRequests.request.Count;
+
+                    var audioRequests = await billingPlanService.GetPaidPlanAudioRequestAsync(command.UserId);
+                    var audioTotalSeconds = audioRequests.request.Count == 0 ? 0 : audioRequests.request.Sum(x => x.ProcessedSeconds);
+                    var audioTotalMinutes = (double)audioTotalSeconds / 60;
+
+                    var textRequests = await billingPlanService.GetPaidPlanTextRequestAsync(command.UserId);
+                    var textChars = textRequests.request.Count == 0 ? 0 : textRequests.request.Sum(x => x.TotalChars);
+
+                    var userPlan = imageRequests.plan;
+                    var plan = planCacheRepository.GetByKeyOrDefault(imageRequests.plan.PlanId);
+
+                    var message = await localizationService.GetTranslateByInterface("stats.message", command.UserId);
+
+                    var timeDifference = userPlan.ExpireDate - TimeProvider.Get();
+
+                    var planAudioMinutes = Math.Round((double)plan.MaxAudioTranscriptionSecondsMonth / 60, 2);
+
+                    var formatedMessage = string.Format(message, 
+                                            plan.Name, 
+                                            imageCount, plan.MaxAnalysisPhotoCountMonth,
+                                            textChars, plan.MaxTranslateCharsMonth,
+                                            Math.Round(audioTotalMinutes, 2), planAudioMinutes,
+                                            Math.Round(timeDifference.TotalDays, 1),
+                                            Math.Round(timeDifference.TotalHours, 1));
+
+                    var commandToSend = new SendMessageCommand(command.ChatId, formatedMessage, ParseMode.Html);
                     await commandDispatcher.DispatchAsync(commandToSend);
                     break;
                 }
