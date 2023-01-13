@@ -167,18 +167,8 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
             var targetLanguage = settings.TargetLanguage;
 
             var messageEstablished = await localizationService.GetTranslateByInterface("app.languages.established", userId);
-            var messageLanguages = await localizationService.GetTranslateByInterface("app.languages.yourLanguages", userId);
 
-            var messageTargetLanguage = await localizationService.GetTranslateByInterface("app.languages.targetL", userId);
-            var messageNativeLanguage = await localizationService.GetTranslateByInterface("app.languages.nativeL", userId);
-
-            var messageCanSend = await localizationService.GetTranslateByInterface("app.languages.canSend", userId);
-
-            var message = $"{messageEstablished}\n" +
-                          $"{messageCanSend}\n" +
-                          $"{messageLanguages} \n" +
-                          $"{messageNativeLanguage} {nativeLanguage.Name}\n" +
-                          $"{messageTargetLanguage} {targetLanguage.Name}";
+            var message = string.Format(messageEstablished, nativeLanguage.Name, targetLanguage.Name);
 
             var command = new SendMessageCommand(chatId, message, ParseMode.Html);
 

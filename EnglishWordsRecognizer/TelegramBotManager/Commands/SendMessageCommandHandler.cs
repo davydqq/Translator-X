@@ -36,9 +36,9 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
 
             return message;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.LogWarning("Message wasn`t been sent: ", e.Message);
+            logger.LogWarning($"Message wasn`t been sent: {ex}");
         }
 
         return null;

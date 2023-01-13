@@ -27,9 +27,9 @@ public class DeleteMessageCommandHandler : ICommandHandler<DeleteMessageCommand,
             await retryPolicy.ExecuteAsync(() => telegramBotClient.DeleteMessageAsync(command.ChatId, command.MessageId));
             return true;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.LogWarning("Message wasn`t been deleted");
+            logger.LogWarning($"Message wasn`t been deleted: {ex}");
             return false;
         }
     }
