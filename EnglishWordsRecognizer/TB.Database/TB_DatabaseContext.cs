@@ -302,6 +302,7 @@ public class TBDatabaseContext : DbContext
 
         // Audios
         var audioText = "app.audios.audioText";
+        var audioLanguageWarning = "app.audios.languageWarning";
 
         // Contents
         var contentInProcessing = "app.content.processing";
@@ -350,10 +351,9 @@ public class TBDatabaseContext : DbContext
         var botFeaturesPolish = "<b>Funkcje bota</b>\n\nPrześlij tekst do automatycznego tłumaczenia na wybrany język.\n\nPrześlij /meaning_english, aby uzyskać angielskie znaczenie i synonimy.\n\n<b>Prześlij zdjęcia i uzyskaj </b> \n- Tekst ze zdjęciem\n- Wszystkie obiekty ze zdjęciem z tłumaczeniem\n- Krótki opis zdjęcia, jeśli to możliwe\n\n<b>Prześlij dźwięk i pobierz</b>\n- transkrypcję dźwięku";
         var botFeaturesTurkish = "<b>Bot özellikleri</b>\n\nSeçilen dile otomatik çeviri için metin gönderin.\n\nİngilizce anlamı ve eşanlamlıları aramak için /meaning_english gönderin.\n\n<b>Fotoğraf gönderin ve </b> \n- Fotoğraflı metin\n- Fotoğraflı tüm nesneler ve çevirisi\n- Mümkünse fotoğrafın kısa açıklaması\n\n<b>Sesi gönderin ve</b>\n- sesli transkripsiyonu alın";
 
-        // bot infi Features, reply id, interface language, Email contact for bot info
+        // bot info Features, support forward and replying, interface language, Email contact for bot info
         // User info settings languages established, audio language, meaning, inteface language 
-        // progress status
-        // audio language after processeing 
+        // Audio language after processeing 
 
         var data = new List<KeyTranslationsInitEntity>
         {
@@ -387,7 +387,7 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.Italian, "Le lingue sono state impostate.\n\n" + botFeaturesItalian + "\n\n<b>Le tue lingue</b>\n" + "Lingua principale: {0}\n" + "Lingua di destinazione: {1}")
                 .AddTranslate(LanguageENUM.Swedish, "Språk sattes.\n\n" + botFeaturesSwedish + "\n\n<b>Dina språk</b>\n" + "Modersmål: {0}\n" + "Målspråk: {1}")
                 .AddTranslate(LanguageENUM.German, "Sprachen wurden eingestellt.\n\n" + botFeaturesGerman + "\n\n<b>Ihre Sprachen</b>\n" + "Muttersprache: {0}\n" + "Zielsprache: {1}")
-                .AddTranslate(LanguageENUM.Polish, "Ustawiono języki.\n\n" + botFeaturesPolish + "\n\n<b>Twoje języki</b>\n" + "Główny język: {0}\n" + "Język docelowy: {1}") 
+                .AddTranslate(LanguageENUM.Polish, "Ustawiono języki.\n\n" + botFeaturesPolish + "\n\n<b>Twoje języki</b>\n" + "Główny język: {0}\n" + "Język docelowy: {1}")
                 .AddTranslate(LanguageENUM.Turkish, "Diller ayarlandı.\n\n" + botFeaturesTurkish + "\n\n<b>Dilleriniz</b>\n" + "Ana dil: {0}\n" + "Hedef dil: {1}"),
             new KeyTranslationsInitEntity(textImageKey)
                 .AddTranslate(LanguageENUM.Ukrainian, "<b>Текст фото</b>")
@@ -804,7 +804,23 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.Swedish, "Upptaget för behandling, vänligen vänta ett ögonblick. 😌")
                 .AddTranslate(LanguageENUM.German, "Zur Bearbeitung angenommen, bitte warten Sie einen Moment. 😌")
                 .AddTranslate(LanguageENUM.Polish, "Pobrane do przetworzenia, proszę chwilę poczekać. 😌")
-                .AddTranslate(LanguageENUM.Turkish, "İşlem için alındı, lütfen bir dakika bekleyin. 😌"),      
+                .AddTranslate(LanguageENUM.Turkish, "İşlem için alındı, lütfen bir dakika bekleyin. 😌"),
+            new KeyTranslationsInitEntity(audioLanguageWarning)
+                .AddTranslate(LanguageENUM.Ukrainian, "Якщо аудіо транскрипція неправильна, спробуйте вибрати аудіо мову /audio_language і надіслати знову аудіо")
+                .AddTranslate(LanguageENUM.Russian, "Если аудио транскрипция неверна, попробуйте выбрать аудио язык /audio_language и отправить снова аудио")
+                .AddTranslate(LanguageENUM.English, "If the audio transcription is incorrect, try to select the audio language /audio_language and send the audio again")
+                .AddTranslate(LanguageENUM.Spanish, "Si la transcripción del audio es incorrecta, intente seleccionar el idioma del audio /audio_language")
+                .AddTranslate(LanguageENUM.French, "Si la transcription audio est incorrecte, essayez de sélectionner la langue audio /audio_language")
+                .AddTranslate(LanguageENUM.Japanese, "音声の書き起こしが正しくない場合は、音声言語 /audio_language を選択してみてください")
+                .AddTranslate(LanguageENUM.Chinese, "如果音频转录不正确，请尝试选择音频语言 /audio_language")
+                .AddTranslate(LanguageENUM.Czech, "Pokud je přepis zvuku nesprávný, zkuste vybrat jazyk zvuku /audio_language")
+                .AddTranslate(LanguageENUM.Danish, "Hvis lydtransskriptionen er forkert, prøv at vælge lydsproget /audio_language")
+                .AddTranslate(LanguageENUM.Hindi, "यदि ऑडियो ट्रांसक्रिप्शन गलत है, तो ऑडियो भाषा /audio_language का चयन करने का प्रयास करें")
+                .AddTranslate(LanguageENUM.Italian, "se la trascrizione audio non è corretta, prova a selezionare la lingua audio /audio_language")
+                .AddTranslate(LanguageENUM.Swedish, "Om ljudtranskriptionen är felaktig, prova att välja ljudspråket /audio_language")
+                .AddTranslate(LanguageENUM.German, "Wenn die Audiotranskription nicht korrekt ist, versuchen Sie, die Audiosprache /audio_language auszuwählen")
+                .AddTranslate(LanguageENUM.Polish, "Jeśli transkrypcja dźwięku jest nieprawidłowa, spróbuj wybrać język dźwięku /audio_language")
+                .AddTranslate(LanguageENUM.Turkish, "Ses dökümü yanlışsa, ses dilini /audio_language seçmeyi deneyin"),
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")

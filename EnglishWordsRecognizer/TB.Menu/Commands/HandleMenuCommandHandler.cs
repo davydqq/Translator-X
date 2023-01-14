@@ -140,10 +140,8 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand, bool>
                 }
             case BotMenuId.AudioTranscriptionLanguage:
                 {
-                    var settings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
-                    var audioLanguage = settings.AudioLanguageId;
                     var message = await localizationService.GetTranslateByInterface("app.menu.audioLang", command.UserId);
-                    var langs = await languageRepository.GetWhereAsync(x => x.Id != audioLanguage && x.IsSupportAudioTranscription);
+                    var langs = await languageRepository.GetWhereAsync(x => x.IsSupportAudioTranscription);
                     var buttons = GetLanguagesButtons(command.MenuCommand.CallBackId, langs);
                     InlineKeyboardMarkup inlineKeyboard = new(buttons);
 

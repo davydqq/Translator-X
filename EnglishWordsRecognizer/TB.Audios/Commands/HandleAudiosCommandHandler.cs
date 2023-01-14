@@ -112,6 +112,8 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
 
         if (!string.IsNullOrEmpty(textProcessed))
         {
+            textProcessed += "\n\n\n" + await localizationService.GetTranslateByInterface("app.audios.languageWarning", command.UserId);
+
             var commandTelegram = new SendMessageCommand(command.ChatId, textProcessed, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
             await commandDispatcher.DispatchAsync(commandTelegram);
         }
