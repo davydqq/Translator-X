@@ -289,11 +289,8 @@ public class TBDatabaseContext : DbContext
         // CALLBACKS
         var interfaceKey = "app.languages.interfaceLanguage";
         var audioLanguageKey = "app.languages.audioLanguageKey";
+
         var languagesSettedKey = "app.languages.established";
-        var languageYourLanguagesKey = "app.languages.yourLanguages";
-        var nativeLanguageKey = "app.languages.nativeL";
-        var targetLanguageKey = "app.languages.targetL";
-        var canSendKey = "app.languages.canSend";
 
         // IMAGES
         var textImageKey = "app.images.text";
@@ -305,6 +302,9 @@ public class TBDatabaseContext : DbContext
 
         // Audios
         var audioText = "app.audios.audioText";
+
+        // Contents
+        var contentInProcessing = "app.content.processing";
 
         // MENU
         var menuChooseNativeKey = "app.menu.chooseNative";
@@ -334,6 +334,27 @@ public class TBDatabaseContext : DbContext
 
         var statsMessage = "stats.message";
 
+        var botFeaturesEN = "<b>Bot features</b>\n\nSend text for automatic translation into the selected language.\n\nUse /meaning_english to enable show English meaning and synonyms for the words.\n\n<b>Send photos and receive</b>\n- Text from photos\n- All objects from the photo with translations\n- Short description of the photo if possible\n\n<b>Send audio and receive</b>\n- Transcription of the audio";
+        var botFeaturesUA = "<b>Можливості бота</b>\n\nНадішліть текст для автоматичного перекладу на вибрану мову.\n\nНадішліть /meaning_english, щоб показувати англійське значення та синоніми.\n\n<b>Надішліть фотографії та отримайте </b>\n- Текст з фото\n- Всі об'єкти з фото з перекладом\n- Короткий опис фото, якщо можливо\n\n<b>Надішліть аудіо та отримайте</b>\n- аудіо транскрипцію";
+        var botFeaturesRU = "<b>Возможности бота</b>\n\nОтправьте текст для автоматического перевода на выбранный язык.\n\nОтправьте /meaning_english, чтобы показывать английское значение и синоними.\n\n<b>Отправьте фотографии и получите </b>\n- Текст с фото\n- Все объекты с фото с переводом\n- Краткое описание фото, если возможно\n\n<b>Отправьте аудио и получите</b>\n- аудио транскрипцию";
+        var botFeaturesSpain = "<b>Características del bot</b>\n\nEnvíe texto para traducción automática al idioma seleccionado.\n\nEnvíe /meaning_english para solicitar significado y sinónimos en inglés.\n\n<b>Envíe fotos y obtenga </b> \n- Texto con foto\n- Todos los objetos con foto con traducción\n- Breve descripción de la foto, si es posible\n\n<b>Envíe el audio y obtenga</b>\n- la transcripción del audio";
+        var botFeaturesFrench = "<b>Fonctionnalités du bot</b>\n\nSoumettez le texte pour traduction automatique dans la langue sélectionnée.\n\nSoumettez /meaning_english pour demander la signification et les synonymes en anglais.\n\n<b>Soumettez des photos et obtenez </b> \n- Texte avec photo\n- Tous les objets avec photo avec traduction\n- Brève description de la photo, si possible\n\n<b>Soumettre l'audio et obtenir</b>\n- Transcription audio";
+        var botFeaturesJapanese = "<b>ボットの機能</b>\n\nテキストを送信して、選択した言語に自動翻訳します。\n\n/meaning_english を送信して、英語の意味と同義語を求めます。\n\n<b>写真を送信して </b> を入手してください> \n- 写真付きテキスト\n- 写真付きのすべてのオブジェクトと翻訳\n- 可能であれば、写真の簡単な説明\n\n<b>音声を送信して取得</b>\n- 音声文字起こし";
+        var botFeaturesChinese = "<b>Bot 功能</b>\n\n提交文本以自动翻译成所选语言。\n\n提交 /meaning_english 以调用英语含义和同义词。\n\n<b>提交照片并获取 </b> \n- 带照片的文本\n- 所有带照片的对象和翻译\n- 如果可能的话，对照片进行简要描述\n\n<b>提交音频并获得</b>\n- 音频转录";
+        var botFeaturesCzech = "<b>Funkce robota</b>\n\nOdešlete text k automatickému překladu do vybraného jazyka.\n\nOdešlete /meaning_english, chcete-li získat anglický význam a synonyma.\n\n<b>Odešlete fotografie a získejte</b> \n- Text s fotografií\n- Všechny objekty s fotografií s překladem\n- Stručný popis fotografie, pokud je to možné\n\n<b>Odešlete zvuk a získejte</b>\n- zvukový přepis";
+        var botFeaturesDanish = "<b>Bot-funktioner</b>\n\nSend tekst til automatisk oversættelse til det valgte sprog.\n\nSend /meaning_english for at kalde på engelsk betydning og synonymer.\n\n<b>Indsend billeder og få </b> \n- Tekst med foto\n- Alle objekter med foto med oversættelse\n- Kort beskrivelse af billedet, hvis det er muligt\n\n<b>Send lyd og få</b>\n- lydtransskription";
+        var botFeaturesHindi = "<b>बॉट सुविधाएँ</b>\n\nचयनित भाषा में स्वचालित अनुवाद के लिए टेक्स्ट सबमिट करें।\n\nअंग्रेज़ी अर्थ और समानार्थक शब्द के लिए कॉल करने के लिए /meaning_english सबमिट करें।\n\n<b>फ़ोटो सबमिट करें और प्राप्त करें </b> \n- फ़ोटो के साथ टेक्स्ट\n- अनुवाद के साथ फ़ोटो के साथ सभी ऑब्जेक्ट\n- फ़ोटो का संक्षिप्त विवरण, यदि संभव हो तो\n\n<b>ऑडियो सबमिट करें और प्राप्त करें</b>\n- ऑडियो ट्रांसक्रिप्शन";
+        var botFeaturesItalian = "<b>Caratteristiche del bot</b>\n\nInvia il testo per la traduzione automatica nella lingua selezionata.\n\nInvia /meaning_english per richiedere significato e sinonimi in inglese.\n\n<b>Invia foto e ottieni </b> \n- Testo con foto\n- Tutti gli oggetti con foto con traduzione\n- Breve descrizione della foto, se possibile\n\n<b>Invia audio e ottieni</b>\n- trascrizione audio";
+        var botFeaturesSwedish = "<b>Botfunktioner</b>\n\nSkicka in text för automatisk översättning till det valda språket.\n\nSkicka in /meaning_english för att få engelska betydelser och synonymer.\n\n<b>Skicka in foton och få </b> \n- Text med foto\n- Alla objekt med foto med översättning\n- Kort beskrivning av fotot, om möjligt\n\n<b>Skicka in ljud och få</b>\n- ljudtranskription";
+        var botFeaturesGerman = "<b>Bot-Funktionen</b>\n\nSenden Sie Text zur automatischen Übersetzung in die ausgewählte Sprache.\n\nSenden Sie /meaning_english, um nach englischer Bedeutung und Synonymen zu fragen.\n\n<b>Senden Sie Fotos und erhalten Sie </b> \n- Text mit Foto\n- Alle Objekte mit Foto mit Übersetzung\n- Kurze Beschreibung des Fotos, wenn möglich\n\n<b>Audio einreichen und</b>\n- Audiotranskription erhalten";
+        var botFeaturesPolish = "<b>Funkcje bota</b>\n\nPrześlij tekst do automatycznego tłumaczenia na wybrany język.\n\nPrześlij /meaning_english, aby uzyskać angielskie znaczenie i synonimy.\n\n<b>Prześlij zdjęcia i uzyskaj </b> \n- Tekst ze zdjęciem\n- Wszystkie obiekty ze zdjęciem z tłumaczeniem\n- Krótki opis zdjęcia, jeśli to możliwe\n\n<b>Prześlij dźwięk i pobierz</b>\n- transkrypcję dźwięku";
+        var botFeaturesTurkish = "<b>Bot özellikleri</b>\n\nSeçilen dile otomatik çeviri için metin gönderin.\n\nİngilizce anlamı ve eşanlamlıları aramak için /meaning_english gönderin.\n\n<b>Fotoğraf gönderin ve </b> \n- Fotoğraflı metin\n- Fotoğraflı tüm nesneler ve çevirisi\n- Mümkünse fotoğrafın kısa açıklaması\n\n<b>Sesi gönderin ve</b>\n- sesli transkripsiyonu alın";
+
+        // bot infi Features, reply id, interface language, Email contact for bot info
+        // User info settings languages established, audio language, meaning, inteface language 
+        // progress status
+        // audio language after processeing 
+
         var data = new List<KeyTranslationsInitEntity>
         {
             new KeyTranslationsInitEntity(interfaceKey)
@@ -353,69 +374,21 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.Polish, "Twój język interfejsu:")
                 .AddTranslate(LanguageENUM.Turkish, "Arayüz diliniz:"),
             new KeyTranslationsInitEntity(languagesSettedKey)
-                .AddTranslate(LanguageENUM.Ukrainian, "Мови були встановлені.")
-                .AddTranslate(LanguageENUM.Russian, "Языки были установлены.")
-                .AddTranslate(LanguageENUM.English, "The languages were established.")
-                .AddTranslate(LanguageENUM.Spanish, "Se han establecido las lenguas.")
-                .AddTranslate(LanguageENUM.French, "Les langues ont été définies.")
-                .AddTranslate(LanguageENUM.Japanese, "言語が設定されました。")
-                .AddTranslate(LanguageENUM.Chinese, "设置了语言。")
-                .AddTranslate(LanguageENUM.Czech, "Jazyky byly nastaveny.")
-                .AddTranslate(LanguageENUM.Danish, "Sprog blev sat.")
-                .AddTranslate(LanguageENUM.Hindi, "भाषाएँ निर्धारित की गईं।")
-                .AddTranslate(LanguageENUM.Italian, "Le lingue sono state impostate.")
-                .AddTranslate(LanguageENUM.Swedish, "Språk sattes.")
-                .AddTranslate(LanguageENUM.German, "Sprachen wurden eingestellt.")
-                .AddTranslate(LanguageENUM.Polish, "Ustawiono języki.")
-                .AddTranslate(LanguageENUM.Turkish, "Diller ayarlandı."),
-            new KeyTranslationsInitEntity(nativeLanguageKey)
-                .AddTranslate(LanguageENUM.Ukrainian, "Основна мова:")
-                .AddTranslate(LanguageENUM.Russian, "Основной язык:")
-                .AddTranslate(LanguageENUM.English, "Main Language:")
-                .AddTranslate(LanguageENUM.Spanish, "Lenguaje principal:")
-                .AddTranslate(LanguageENUM.French, "Langage principal:")
-                .AddTranslate(LanguageENUM.Japanese, "主要言語：")
-                .AddTranslate(LanguageENUM.Chinese, "主要语言：")
-                .AddTranslate(LanguageENUM.Czech, "Hlavní jazyk:")
-                .AddTranslate(LanguageENUM.Danish, "Hovedsprog:")
-                .AddTranslate(LanguageENUM.Hindi, "मुख्य भाषा:")
-                .AddTranslate(LanguageENUM.Italian, "Lingua principale:")
-                .AddTranslate(LanguageENUM.Swedish, "Modersmål:")
-                .AddTranslate(LanguageENUM.German, "Muttersprache:")
-                .AddTranslate(LanguageENUM.Polish, "Główny język:")
-                .AddTranslate(LanguageENUM.Turkish, "Ana dil:"),
-            new KeyTranslationsInitEntity(languageYourLanguagesKey)
-                .AddTranslate(LanguageENUM.Ukrainian, "Ваші мови")
-                .AddTranslate(LanguageENUM.Russian, "Ваши языки")
-                .AddTranslate(LanguageENUM.English, "Your languages")
-                .AddTranslate(LanguageENUM.Spanish, "Tus idiomas")
-                .AddTranslate(LanguageENUM.French, "Vos langues")
-                .AddTranslate(LanguageENUM.Japanese, "あなたの言語")
-                .AddTranslate(LanguageENUM.Chinese, "你的语言")
-                .AddTranslate(LanguageENUM.Czech, "Vaše jazyky")
-                .AddTranslate(LanguageENUM.Danish, "Dine sprog")
-                .AddTranslate(LanguageENUM.Hindi, "आपकी भाषाएँ")
-                .AddTranslate(LanguageENUM.Italian, "Le tue lingue")
-                .AddTranslate(LanguageENUM.Swedish, "Dina språk")
-                .AddTranslate(LanguageENUM.German, "Ihre Sprachen")
-                .AddTranslate(LanguageENUM.Polish, "Twoje języki")
-                .AddTranslate(LanguageENUM.Turkish, "Dilleriniz"),
-            new KeyTranslationsInitEntity(canSendKey)
-                .AddTranslate(LanguageENUM.Ukrainian, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Russian, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.English, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Spanish, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.French, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Japanese, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Chinese, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Czech, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Danish, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Hindi, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Italian, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Swedish, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.German, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Polish, "Send text, photo, audio for translating. TODO")
-                .AddTranslate(LanguageENUM.Turkish, "Send text, photo, audio for translating. TODO"),
+                .AddTranslate(LanguageENUM.Ukrainian, "Мови були встановлені.\n\n" + botFeaturesUA + "\n\n<b>Ваші мови</b>\n" + "Основна мова: {0}\n" + "Мова перекладу: {1}")
+                .AddTranslate(LanguageENUM.Russian, "Языки были установлены.\n\n" + botFeaturesRU + "\n\n<b>Ваши языки</b>\n" + "Основной язык: {0}\n" + "Целевой язык: {1}")
+                .AddTranslate(LanguageENUM.English, "The languages were established.\n\n" + botFeaturesEN + "\n\n<b>Your languages</b>\n" + "Main Language: {0}\n" + "Target Language: {1}")
+                .AddTranslate(LanguageENUM.Spanish, "Se han establecido las lenguas.\n\n" + botFeaturesSpain + "\n\n<b>Tus idiomas</b>\n" + "Lenguaje principal: {0}\n" + "Lengua meta: {1}")
+                .AddTranslate(LanguageENUM.French, "Les langues ont été définies.\n\n" + botFeaturesFrench + "\n\n<b>Vos langues</b>\n" + "Langage principal: {0}\n" + "Langue cible: {1}")
+                .AddTranslate(LanguageENUM.Japanese, "言語が設定されました。\n\n" + botFeaturesJapanese + "\n\n<b>あなたの言語</b>\n" + "主要言語：{0}\n" + "ターゲット言語: {1}")
+                .AddTranslate(LanguageENUM.Chinese, "设置了语言。\n\n" + botFeaturesChinese + "\n\n<b>你的语言</b>\n" + "主要语言： {0}\n" + "选择母语: {1}")
+                .AddTranslate(LanguageENUM.Czech, "Jazyky byly nastaveny.\n\n" + botFeaturesCzech + "\n\n<b>Vaše jazyky</b>\n" + "Hlavní jazyk: {0}\n" + "Cílový jazyk: {1}")
+                .AddTranslate(LanguageENUM.Danish, "Sprog blev sat.\n\n" + botFeaturesDanish + "\n\n<b>Dine sprog</b>\n" + "Hovedsprog: {0}\n" + "Målsprog: {1}")
+                .AddTranslate(LanguageENUM.Hindi, "भाषाएँ निर्धारित की गईं।\n\n" + botFeaturesHindi + "\n\n<b>आपकी भाषाएँ</b>\n" + "मुख्य भाषा: {0}\n" +  "लक्ष्य भाषा: {1}")
+                .AddTranslate(LanguageENUM.Italian, "Le lingue sono state impostate.\n\n" + botFeaturesItalian + "\n\n<b>Le tue lingue</b>\n" + "Lingua principale: {0}\n" + "Lingua di destinazione: {1}")
+                .AddTranslate(LanguageENUM.Swedish, "Språk sattes.\n\n" + botFeaturesSwedish + "\n\n<b>Dina språk</b>\n" + "Modersmål: {0}\n" + "Målspråk: {1}")
+                .AddTranslate(LanguageENUM.German, "Sprachen wurden eingestellt.\n\n" + botFeaturesGerman + "\n\n<b>Ihre Sprachen</b>\n" + "Muttersprache: {0}\n" + "Zielsprache: {1}")
+                .AddTranslate(LanguageENUM.Polish, "Ustawiono języki.\n\n" + botFeaturesPolish + "\n\n<b>Twoje języki</b>\n" + "Główny język: {0}\n" + "Język docelowy: {1}") 
+                .AddTranslate(LanguageENUM.Turkish, "Diller ayarlandı.\n\n" + botFeaturesTurkish + "\n\n<b>Dilleriniz</b>\n" + "Ana dil: {0}\n" + "Hedef dil: {1}"),
             new KeyTranslationsInitEntity(textImageKey)
                 .AddTranslate(LanguageENUM.Ukrainian, "<b>Текст фото</b>")
                 .AddTranslate(LanguageENUM.Russian, "<b>Фото текст</b>")
@@ -480,22 +453,6 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "<b>Vielleicht meinst du</b>")
                 .AddTranslate(LanguageENUM.Polish, "<b>Może masz na myśli</b>")
                 .AddTranslate(LanguageENUM.Turkish, "<b>Belki demek istiyorsun</b>"),
-            new KeyTranslationsInitEntity(targetLanguageKey)
-                .AddTranslate(LanguageENUM.Ukrainian, "Мова перекладу:")
-                .AddTranslate(LanguageENUM.Russian, "Целевой язык:")
-                .AddTranslate(LanguageENUM.English, "Target Language:")
-                .AddTranslate(LanguageENUM.Spanish, "Lengua meta:")
-                .AddTranslate(LanguageENUM.French, "Langue cible :")
-                .AddTranslate(LanguageENUM.Japanese, "ターゲット言語")
-                .AddTranslate(LanguageENUM.Chinese, "目标语言。")
-                .AddTranslate(LanguageENUM.Czech, "Cílový jazyk:")
-                .AddTranslate(LanguageENUM.Danish, "Målsprog:")
-                .AddTranslate(LanguageENUM.Hindi, "लक्ष्य भाषा:")
-                .AddTranslate(LanguageENUM.Italian, "Lingua di destinazione:")
-                .AddTranslate(LanguageENUM.Swedish, "Målspråk:")
-                .AddTranslate(LanguageENUM.German, "Zielsprache:")
-                .AddTranslate(LanguageENUM.Polish, "Język docelowy:")
-                .AddTranslate(LanguageENUM.Turkish, "Hedef dil:"),
             new KeyTranslationsInitEntity(menuChooseNativeKey)
                 .AddTranslate(LanguageENUM.Ukrainian, "Виберіть мову")
                 .AddTranslate(LanguageENUM.Russian, "Выберите родной язык")
@@ -593,21 +550,21 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.Polish, "Wybierz język interfejsu")
                 .AddTranslate(LanguageENUM.Turkish, "Arayüz dilini seçin"),
             new KeyTranslationsInitEntity(menuInfoKey)
-                .AddTranslate(LanguageENUM.Ukrainian, "Info")
-                .AddTranslate(LanguageENUM.Russian, "Info")
-                .AddTranslate(LanguageENUM.English, "Info")
-                .AddTranslate(LanguageENUM.Spanish, "Info")
-                .AddTranslate(LanguageENUM.French, "Info")
-                .AddTranslate(LanguageENUM.Japanese, "Info")
-                .AddTranslate(LanguageENUM.Chinese, "Info")
-                .AddTranslate(LanguageENUM.Czech, "Info")
-                .AddTranslate(LanguageENUM.Danish, "Info")
-                .AddTranslate(LanguageENUM.Hindi, "Info")
-                .AddTranslate(LanguageENUM.Italian, "Info")
-                .AddTranslate(LanguageENUM.Swedish, "Info")
-                .AddTranslate(LanguageENUM.German, "Info")
-                .AddTranslate(LanguageENUM.Polish, "Info")
-                .AddTranslate(LanguageENUM.Turkish, "Info"),
+                .AddTranslate(LanguageENUM.Ukrainian,  botFeaturesUA)
+                .AddTranslate(LanguageENUM.Russian, botFeaturesRU)
+                .AddTranslate(LanguageENUM.English,  botFeaturesEN)
+                .AddTranslate(LanguageENUM.Spanish, botFeaturesSpain)
+                .AddTranslate(LanguageENUM.French, botFeaturesFrench)
+                .AddTranslate(LanguageENUM.Japanese, botFeaturesJapanese)
+                .AddTranslate(LanguageENUM.Chinese, botFeaturesChinese)
+                .AddTranslate(LanguageENUM.Czech, botFeaturesCzech)
+                .AddTranslate(LanguageENUM.Danish, botFeaturesDanish)
+                .AddTranslate(LanguageENUM.Hindi, botFeaturesHindi)
+                .AddTranslate(LanguageENUM.Italian, botFeaturesItalian)
+                .AddTranslate(LanguageENUM.Swedish, botFeaturesSwedish)
+                .AddTranslate(LanguageENUM.German, botFeaturesGerman)
+                .AddTranslate(LanguageENUM.Polish, botFeaturesPolish)
+                .AddTranslate(LanguageENUM.Turkish, botFeaturesTurkish),
             new KeyTranslationsInitEntity(audioText)
                 .AddTranslate(LanguageENUM.Ukrainian, "Аудіо-транскрипція")
                 .AddTranslate(LanguageENUM.Russian, "Транскрипция аудио")
@@ -832,6 +789,22 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "<b>Statistik</b>\n\n" + "Tarif: {0}\n\n" + "<b>Bilder</b> {1} von {2} verwendet\n" + "<b>Textzeichen für die Übersetzung</b> {3} von {4} verwendet\n" + "<b>Audiominuten</b> {5} von {6} verbraucht\n\n" + "{7} Tage Abonnement verbleibend\n" + "{8} Minuten Abonnement verbleiben")
                 .AddTranslate(LanguageENUM.Polish, "<b>Statystyki</b>\n\n" + "Taryfa: {0}\n\n" + "<b>Obrazy</b> użyto {1} z {2}\n" + "<b>Znaki tekstowe do tłumaczenia</b> Użyto {3} z {4}\n" + "<b>Wykorzystano minuty audio</b> {5} z {6}\n\n" + "Pozostało {7} dni subskrypcji\n" + "Pozostało {8} minut subskrypcji")
                 .AddTranslate(LanguageENUM.Turkish, "<b>İstatistik</b>\n\n" + "Tarife: {0}\n\n" + "{2} resimden {1} <b>resim</b> kullanıldı\n" + "<b>Çeviri için metin karakterleri</b> {3} / {4} kullanıldı\n" + "<b>Ses dakikaları</b> {5} / {6} kullanıldı\n\n" + "{7} günlük abonelik kaldı\n" + "{8} dakikalık abonelik kaldı"),
+            new KeyTranslationsInitEntity(contentInProcessing)
+                .AddTranslate(LanguageENUM.Ukrainian, "Взято на обробку, будь ласка, зачекайте хвилинку. 😌")
+                .AddTranslate(LanguageENUM.Russian, "Взято на обработку, пожалуйста, подождите немного. 😌")
+                .AddTranslate(LanguageENUM.English, "Taken for processing, please wait a moment. 😌")
+                .AddTranslate(LanguageENUM.Spanish, "Tomado para procesar, por favor espere un momento. 😌")
+                .AddTranslate(LanguageENUM.French, "Pris pour traitement, veuillez patienter un moment. 😌")
+                .AddTranslate(LanguageENUM.Japanese, "処理に時間がかかっています、しばらくお待ちください。😌")
+                .AddTranslate(LanguageENUM.Chinese, "正在处理中，请稍等片刻。😌")
+                .AddTranslate(LanguageENUM.Czech, "Převzato ke zpracování, chvíli prosím počkejte. 😌")
+                .AddTranslate(LanguageENUM.Danish, "Optaget til behandling, vent venligst et øjeblik. 😌")
+                .AddTranslate(LanguageENUM.Hindi, "प्रसंस्करण के लिए लिया गया, कृपया एक क्षण प्रतीक्षा करें। 😌")
+                .AddTranslate(LanguageENUM.Italian, "Assunto per l'elaborazione, si prega di attendere un momento. 😌")
+                .AddTranslate(LanguageENUM.Swedish, "Upptaget för behandling, vänligen vänta ett ögonblick. 😌")
+                .AddTranslate(LanguageENUM.German, "Zur Bearbeitung angenommen, bitte warten Sie einen Moment. 😌")
+                .AddTranslate(LanguageENUM.Polish, "Pobrane do przetworzenia, proszę chwilę poczekać. 😌")
+                .AddTranslate(LanguageENUM.Turkish, "İşlem için alındı, lütfen bir dakika bekleyin. 😌"),      
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")

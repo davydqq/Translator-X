@@ -79,6 +79,11 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
             return false;
         }
 
+        // PROCESSING MESSAGE
+        var processingMessage = await localizationService.GetTranslateByInterface("app.content.processing", command.UserId);
+        var processesingMessageCommand = new SendMessageCommand(command.ChatId, processingMessage, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+        var processingMessageResult = await commandDispatcher.DispatchAsync(processesingMessageCommand);
+
         var downloadFile = await queryDispatcher.DispatchAsync(new DownloadFileQuery(file.TelegramFileId));
 
         var extension = Path.GetExtension(downloadFile.Path);
@@ -104,6 +109,9 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         {
             await SendErrorMessage(command.ChatId, command.MessageId, command.UserId);
         }
+
+        // DELETE PROCESSING MESSAGE
+        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, processingMessageResult.MessageId));
 
         return true;
     }

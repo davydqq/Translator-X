@@ -77,12 +77,17 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
             return false;
         }
 
+        var processingMessage = await localizationService.GetTranslateByInterface("app.content.processing", command.UserId);
+        var processesingMessageCommand = new SendMessageCommand(command.ChatId, processingMessage, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
+        var processingMessageResult = await commandDispatcher.DispatchAsync(processesingMessageCommand);
+
         var downloadFile = await queryDispatcher.DispatchAsync(new DownloadFileQuery(command.File.FileId));
 
         var settings = await userSettingsRepository.GetAudioLanguageAsync(command.UserId);
 
         var commandToSend = new AudioToTextCommand(downloadFile.File, settings.AudioLanguageId.Value, command.File.MimeType, command.UserId);
         var result = await commandDispatcher.DispatchAsync(commandToSend);
+
 
         if (!result.IsSuccess)
         {
@@ -101,6 +106,10 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
         }
 
         var textProcessed = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);
+
+        // DELETE PROCESSING MESSAGE
+        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, processingMessageResult.MessageId));
+
         if (!string.IsNullOrEmpty(textProcessed))
         {
             var commandTelegram = new SendMessageCommand(command.ChatId, textProcessed, parseMode: ParseMode.Html, replyToMessageId: command.MessageId);
