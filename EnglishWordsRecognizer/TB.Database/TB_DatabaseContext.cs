@@ -289,6 +289,7 @@ public class TBDatabaseContext : DbContext
         // CALLBACKS
         var interfaceKey = "app.languages.interfaceLanguage";
         var audioLanguageKey = "app.languages.audioLanguageKey";
+        var audioResendKey = "app.languages.audioResendKey";
 
         var languagesSettedKey = "app.languages.established";
 
@@ -335,25 +336,281 @@ public class TBDatabaseContext : DbContext
 
         var statsMessage = "stats.message";
 
-        var botFeaturesEN = "<b>Bot features</b>\n\nSend text for automatic translation into the selected language.\n\nUse /meaning_english to enable show English meaning and synonyms for the words.\n\n<b>Send photos and receive</b>\n- Text from photos\n- All objects from the photo with translations\n- Short description of the photo if possible\n\n<b>Send audio and receive</b>\n- Transcription of the audio";
-        var botFeaturesUA = "<b>Можливості бота</b>\n\nНадішліть текст для автоматичного перекладу на вибрану мову.\n\nНадішліть /meaning_english, щоб показувати англійське значення та синоніми.\n\n<b>Надішліть фотографії та отримайте </b>\n- Текст з фото\n- Всі об'єкти з фото з перекладом\n- Короткий опис фото, якщо можливо\n\n<b>Надішліть аудіо та отримайте</b>\n- аудіо транскрипцію";
-        var botFeaturesRU = "<b>Возможности бота</b>\n\nОтправьте текст для автоматического перевода на выбранный язык.\n\nОтправьте /meaning_english, чтобы показывать английское значение и синоними.\n\n<b>Отправьте фотографии и получите </b>\n- Текст с фото\n- Все объекты с фото с переводом\n- Краткое описание фото, если возможно\n\n<b>Отправьте аудио и получите</b>\n- аудио транскрипцию";
-        var botFeaturesSpain = "<b>Características del bot</b>\n\nEnvíe texto para traducción automática al idioma seleccionado.\n\nEnvíe /meaning_english para solicitar significado y sinónimos en inglés.\n\n<b>Envíe fotos y obtenga </b> \n- Texto con foto\n- Todos los objetos con foto con traducción\n- Breve descripción de la foto, si es posible\n\n<b>Envíe el audio y obtenga</b>\n- la transcripción del audio";
-        var botFeaturesFrench = "<b>Fonctionnalités du bot</b>\n\nSoumettez le texte pour traduction automatique dans la langue sélectionnée.\n\nSoumettez /meaning_english pour demander la signification et les synonymes en anglais.\n\n<b>Soumettez des photos et obtenez </b> \n- Texte avec photo\n- Tous les objets avec photo avec traduction\n- Brève description de la photo, si possible\n\n<b>Soumettre l'audio et obtenir</b>\n- Transcription audio";
-        var botFeaturesJapanese = "<b>ボットの機能</b>\n\nテキストを送信して、選択した言語に自動翻訳します。\n\n/meaning_english を送信して、英語の意味と同義語を求めます。\n\n<b>写真を送信して </b> を入手してください> \n- 写真付きテキスト\n- 写真付きのすべてのオブジェクトと翻訳\n- 可能であれば、写真の簡単な説明\n\n<b>音声を送信して取得</b>\n- 音声文字起こし";
-        var botFeaturesChinese = "<b>Bot 功能</b>\n\n提交文本以自动翻译成所选语言。\n\n提交 /meaning_english 以调用英语含义和同义词。\n\n<b>提交照片并获取 </b> \n- 带照片的文本\n- 所有带照片的对象和翻译\n- 如果可能的话，对照片进行简要描述\n\n<b>提交音频并获得</b>\n- 音频转录";
-        var botFeaturesCzech = "<b>Funkce robota</b>\n\nOdešlete text k automatickému překladu do vybraného jazyka.\n\nOdešlete /meaning_english, chcete-li získat anglický význam a synonyma.\n\n<b>Odešlete fotografie a získejte</b> \n- Text s fotografií\n- Všechny objekty s fotografií s překladem\n- Stručný popis fotografie, pokud je to možné\n\n<b>Odešlete zvuk a získejte</b>\n- zvukový přepis";
-        var botFeaturesDanish = "<b>Bot-funktioner</b>\n\nSend tekst til automatisk oversættelse til det valgte sprog.\n\nSend /meaning_english for at kalde på engelsk betydning og synonymer.\n\n<b>Indsend billeder og få </b> \n- Tekst med foto\n- Alle objekter med foto med oversættelse\n- Kort beskrivelse af billedet, hvis det er muligt\n\n<b>Send lyd og få</b>\n- lydtransskription";
-        var botFeaturesHindi = "<b>बॉट सुविधाएँ</b>\n\nचयनित भाषा में स्वचालित अनुवाद के लिए टेक्स्ट सबमिट करें।\n\nअंग्रेज़ी अर्थ और समानार्थक शब्द के लिए कॉल करने के लिए /meaning_english सबमिट करें।\n\n<b>फ़ोटो सबमिट करें और प्राप्त करें </b> \n- फ़ोटो के साथ टेक्स्ट\n- अनुवाद के साथ फ़ोटो के साथ सभी ऑब्जेक्ट\n- फ़ोटो का संक्षिप्त विवरण, यदि संभव हो तो\n\n<b>ऑडियो सबमिट करें और प्राप्त करें</b>\n- ऑडियो ट्रांसक्रिप्शन";
-        var botFeaturesItalian = "<b>Caratteristiche del bot</b>\n\nInvia il testo per la traduzione automatica nella lingua selezionata.\n\nInvia /meaning_english per richiedere significato e sinonimi in inglese.\n\n<b>Invia foto e ottieni </b> \n- Testo con foto\n- Tutti gli oggetti con foto con traduzione\n- Breve descrizione della foto, se possibile\n\n<b>Invia audio e ottieni</b>\n- trascrizione audio";
-        var botFeaturesSwedish = "<b>Botfunktioner</b>\n\nSkicka in text för automatisk översättning till det valda språket.\n\nSkicka in /meaning_english för att få engelska betydelser och synonymer.\n\n<b>Skicka in foton och få </b> \n- Text med foto\n- Alla objekt med foto med översättning\n- Kort beskrivning av fotot, om möjligt\n\n<b>Skicka in ljud och få</b>\n- ljudtranskription";
-        var botFeaturesGerman = "<b>Bot-Funktionen</b>\n\nSenden Sie Text zur automatischen Übersetzung in die ausgewählte Sprache.\n\nSenden Sie /meaning_english, um nach englischer Bedeutung und Synonymen zu fragen.\n\n<b>Senden Sie Fotos und erhalten Sie </b> \n- Text mit Foto\n- Alle Objekte mit Foto mit Übersetzung\n- Kurze Beschreibung des Fotos, wenn möglich\n\n<b>Audio einreichen und</b>\n- Audiotranskription erhalten";
-        var botFeaturesPolish = "<b>Funkcje bota</b>\n\nPrześlij tekst do automatycznego tłumaczenia na wybrany język.\n\nPrześlij /meaning_english, aby uzyskać angielskie znaczenie i synonimy.\n\n<b>Prześlij zdjęcia i uzyskaj </b> \n- Tekst ze zdjęciem\n- Wszystkie obiekty ze zdjęciem z tłumaczeniem\n- Krótki opis zdjęcia, jeśli to możliwe\n\n<b>Prześlij dźwięk i pobierz</b>\n- transkrypcję dźwięku";
-        var botFeaturesTurkish = "<b>Bot özellikleri</b>\n\nSeçilen dile otomatik çeviri için metin gönderin.\n\nİngilizce anlamı ve eşanlamlıları aramak için /meaning_english gönderin.\n\n<b>Fotoğraf gönderin ve </b> \n- Fotoğraflı metin\n- Fotoğraflı tüm nesneler ve çevirisi\n- Mümkünse fotoğrafın kısa açıklaması\n\n<b>Sesi gönderin ve</b>\n- sesli transkripsiyonu alın";
+        var botFeaturesEN = "<b>Bot features</b>\n\n" + 
+                            "Send text for automatic translation into the selected language.\n\n" + 
+                            "Send /meaning_english to enable show English meaning and synonyms for the words.\n" +
+                            "Send /interface_language to change the interface language\n\n" +
+                            "<b>Send photos and receive</b>\n" + 
+                            "- Text from photos\n" + 
+                            "- All objects from the photo with translations\n" + 
+                            "- Short description of the photo if possible\n\n" + 
+                            "<b>Send audio and receive</b>\n" + 
+                            "- Transcription of the audio" +
+                            "\n\n<b>Bot support 'replies' and 'forwards' messages.</b>";
 
-        // bot info Features, support forward and replying, interface language, Email contact for bot info
+        var botFeaturesUA = "<b>Можливості бота</b>\n\n" + 
+                            "Надішліть текст для автоматичного перекладу на вибрану мову.\n\n" + 
+                            "Надішліть /meaning_english, щоб показувати англійське значення та синоніми.\n" +
+                            "Надішліть /interface_language, щоб змінити мову інтерфейсу\n\n" +
+                            "<b>Надішліть фотографії та отримайте </b>\n" + 
+                            "- Текст з фото\n" + 
+                            "- Всі об'єкти з фото з перекладом\n" + 
+                            "- Короткий опис фото, якщо можливо\n\n" + 
+                            "<b>Надішліть аудіо та отримайте</b>\n" + 
+                            "- Аудіо транскрипцію" +
+                            "\n\n<b>Бот підтримує «відповіді» та «пересилання» повідомлень.</b>";
+
+        var botFeaturesRU = "<b>Возможности бота</b>\n\n" + 
+                            "Отправьте текст для автоматического перевода на выбранный язык.\n\n" + 
+                            "Отправьте /meaning_english, чтобы показывать английское значение и синоними.\n" +
+                            "Отправьте /interface_language, чтобы изменить язык интерфейса\n\n" +
+                            "<b>Отправьте фотографии и получите </b>\n" + 
+                            "- Текст с фото\n" + 
+                            "- Все объекты с фото с переводом\n" + 
+                            "- Краткое описание фото, если возможно\n\n" + 
+                            "<b>Отправьте аудио и получите</b>\n" + 
+                            "- Аудио транскрипцию" +
+                            "\n\n<b>Бот поддерживает 'ответы' и 'пересылки' сообщений.</b>";
+
+        var botFeaturesSpain = "<b>Características del bot</b>\n\n" + 
+                                "Envíe texto para traducción automática al idioma seleccionado.\n\n" + 
+                                "Envíe /meaning_english para solicitar significado y sinónimos en inglés.\n" +
+                                "Envía /interface_language para cambiar el idioma de la interfaz\n\n" +
+                                "<b>Envíe fotos y obtenga </b>\n" + 
+                                "- Texto con foto\n" + 
+                                "- Todos los objetos con foto con traducción\n" + 
+                                "- Breve descripción de la foto, si es posible\n\n" + 
+                                "<b>Envíe el audio y obtenga</b>\n" + 
+                                "- La transcripción del audio" +
+                                "\n\n<b>El bot admite mensajes de 'respuestas' y 'reenvíos'.</b>";
+
+        var botFeaturesFrench = "<b>Fonctionnalités du bot</b>\n\n" + 
+                                "Soumettez le texte pour traduction automatique dans la langue sélectionnée.\n\n" + 
+                                "Soumettez /meaning_english pour demander la signification et les synonymes en anglais.\n" +
+                                "Envoyez /interface_language pour changer la langue de l'interface\n\n" +
+                                "<b>Soumettez des photos et obtenez </b>\n" + 
+                                "- Texte avec photo\n" + 
+                                "- Tous les objets avec photo avec traduction\n" + 
+                                "- Brève description de la photo, si possible\n\n" + 
+                                "<b>Soumettre l'audio et obtenir</b>\n" + 
+                                "- Transcription audio" +
+                                "\n\n<b>Le bot prend en charge les messages 'répondre' et 'transférer'.</b>";
+
+        var botFeaturesJapanese = "<b>ボットの機能</b>\n\n" + 
+                                  "テキストを送信して、選択した言語に自動翻訳します。\n\n" + 
+                                  "/meaning_english を送信して、英語の意味と同義語を求めます。\n" +
+                                  "インターフェイス言語を変更するには、/interface_language を送信します\n\n" +
+                                  "<b>写真を送信して </b> を入手してください\n" + 
+                                  "- 写真付きテキスト\n" + 
+                                  "- 写真付きのすべてのオブジェクトと翻訳\n" + 
+                                  "- 可能であれば、写真の簡単な説明\n\n" + 
+                                  "<b>音声を送信して取得</b>\n" + 
+                                  "- 音声文字起こし" +
+                                  "\n\n<b>ボットはメッセージの「返信」と「転送」をサポートします。</b>";
+
+        var botFeaturesChinese = "<b>Bot 功能</b>\n\n" + 
+                                 "提交文本以自动翻译成所选语言。\n\n" + 
+                                 "提交 /meaning_english 以调用英语含义和同义词。\n" +
+                                 "发送 /interface_language 更改界面语言\n\n" +
+                                 "<b>提交照片并获取</b>\n" + 
+                                 "- 带照片的文本\n" + 
+                                 "- 所有带照片的对象和翻译\n" + 
+                                 "- 如果可能的话，对照片进行简要描述\n\n" + 
+                                 "<b>提交音频并获得</b>\n" + 
+                                 "- 音频转录" +
+                                 "\n\n<b>Bot 支持“回复”和“转发”消息。</b>";
+
+        var botFeaturesCzech = "<b>Funkce robota</b>\n\n" + 
+                               "Odešlete text k automatickému překladu do vybraného jazyka.\n\n" + 
+                               "Odešlete /meaning_english, chcete-li získat anglický význam a synonyma.\n" +
+                               "Pro změnu jazyka rozhraní odešlete /interface_language\n\n" +
+                               "<b>Odešlete fotografie a získejte</b>\n" + 
+                               "- Text s fotografií\n" + 
+                               "- Všechny objekty s fotografií s překladem\n" + 
+                               "- Stručný popis fotografie, pokud je to možné\n\n" + 
+                               "<b>Odešlete zvuk a získejte</b>\n" + 
+                               "- Zvukový přepis" +
+                               "\n\n<b>Bot podporuje „odpovědi“ a „přeposílání“ zpráv.</b>";
+
+        var botFeaturesDanish = "<b>Bot-funktioner</b>\n\n" + 
+                                "Send tekst til automatisk oversættelse til det valgte sprog.\n\n" + 
+                                "Send /meaning_english for at kalde på engelsk betydning og synonymer.\n" +
+                                "Send /interface_language for at ændre grænsefladesproget\n\n" +
+                                "<b>Indsend billeder og få </b>\n" + 
+                                "- Tekst med foto\n" + 
+                                "- Alle objekter med foto med oversættelse\n" + 
+                                "- Kort beskrivelse af billedet, hvis det er muligt\n\n" + 
+                                "<b>Send lyd og få</b>\n" + 
+                                "- Lydtransskription" +
+                                "\n\n<b>Bot understøtter 'svar' og 'videresendelser'-meddelelser.</b>";
+
+        var botFeaturesHindi = "<b>बॉट सुविधाएँ</b>\n\n" + 
+                               "चयनित भाषा में स्वचालित अनुवाद के लिए टेक्स्ट सबमिट करें।\n\n" + 
+                               "अंग्रेज़ी अर्थ और समानार्थक शब्द के लिए कॉल करने के लिए /meaning_english सबमिट करें।\n" +
+                               "इंटरफ़ेस भाषा बदलने के लिए /interface_language भेजें\n\n" +
+                               "<b>फ़ोटो सबमिट करें और प्राप्त करें</b>\n" + 
+                               "- फ़ोटो के साथ टेक्स्ट\n" + 
+                               "- अनुवाद के साथ फ़ोटो के साथ सभी ऑब्जेक्ट\n" + 
+                               "- फ़ोटो का संक्षिप्त विवरण, यदि संभव हो तो\n\n" + 
+                               "<b>ऑडियो सबमिट करें और प्राप्त करें</b>\n" + 
+                               "- ऑडियो ट्रांसक्रिप्शन" +
+                               "\n\n<b>बॉट 'जवाब' और 'फॉरवर्ड' संदेशों का समर्थन करता है।</b>";
+
+        var botFeaturesItalian = "<b>Caratteristiche del bot</b>\n\n" + 
+                                 "Invia il testo per la traduzione automatica nella lingua selezionata.\n\n" + 
+                                 "Invia /meaning_english per richiedere significato e sinonimi in inglese.\n" +
+                                 "Invia /interface_language per cambiare la lingua dell'interfaccia\n\n" +
+                                 "<b>Invia foto e ottieni </b>\n" + 
+                                 "- Testo con foto\n" + 
+                                 "- Tutti gli oggetti con foto con traduzione\n" + 
+                                 "- Breve descrizione della foto, se possibile\n\n" + 
+                                 "<b>Invia audio e ottieni</b>\n" + 
+                                 "- Trascrizione audio" +
+                                 "\n\n<b>Il bot supporta i messaggi di 'risposta' e 'inoltro'.</b>";
+
+        var botFeaturesSwedish = "<b>Botfunktioner</b>\n\n" + 
+                                 "Skicka in text för automatisk översättning till det valda språket.\n\n" + 
+                                 "Skicka in /meaning_english för att få engelska betydelser och synonymer.\n" +
+                                 "Skicka /interface_language för att ändra gränssnittsspråket\n\n" +
+                                 "<b>Skicka in foton och få </b>\n" + 
+                                 "- Text med foto\n" + 
+                                 "- Alla objekt med foto med översättning\n" + 
+                                 "- Kort beskrivning av fotot, om möjligt\n\n" + 
+                                 "<b>Skicka in ljud och få</b>\n" + 
+                                 "- Ljudtranskription" +
+                                 "\n\n<b>Bot stöder 'svar' och 'vidarebefordrar' meddelanden.</b>";
+
+        var botFeaturesGerman = "<b>Bot-Funktionen</b>\n\n" + 
+                                "Senden Sie Text zur automatischen Übersetzung in die ausgewählte Sprache.\n\n" + 
+                                "Senden Sie /meaning_english, um nach englischer Bedeutung und Synonymen zu fragen.\n" +
+                                "Senden Sie /interface_language, um die Sprache der Benutzeroberfläche zu ändern\n\n" +
+                                "<b>Senden Sie Fotos und erhalten Sie</b>\n" + 
+                                "- Text mit Foto\n" + 
+                                "- Alle Objekte mit Foto mit Übersetzung\n" + 
+                                "- Kurze Beschreibung des Fotos, wenn möglich\n\n" + 
+                                "<b>Audio einreichen und</b>\n" + 
+                                "- Audiotranskription erhalten" +
+                                "\n\n<b>Bot unterstützt 'Antworten' und 'Weiterleiten' von Nachrichten.</b>";
+
+        var botFeaturesPolish = "<b>Funkcje bota</b>\n\n" + 
+                                "Prześlij tekst do automatycznego tłumaczenia na wybrany język.\n\n" + 
+                                "Prześlij /meaning_english, aby uzyskać angielskie znaczenie i synonimy.\n" +
+                                "Wyślij /interface_language, aby zmienić język interfejsu\n\n" +
+                                "<b>Prześlij zdjęcia i uzyskaj </b>\n" + 
+                                "- Tekst ze zdjęciem\n" + 
+                                "- Wszystkie obiekty ze zdjęciem z tłumaczeniem\n" + 
+                                "- Krótki opis zdjęcia, jeśli to możliwe\n\n" + 
+                                "<b>Prześlij dźwięk i pobierz</b>\n" + 
+                                "- Transkrypcję dźwięku" +
+                                "\n\n<b>Bot obsługuje 'odpowiedzi' i 'przekazuje dalej' wiadomości.</b>";
+
+        var botFeaturesTurkish = "<b>Bot özellikleri</b>\n\n" + 
+                                 "Seçilen dile otomatik çeviri için metin gönderin.\n\n" + 
+                                 "İngilizce anlamı ve eşanlamlıları aramak için /meaning_english gönderin.\n" +
+                                 "Arayüz dilini değiştirmek için /interface_language gönderin\n\n" +
+                                 "<b>Fotoğraf gönderin ve </b>\n" + 
+                                 "- Fotoğraflı metin\n" + 
+                                 "- Fotoğraflı tüm nesneler ve çevirisi\n" + 
+                                 "- Mümkünse fotoğrafın kısa açıklaması\n\n" + 
+                                 "<b>Sesi gönderin ve</b>\n" + 
+                                 "- Sesli transkripsiyonu alın" +
+                                 "\n\n<b>Bot desteği 'yanıtlar' ve 'iletilen' mesajlar.</b>";
+
+        var userLanguagesUA = "<b>Ваші мови</b>\n" + "Основна мова: {0}\n" + "Мова перекладу: {1}";
+        var userLanguagesRU = "<b>Ваши языки</b>\n" + "Основной язык: {0}\n" + "Целевой язык: {1}";
+        var userLanguagesEN = "<b>Your languages</b>\n" + "Main Language: {0}\n" + "Target Language: {1}";
+        var userLanguagesSP = "b>Tus idiomas</b>\n" + "Lenguaje principal: {0}\n" + "Lengua meta: {1}";
+        var userLanguagesFR = "<b>Vos langues</b>\n" + "Langage principal: {0}\n" + "Langue cible: {1}";
+        var userLanguagesJA = "<b>あなたの言語</b>\n" + "主要言語：{0}\n" + "ターゲット言語: {1}";
+        var userLanguagesCHINESE = "<b>你的语言</b>\n" + "主要语言： {0}\n" + "选择母语: {1}";
+        var userLanguagesCZHECH = "<b>Vaše jazyky</b>\n" + "Hlavní jazyk: {0}\n" + "Cílový jazyk: {1}";
+        var userLanguagesDANISH = "<b>Dine sprog</b>\n" + "Hovedsprog: {0}\n" + "Målsprog: {1}";
+        var userLanguagesHindi = "<b>आपकी भाषाएँ</b>\n" + "मुख्य भाषा: {0}\n" + "लक्ष्य भाषा: {1}";
+        var userLanguagesItalian = "<b>Le tue lingue</b>\n" + "Lingua principale: {0}\n" + "Lingua di destinazione: {1}";
+        var userLanguagesSwedish = "<b>Dina språk</b>\n" + "Modersmål: {0}\n" + "Målspråk: {1}";
+        var userLanguagesGerman = "<b>Ihre Sprachen</b>\n" + "Muttersprache: {0}\n" + "Zielsprache: {1}";
+        var userLanguagesPolish = "<b>Twoje języki</b>\n" + "Główny język: {0}\n" + "Język docelowy: {1}";
+        var userLanguagesTurkish = "<b>Dilleriniz</b>\n" + "Ana dil: {0}\n" + "Hedef dil: {1}";
+
+
+        var userInfoKey = "app.menu.userInfo";
+
+        var userInfoUA = $"{userLanguagesUA}\n\n" +
+                         "Мова аудіо транскрипції: {2}\n\n" +
+                         "Мова інтерфейсу: {3}\n\n" +
+                         "Показувати значення англійських слів - {4}";
+
+        var userInfoRU = $"{userLanguagesRU}\n\n" +
+                         "Язык аудио транскрипции: {2}\n\n" +
+                         "Язык интерфейса: {3}\n\n" +
+                         "Показывать значение английских слов - {4}";
+
+        var userInfoEN = $"{userLanguagesEN}\n\n" +
+                        "Audio transcription language: {2}\n\n" +
+                        "Your interface language: {3}\n\n" +
+                        "Show english words meaning - {4}";
+
+        var userInfoSP = $"{userLanguagesSP}\n\n" +
+                         "Idioma de transcripción de audio: {2}\n\n" +
+                         "Tu idioma de interfaz: {3}\n\n" +
+                         "Mostrar el significado de las palabras en inglés - {4}";
+
+        var userInfoFR = $"{userLanguagesFR}\n\n" +
+                         "Langue de transcription audio: {2}\n\n" +
+                         "La langue de votre interface: {3}\n\n" +
+                         "Afficher le sens des mots anglais - {4}";
+
+        var userInfoJA = $"{userLanguagesJA}\n\n" +
+                         "音声転写言語: {2}\n\n" +
+                         "インターフェース言語: {3}\n\n" +
+                         "英単語の意味を表示 - {4}";
+
+        var userInfoCHINESE = $"{userLanguagesCHINESE}\n\n" +
+                              "音频转录语言：{2}\n\n" +
+                              "界面语言： {3}\n\n" +
+                              "显示英文单词的意思 - {4}";
+
+        var userInfoCZHECH = $"{userLanguagesCZHECH}\n\n" +
+                             "Jazyk zvukového přepisu: {2}\n\n" +
+                             "Váš jazyk rozhraní: {3}\n\n" +
+                             "Zobrazit význam anglických slov - {4}";
+
+        var userInfoDANISH = $"{userLanguagesDANISH}\n\n" +
+                             "Lydtransskriptionssprog: {2}\n\n" +
+                             "Dit grænsefladesprog: {3}\n\n" +
+                             "Vis engelske ords betydning - {4}";
+
+        var userInfoHindi = $"{userLanguagesHindi}\n\n" +
+                            "ऑडियो ट्रांसक्रिप्शन भाषा: {2}\n\n" +
+                            "अंतरफलक भाषा: {3}\n\n" +
+                            "अंग्रेजी शब्दों का अर्थ दिखाएँ - {4}";
+
+        var userInfoItalian = $"{userLanguagesItalian}\n\n" +
+                              "Lingua di trascrizione audio: {2}\n\n" +
+                              "La lingua dell'interfaccia: {3}\n\n" +
+                              "Mostra il significato delle parole inglesi - {4}";
+
+        var userInfoSwedish = $"{userLanguagesSwedish}\n\n" +
+                              "Språk för ljudtranskription: {2}\n\n" +
+                              "Ditt gränssnittsspråk: {3}\n\n" +
+                              "Visa engelska ords betydelse - {4}";
+
+        var userInfoGerman = $"{userLanguagesGerman}\n\n" +
+                             "Sprache der Audiotranskription: {2}\n\n" +
+                             "Ihre Oberflächensprache: {3}\n\n" +
+                             "Visa engelska ords betydelse - {4}";
+
+        var userInfoPolish = $"{userLanguagesPolish}\n\n" +
+                             "Język transkrypcji dźwięku: {2}\n\n" +
+                             "Twój język interfejsu: {3}\n\n" +
+                             "Pokaż znaczenie angielskich słów - {4}";
+
+        var userInfoTurkish = $"{userLanguagesTurkish}\n\n" +
+                              "Ses transkripsiyon dili: {2}\n\n" +
+                              "Arayüz diliniz: {3}\n\n" +
+                              "İngilizce kelimelerin anlamını göster - {4}";
+
         // User info settings languages established, audio language, meaning, inteface language 
-        // Audio language after processeing 
 
         var data = new List<KeyTranslationsInitEntity>
         {
@@ -362,7 +619,7 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.Russian, "Язык интерфейса:")
                 .AddTranslate(LanguageENUM.English, "Your interface language:")
                 .AddTranslate(LanguageENUM.Spanish, "Tu idioma de interfaz:")
-                .AddTranslate(LanguageENUM.French, "La langue de votre interface :")
+                .AddTranslate(LanguageENUM.French, "La langue de votre interface:")
                 .AddTranslate(LanguageENUM.Japanese, "インターフェース言語:")
                 .AddTranslate(LanguageENUM.Chinese, "界面语言：")
                 .AddTranslate(LanguageENUM.Czech, "Váš jazyk rozhraní:")
@@ -374,21 +631,21 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.Polish, "Twój język interfejsu:")
                 .AddTranslate(LanguageENUM.Turkish, "Arayüz diliniz:"),
             new KeyTranslationsInitEntity(languagesSettedKey)
-                .AddTranslate(LanguageENUM.Ukrainian, "Мови були встановлені.\n\n" + botFeaturesUA + "\n\n<b>Ваші мови</b>\n" + "Основна мова: {0}\n" + "Мова перекладу: {1}")
-                .AddTranslate(LanguageENUM.Russian, "Языки были установлены.\n\n" + botFeaturesRU + "\n\n<b>Ваши языки</b>\n" + "Основной язык: {0}\n" + "Целевой язык: {1}")
-                .AddTranslate(LanguageENUM.English, "The languages were established.\n\n" + botFeaturesEN + "\n\n<b>Your languages</b>\n" + "Main Language: {0}\n" + "Target Language: {1}")
-                .AddTranslate(LanguageENUM.Spanish, "Se han establecido las lenguas.\n\n" + botFeaturesSpain + "\n\n<b>Tus idiomas</b>\n" + "Lenguaje principal: {0}\n" + "Lengua meta: {1}")
-                .AddTranslate(LanguageENUM.French, "Les langues ont été définies.\n\n" + botFeaturesFrench + "\n\n<b>Vos langues</b>\n" + "Langage principal: {0}\n" + "Langue cible: {1}")
-                .AddTranslate(LanguageENUM.Japanese, "言語が設定されました。\n\n" + botFeaturesJapanese + "\n\n<b>あなたの言語</b>\n" + "主要言語：{0}\n" + "ターゲット言語: {1}")
-                .AddTranslate(LanguageENUM.Chinese, "设置了语言。\n\n" + botFeaturesChinese + "\n\n<b>你的语言</b>\n" + "主要语言： {0}\n" + "选择母语: {1}")
-                .AddTranslate(LanguageENUM.Czech, "Jazyky byly nastaveny.\n\n" + botFeaturesCzech + "\n\n<b>Vaše jazyky</b>\n" + "Hlavní jazyk: {0}\n" + "Cílový jazyk: {1}")
-                .AddTranslate(LanguageENUM.Danish, "Sprog blev sat.\n\n" + botFeaturesDanish + "\n\n<b>Dine sprog</b>\n" + "Hovedsprog: {0}\n" + "Målsprog: {1}")
-                .AddTranslate(LanguageENUM.Hindi, "भाषाएँ निर्धारित की गईं।\n\n" + botFeaturesHindi + "\n\n<b>आपकी भाषाएँ</b>\n" + "मुख्य भाषा: {0}\n" +  "लक्ष्य भाषा: {1}")
-                .AddTranslate(LanguageENUM.Italian, "Le lingue sono state impostate.\n\n" + botFeaturesItalian + "\n\n<b>Le tue lingue</b>\n" + "Lingua principale: {0}\n" + "Lingua di destinazione: {1}")
-                .AddTranslate(LanguageENUM.Swedish, "Språk sattes.\n\n" + botFeaturesSwedish + "\n\n<b>Dina språk</b>\n" + "Modersmål: {0}\n" + "Målspråk: {1}")
-                .AddTranslate(LanguageENUM.German, "Sprachen wurden eingestellt.\n\n" + botFeaturesGerman + "\n\n<b>Ihre Sprachen</b>\n" + "Muttersprache: {0}\n" + "Zielsprache: {1}")
-                .AddTranslate(LanguageENUM.Polish, "Ustawiono języki.\n\n" + botFeaturesPolish + "\n\n<b>Twoje języki</b>\n" + "Główny język: {0}\n" + "Język docelowy: {1}")
-                .AddTranslate(LanguageENUM.Turkish, "Diller ayarlandı.\n\n" + botFeaturesTurkish + "\n\n<b>Dilleriniz</b>\n" + "Ana dil: {0}\n" + "Hedef dil: {1}"),
+                .AddTranslate(LanguageENUM.Ukrainian, "Мови були встановлені.\n\n" + botFeaturesUA + $"\n\n{userLanguagesUA}")
+                .AddTranslate(LanguageENUM.Russian, "Языки были установлены.\n\n" + botFeaturesRU + $"\n\n{userLanguagesRU}")
+                .AddTranslate(LanguageENUM.English, "The languages were established.\n\n" + botFeaturesEN + $"\n\n{userLanguagesEN}")
+                .AddTranslate(LanguageENUM.Spanish, "Se han establecido las lenguas.\n\n" + botFeaturesSpain + $"\n\n{userLanguagesSP}")
+                .AddTranslate(LanguageENUM.French, "Les langues ont été définies.\n\n" + botFeaturesFrench + $"\n\n{userLanguagesFR}")
+                .AddTranslate(LanguageENUM.Japanese, "言語が設定されました。\n\n" + botFeaturesJapanese + $"\n\n{userLanguagesJA}")
+                .AddTranslate(LanguageENUM.Chinese, "设置了语言。\n\n" + botFeaturesChinese + $"\n\n{userLanguagesCHINESE}")
+                .AddTranslate(LanguageENUM.Czech, "Jazyky byly nastaveny.\n\n" + botFeaturesCzech + $"\n\n{userLanguagesCZHECH}")
+                .AddTranslate(LanguageENUM.Danish, "Sprog blev sat.\n\n" + botFeaturesDanish + $"\n\n{userLanguagesDANISH}")
+                .AddTranslate(LanguageENUM.Hindi, "भाषाएँ निर्धारित की गईं।\n\n" + botFeaturesHindi + $"\n\n{userLanguagesHindi}")
+                .AddTranslate(LanguageENUM.Italian, "Le lingue sono state impostate.\n\n" + botFeaturesItalian + $"\n\n{userLanguagesItalian}")
+                .AddTranslate(LanguageENUM.Swedish, "Språk sattes.\n\n" + botFeaturesSwedish + $"\n\n{userLanguagesSwedish}")
+                .AddTranslate(LanguageENUM.German, "Sprachen wurden eingestellt.\n\n" + botFeaturesGerman + $"\n\n{userLanguagesGerman}")
+                .AddTranslate(LanguageENUM.Polish, "Ustawiono języki.\n\n" + botFeaturesPolish + $"\n\n{userLanguagesPolish}")
+                .AddTranslate(LanguageENUM.Turkish, "Diller ayarlandı.\n\n" + botFeaturesTurkish + $"\n\n{userLanguagesTurkish}"),
             new KeyTranslationsInitEntity(textImageKey)
                 .AddTranslate(LanguageENUM.Ukrainian, "<b>Текст фото</b>")
                 .AddTranslate(LanguageENUM.Russian, "<b>Фото текст</b>")
@@ -613,6 +870,22 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "Sprache der Audiotranskription:")
                 .AddTranslate(LanguageENUM.Polish, "Język transkrypcji dźwięku:")
                 .AddTranslate(LanguageENUM.Turkish, "Ses transkripsiyon dili:"),
+            new KeyTranslationsInitEntity(audioResendKey)
+                .AddTranslate(LanguageENUM.Ukrainian, "Надішліть аудіо ще раз, ви можете використати 'reply'")
+                .AddTranslate(LanguageENUM.Russian, "Отправьте аудио еще раз, вы можете использовать 'reply'")
+                .AddTranslate(LanguageENUM.English, "Send the audio again, you can use 'reply'")
+                .AddTranslate(LanguageENUM.Spanish, "Envía el audio de nuevo, puedes usar 'reply'")
+                .AddTranslate(LanguageENUM.French, "Envoyez à nouveau l'audio, vous pouvez utiliser 'reply'")
+                .AddTranslate(LanguageENUM.Japanese, "音声をもう一度送信してください。'reply' を使用できます")
+                .AddTranslate(LanguageENUM.Chinese, "再次发送音频，您可以使用 'reply'")
+                .AddTranslate(LanguageENUM.Czech, "Pošlete zvuk znovu, můžete použít 'reply'")
+                .AddTranslate(LanguageENUM.Danish, "Send lyden igen, du kan bruge 'reply'")
+                .AddTranslate(LanguageENUM.Hindi, "ऑडियो फिर से भेजें, आप 'reply' का उपयोग कर सकते हैं")
+                .AddTranslate(LanguageENUM.Italian, "Invia di nuovo l'audio, puoi usare 'reply'")
+                .AddTranslate(LanguageENUM.Swedish, "Skicka ljudet igen, du kan använda 'svara'")
+                .AddTranslate(LanguageENUM.German, "Senden Sie das Audio erneut, Sie können 'reply' verwenden")
+                .AddTranslate(LanguageENUM.Polish, "Wyślij dźwięk ponownie, możesz użyć 'reply'")
+                .AddTranslate(LanguageENUM.Turkish, "Sesi tekrar gönderin, 'reply' kullanabilirsiniz"),
             new KeyTranslationsInitEntity(fileNoSupportContentTypeKey)
                 .AddTranslate(LanguageENUM.Ukrainian, "Бот не підтримує цей тип контенту")
                 .AddTranslate(LanguageENUM.Russian, "Бот не поддерживает этот тип контента")
@@ -774,21 +1047,142 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.Polish, "Limit w tym miesiącu został przekroczony, wyślij /stats, aby uzyskać szczegółowe informacje.")
                 .AddTranslate(LanguageENUM.Turkish, "Bu ayın limiti aşıldı, detaylar için /stats gönderin."),
             new KeyTranslationsInitEntity(statsMessage)
-                .AddTranslate(LanguageENUM.Ukrainian, "<b>Статистика</b>\n\n" + "Тариф: {0}\n\n" + "<b>Зображення</b> {1} з {2} використано\n" + "<b>Символов текста для перевода</b> использовано {3} из {4}\n" + "<b>Аудіохвилин</b> використано {5} із {6}\n\n" + "Залишилося {7} днів підписки\n" + "Залишилося {8} хвилин підписки")
-                .AddTranslate(LanguageENUM.Russian, "<b>Статистика</b>\n\n" + "Тариф: {0}\n\n" + "<b>Изображения</b> {1} из {2} использованных\n" + "<b>Символів тексту для перекладу</b> використано {3} з {4}\n" + "<b>Аудио минут</b> использовано {5} из {6}\n\n" + "Осталось {7} дней подписки\n" + "Осталось {8} минут подписки")
-                .AddTranslate(LanguageENUM.English, "<b>Statistic</b>\n\n" + "Plan: {0}\n\n" + "<b>Images</b> {1} of {2} used\n" + "<b>Text characters for translation</b> {3} of {4} used\n" + "<b>Audio minutes</b> {5} of {6} used\n\n" + "{7} days of subscription left\n" + "{8} minutes of subscription left")
-                .AddTranslate(LanguageENUM.Spanish, "<b>Estadística</b>\n\n" + "Tarifa: {0}\n\n" + "<b>Imágenes</b> {1} de {2} usadas\n" + "<b>Caracteres de texto para traducción</b> {3} de {4} utilizados\n" + "<b>Minutos de audio</b> {5} de {6} utilizados\n\n" + "Quedan {7} días de suscripción\n" + "Quedan {8} minutos de suscripción")
-                .AddTranslate(LanguageENUM.French, "<b>Statistique</b>\n\n" + "Tarif : {0}\n\n" + "<b>Images</b> {1} sur {2} utilisées\n" + "<b>Caractères de texte à traduire</b> {3} sur {4} utilisés\n" + "<b>Minutes audio</b> {5} sur {6} utilisées\n\n" + "{7} jours d'abonnement restants\n" + "{8} minutes d'abonnement restantes")
-                .AddTranslate(LanguageENUM.Japanese, "<b>統計</b>\n\n" + "料金: {0}\n\n" + "<b>画像</b> {1}/{2} 使用\n" + "<b>翻訳用テキスト文字</b> {4} 個中 {3} 個使用\n" + "<b>音声時間</b> {6} 中 {5} を使用\n\n" + "サブスクリプションは残り {7} 日\n" + "{8} 分のサブスクリプションが残っています")
-                .AddTranslate(LanguageENUM.Chinese, "<b>统计</b>\n\n" + "关税：{0}\n\n" + "<b>Images</b> {1} of {2} 使用了\n" + "<b>用于翻译的文本字符</b> 使用了 {3} 个，共 {4} 个\n" + "<b>音频分钟数</b>已使用 {5} 分钟，共 {6} 分钟\n\n" + "订阅还剩 {7} 天\n" + "还剩 {8} 分钟的订阅时间")
-                .AddTranslate(LanguageENUM.Czech, "<b>Statistika</b>\n\n" + "Tarif: {0}\n\n" + "<b>Obrázky</b> použité {1} z {2}\n" + "<b>Textové znaky pro překlad</b> Využito {3} z {4}\n" + "<b>Zvukové minuty</b> Využito {5} z {6}\n\n" + "Zbývá {7} dní předplatného\n" + "Zbývá {8} minut předplatného")
-                .AddTranslate(LanguageENUM.Danish, "<b>Statistik</b>\n\n" + "Takst: {0}\n\n" + "<b>Billeder</b> {1} af {2} brugt\n" + "<b>Teksttegn til oversættelse</b> {3} af {4} brugt\n" + "<b>Lydminutter</b> {5} af {6} brugt\n\n" + "{7} dages abonnement tilbage\n" + "{8} minutters abonnement tilbage")
-                .AddTranslate(LanguageENUM.Hindi, "<b>आँकड़ा</b>\n\n" + "शुल्क: {0}\n\n" + "<b>इमेज</b> {2} में से {1} इस्तेमाल की गई\n" + "<b>अनुवाद के लिए पाठ वर्ण</b> {4} में से {3} का उपयोग किया गया\n" + "<b>ऑडियो मिनट</b> {6} में से {5} का उपयोग किया गया\n\n" + "{7} दिनों की सदस्‍यता शेष\n" + "{8} मिनट की सदस्यता बाकी है")
-                .AddTranslate(LanguageENUM.Italian, "<b>Statistica</b>\n\n" + "Tariffa: {0}\n\n" + "<b>Immagini</b> {1} di {2} usate\n" + "<b>Caratteri di testo per la traduzione</b> {3} di {4} utilizzati\n" + "<b>Minuti audio</b> {5} su {6} utilizzati\n\n" + "{7} giorni di abbonamento rimanenti\n" + "{8} minuti di abbonamento rimanenti")
-                .AddTranslate(LanguageENUM.Swedish, "<b>Statistik</b>\n\n" + "Pris: {0}\n\n" + "<b>Bilder</b> {1} av {2} används\n" + "<b>Textecken för översättning</b> {3} av {4} används\n" + "<b>Ljudminuter</b> {5} av {6} används\n\n" + "{7} dagars prenumeration kvar\n" + "{8} minuters prenumeration kvar")
-                .AddTranslate(LanguageENUM.German, "<b>Statistik</b>\n\n" + "Tarif: {0}\n\n" + "<b>Bilder</b> {1} von {2} verwendet\n" + "<b>Textzeichen für die Übersetzung</b> {3} von {4} verwendet\n" + "<b>Audiominuten</b> {5} von {6} verbraucht\n\n" + "{7} Tage Abonnement verbleibend\n" + "{8} Minuten Abonnement verbleiben")
-                .AddTranslate(LanguageENUM.Polish, "<b>Statystyki</b>\n\n" + "Taryfa: {0}\n\n" + "<b>Obrazy</b> użyto {1} z {2}\n" + "<b>Znaki tekstowe do tłumaczenia</b> Użyto {3} z {4}\n" + "<b>Wykorzystano minuty audio</b> {5} z {6}\n\n" + "Pozostało {7} dni subskrypcji\n" + "Pozostało {8} minut subskrypcji")
-                .AddTranslate(LanguageENUM.Turkish, "<b>İstatistik</b>\n\n" + "Tarife: {0}\n\n" + "{2} resimden {1} <b>resim</b> kullanıldı\n" + "<b>Çeviri için metin karakterleri</b> {3} / {4} kullanıldı\n" + "<b>Ses dakikaları</b> {5} / {6} kullanıldı\n\n" + "{7} günlük abonelik kaldı\n" + "{8} dakikalık abonelik kaldı"),
+
+                .AddTranslate(LanguageENUM.Ukrainian, "<b>Статистика</b>\n\n" + 
+                                                      "Тариф: {0}\n\n" + 
+                                                      "<b>Зображення</b> {1} з {2} використано\n" + 
+                                                      "<b>Символов текста для перевода</b> использовано {3} из {4}\n" + 
+                                                      "<b>Аудіохвилин</b> використано {5} із {6}\n\n" + 
+                                                      "Залишилося {7} днів підписки\n" + 
+                                                      "Залишилося {8} хвилин підписки\n\n" +
+                                                      "Підписка автоматично оновлюється кожного місяця")
+
+                .AddTranslate(LanguageENUM.Russian, "<b>Статистика</b>\n\n" + 
+                                                    "Тариф: {0}\n\n" + 
+                                                    "<b>Изображения</b> {1} из {2} использованных\n" + 
+                                                    "<b>Символів тексту для перекладу</b> використано {3} з {4}\n" + 
+                                                    "<b>Аудио минут</b> использовано {5} из {6}\n\n" + 
+                                                    "Осталось {7} дней подписки\n" + 
+                                                    "Осталось {8} минут подписки\n\n" +
+                                                    "Подписка автоматически обновляется каждый месяц")
+
+                .AddTranslate(LanguageENUM.English, "<b>Statistic</b>\n\n" + 
+                                                    "Plan: {0}\n\n" + 
+                                                    "<b>Images</b> {1} of {2} used\n" + 
+                                                    "<b>Text characters for translation</b> {3} of {4} used\n" + 
+                                                    "<b>Audio minutes</b> {5} of {6} used\n\n" + 
+                                                    "{7} days of subscription left\n" + 
+                                                    "{8} minutes of subscription left\n\n" +
+                                                    "Subscription automatically renews each month")
+
+                .AddTranslate(LanguageENUM.Spanish, "<b>Estadística</b>\n\n" + 
+                                                    "Tarifa: {0}\n\n" + 
+                                                    "<b>Imágenes</b> {1} de {2} usadas\n" + 
+                                                    "<b>Caracteres de texto para traducción</b> {3} de {4} utilizados\n" + 
+                                                    "<b>Minutos de audio</b> {5} de {6} utilizados\n\n" + 
+                                                    "Quedan {7} días de suscripción\n" + 
+                                                    "Quedan {8} minutos de suscripción\n\n" +
+                                                    "Mes de skin actualizado automáticamente por suscripción")
+
+                .AddTranslate(LanguageENUM.French, "<b>Statistique</b>\n\n" + 
+                                                   "Tarif : {0}\n\n" + 
+                                                   "<b>Images</b> {1} sur {2} utilisées\n" + 
+                                                   "<b>Caractères de texte à traduire</b> {3} sur {4} utilisés\n" + 
+                                                   "<b>Minutes audio</b> {5} sur {6} utilisées\n\n" + 
+                                                   "{7} jours d'abonnement restants\n" + 
+                                                   "{8} minutes d'abonnement restantes\n\n" +
+                                                   "Abonnement automatiquement mis à jour skin mois")
+
+                .AddTranslate(LanguageENUM.Japanese, "<b>統計</b>\n\n" + 
+                                                     "料金: {0}\n\n" + 
+                                                     "<b>画像</b> {1}/{2} 使用\n" + 
+                                                     "<b>翻訳用テキスト文字</b> {4} 個中 {3} 個使用\n" + 
+                                                     "<b>音声時間</b> {6} 中 {5} を使用\n\n" + 
+                                                     "サブスクリプションは残り {7} 日\n" + 
+                                                     "{8} 分のサブスクリプションが残っています\n\n" +
+                                                     "サブスクリプションは自動的にスキン月を更新します")
+
+                .AddTranslate(LanguageENUM.Chinese, "<b>统计</b>\n\n" + 
+                                                    "关税：{0}\n\n" + 
+                                                    "<b>Images</b> {1} of {2} 使用了\n" + 
+                                                    "<b>用于翻译的文本字符</b> 使用了 {3} 个，共 {4} 个\n" + 
+                                                    "<b>音频分钟数</b>已使用 {5} 分钟，共 {6} 分钟\n\n" + 
+                                                    "订阅还剩 {7} 天\n" + 
+                                                    "还剩 {8} 分钟的订阅时间\n\n" +
+                                                    "订阅自动更新皮肤月份")
+
+                .AddTranslate(LanguageENUM.Czech, "<b>Statistika</b>\n\n" + 
+                                                  "Tarif: {0}\n\n" + 
+                                                  "<b>Obrázky</b> použité {1} z {2}\n" + 
+                                                  "<b>Textové znaky pro překlad</b> Využito {3} z {4}\n" + 
+                                                  "<b>Zvukové minuty</b> Využito {5} z {6}\n\n" + 
+                                                  "Zbývá {7} dní předplatného\n" + 
+                                                  "Zbývá {8} minut předplatného\n\n" +
+                                                  "Předplatné automaticky aktualizovalo měsíc vzhledu")
+
+                .AddTranslate(LanguageENUM.Danish, "<b>Statistik</b>\n\n" + 
+                                                   "Takst: {0}\n\n" + 
+                                                   "<b>Billeder</b> {1} af {2} brugt\n" + 
+                                                   "<b>Teksttegn til oversættelse</b> {3} af {4} brugt\n" + 
+                                                   "<b>Lydminutter</b> {5} af {6} brugt\n\n" + 
+                                                   "{7} dages abonnement tilbage\n" + 
+                                                   "{8} minutters abonnement tilbage\n\n" +
+                                                   "Abonnement opdateret automatisk hudmåned")
+
+                .AddTranslate(LanguageENUM.Hindi, "<b>आँकड़ा</b>\n\n" + 
+                                                  "शुल्क: {0}\n\n" + 
+                                                  "<b>इमेज</b> {2} में से {1} इस्तेमाल की गई\n" + 
+                                                  "<b>अनुवाद के लिए पाठ वर्ण</b> {4} में से {3} का उपयोग किया गया\n" + 
+                                                  "<b>ऑडियो मिनट</b> {6} में से {5} का उपयोग किया गया\n\n" + 
+                                                  "{7} दिनों की सदस्‍यता शेष\n" + 
+                                                  "{8} मिनट की सदस्यता बाकी है\n\n" +
+                                                  "सदस्यता स्वचालित रूप से अद्यतन त्वचा माह")
+
+                .AddTranslate(LanguageENUM.Italian, "<b>Statistica</b>\n\n" + 
+                                                    "Tariffa: {0}\n\n" + 
+                                                    "<b>Immagini</b> {1} di {2} usate\n" + 
+                                                    "<b>Caratteri di testo per la traduzione</b> {3} di {4} utilizzati\n" + 
+                                                    "<b>Minuti audio</b> {5} su {6} utilizzati\n\n" + 
+                                                    "{7} giorni di abbonamento rimanenti\n" + 
+                                                    "{8} minuti di abbonamento rimanenti\n\n" +
+                                                    "Abbonamento aggiornato automaticamente skin mese")
+
+                .AddTranslate(LanguageENUM.Swedish, "<b>Statistik</b>\n\n" + 
+                                                    "Pris: {0}\n\n" + 
+                                                    "<b>Bilder</b> {1} av {2} används\n" + 
+                                                    "<b>Textecken för översättning</b> {3} av {4} används\n" + 
+                                                    "<b>Ljudminuter</b> {5} av {6} används\n\n" + 
+                                                    "{7} dagars prenumeration kvar\n" + 
+                                                    "{8} minuters prenumeration kvar\n\n" +
+                                                    "Abonnemanget uppdateras automatiskt hudmånad")
+
+                .AddTranslate(LanguageENUM.German, "<b>Statistik</b>\n\n" + 
+                                                   "Tarif: {0}\n\n" + 
+                                                   "<b>Bilder</b> {1} von {2} verwendet\n" + 
+                                                   "<b>Textzeichen für die Übersetzung</b> {3} von {4} verwendet\n" + 
+                                                   "<b>Audiominuten</b> {5} von {6} verbraucht\n\n" + 
+                                                   "{7} Tage Abonnement verbleibend\n" + 
+                                                   "{8} Minuten Abonnement verbleiben\n\n" +
+                                                   "Abonnement automatisch aktualisiert Skin Monat")
+
+                .AddTranslate(LanguageENUM.Polish, "<b>Statystyki</b>\n\n" + 
+                                                   "Taryfa: {0}\n\n" + 
+                                                   "<b>Obrazy</b> użyto {1} z {2}\n" + 
+                                                   "<b>Znaki tekstowe do tłumaczenia</b> Użyto {3} z {4}\n" + 
+                                                   "<b>Wykorzystano minuty audio</b> {5} z {6}\n\n" + 
+                                                   "Pozostało {7} dni subskrypcji\n" + 
+                                                   "Pozostało {8} minut subskrypcji\n\n" +
+                                                   "Subskrypcja automatycznie aktualizuje miesiąc skórki")
+
+                .AddTranslate(LanguageENUM.Turkish, "<b>İstatistik</b>\n\n" + 
+                                                    "Tarife: {0}\n\n" + 
+                                                    "{2} resimden {1} <b>resim</b> kullanıldı\n" + 
+                                                    "<b>Çeviri için metin karakterleri</b> {3} / {4} kullanıldı\n" +
+                                                    "<b>Ses dakikaları</b> {5} / {6} kullanıldı\n\n" + 
+                                                    "{7} günlük abonelik kaldı\n" + 
+                                                    "{8} dakikalık abonelik kaldı\n\n" +
+                                                    "Abonelik otomatik olarak güncellenen cilt ayı"),
+
             new KeyTranslationsInitEntity(contentInProcessing)
                 .AddTranslate(LanguageENUM.Ukrainian, "Взято на обробку, будь ласка, зачекайте хвилинку. 😌")
                 .AddTranslate(LanguageENUM.Russian, "Взято на обработку, пожалуйста, подождите немного. 😌")
@@ -821,6 +1215,22 @@ public class TBDatabaseContext : DbContext
                 .AddTranslate(LanguageENUM.German, "Wenn die Audiotranskription nicht korrekt ist, versuchen Sie, die Audiosprache /audio_language auszuwählen")
                 .AddTranslate(LanguageENUM.Polish, "Jeśli transkrypcja dźwięku jest nieprawidłowa, spróbuj wybrać język dźwięku /audio_language")
                 .AddTranslate(LanguageENUM.Turkish, "Ses dökümü yanlışsa, ses dilini /audio_language seçmeyi deneyin"),
+            new KeyTranslationsInitEntity(userInfoKey)
+                .AddTranslate(LanguageENUM.Ukrainian, userInfoUA)
+                .AddTranslate(LanguageENUM.Russian, userInfoRU)
+                .AddTranslate(LanguageENUM.English, userInfoEN)
+                .AddTranslate(LanguageENUM.Spanish, userInfoSP)
+                .AddTranslate(LanguageENUM.French, userInfoFR)
+                .AddTranslate(LanguageENUM.Japanese, userInfoJA)
+                .AddTranslate(LanguageENUM.Chinese, userInfoCHINESE)
+                .AddTranslate(LanguageENUM.Czech, userInfoCZHECH)
+                .AddTranslate(LanguageENUM.Danish, userInfoDANISH)
+                .AddTranslate(LanguageENUM.Hindi, userInfoHindi)
+                .AddTranslate(LanguageENUM.Italian, userInfoItalian)
+                .AddTranslate(LanguageENUM.Swedish, userInfoSwedish)
+                .AddTranslate(LanguageENUM.German, userInfoGerman)
+                .AddTranslate(LanguageENUM.Polish, userInfoPolish)
+                .AddTranslate(LanguageENUM.Turkish, userInfoTurkish),
             //new KeyTranslationsInitEntity("")
             //    .AddTranslate(LanguageENUM.Ukrainian, "")
             //    .AddTranslate(LanguageENUM.Russian, "")

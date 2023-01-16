@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
+using System.Numerics;
 using TB.BillingPlans;
 using TB.Common;
 using TB.Core.Commands;
@@ -8,6 +9,7 @@ using TB.Database.GenericRepositories;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Menu.Entities;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -97,10 +99,10 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand, bool>
                     await commandDispatcher.DispatchAsync(commandToSend);
                     break;
 				}
-			case BotMenuId.Info:
+			case BotMenuId.BotInfo:
 				{
 					var message = await localizationService.GetTranslateByInterface("app.menu.info", command.UserId);
-					var commandToSend = new SendMessageCommand(command.ChatId, message);
+					var commandToSend = new SendMessageCommand(command.ChatId, message, ParseMode.Html);
                     await commandDispatcher.DispatchAsync(commandToSend);
                     break;
 				}
@@ -177,6 +179,37 @@ public class HandleMenuCommandHandler : ICommandHandler<HandleMenuCommand, bool>
                                             Math.Round(audioTotalMinutes, 2), planAudioMinutes,
                                             Math.Round(timeDifference.TotalDays, 1),
                                             Math.Round(timeDifference.TotalHours, 1));
+
+                    var commandToSend = new SendMessageCommand(command.ChatId, formatedMessage, ParseMode.Html);
+                    await commandDispatcher.DispatchAsync(commandToSend);
+                    break;
+                }
+            case BotMenuId.UserInfo:
+                {
+                    var userSettings = await userSettingsRepository.FirstOrDefaultAsync(x => x.TelegramUserId == command.UserId);
+                    var languages = (await languageRepository.GetAllAsync()).ToDictionary(x => x.Id);
+
+                    string LangExist(LanguageENUM? language)
+                    {
+                        if(language != null && languages.ContainsKey(language.Value))
+                        {
+                            return languages[language.Value].Name;
+                        }
+
+                        return "No сhosen";
+                    }
+
+                    var meaningKey = userSettings.RecognizeEnglishMeaning ? "app.menu.activated" : "app.menu.disabled";
+                    var meaningDescription = await localizationService.GetTranslateByInterface(meaningKey, command.UserId);
+
+
+                    var infoMessage = await localizationService.GetTranslateByInterface("app.menu.userInfo", command.UserId);
+                    var formatedMessage = string.Format(infoMessage,
+                                          LangExist(userSettings.NativeLanguageId),
+                                          LangExist(userSettings.TargetLanguageId),
+                                          LangExist(userSettings.AudioLanguageId),
+                                          LangExist(userSettings.InterfaceLanguageId),
+                                          meaningDescription);
 
                     var commandToSend = new SendMessageCommand(command.ChatId, formatedMessage, ParseMode.Html);
                     await commandDispatcher.DispatchAsync(commandToSend);

@@ -138,7 +138,8 @@ public class HandleCallbackCommandHandler : ICommandHandler<HandleCallbackComman
         var settings = await userSettingsRepository.GetAudioLanguageAsync(userId);
 
         var baseMessage = await localizationService.GetTranslateByInterface("app.languages.audioLanguageKey", userId);
-        var message = $"{baseMessage} {settings.AudioLanguage.Name}";
+        var audioResendMessage = await localizationService.GetTranslateByInterface("app.languages.audioResendKey", userId);
+        var message = $"{baseMessage} {settings.AudioLanguage.Name}\n\n" + audioResendMessage;
 
         var commandMessage = new SendMessageCommand(chatId, message, ParseMode.Html);
 
