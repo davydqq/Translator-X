@@ -18,3 +18,4 @@ jobs:
           dotnet ef database update -c TBDatabaseContext -p EnglishWordsRecognizer/EnglishWordsRecognizer -s EnglishWordsRecognizer/EnglishWordsRecognizer
         env:
           ASPNETCORE_ENVIRONMENT: Production
+          Database: ${{ secrets.DATABASECONNECTION }}
