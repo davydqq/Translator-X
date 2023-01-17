@@ -12,8 +12,8 @@ using TB.Database;
 namespace TB.Database.Migrations
 {
     [DbContext(typeof(TBDatabaseContext))]
-    [Migration("20230113230746_fix-established-message3")]
-    partial class fixestablishedmessage3
+    [Migration("20230117131323_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -541,7 +541,7 @@ namespace TB.Database.Migrations
                             Id = 5,
                             Key = "app.languages.interfaceLanguage",
                             LanguageId = 5,
-                            Translate = "La langue de votre interface :"
+                            Translate = "La langue de votre interface:"
                         },
                         new
                         {
@@ -618,105 +618,105 @@ namespace TB.Database.Migrations
                             Id = 16,
                             Key = "app.languages.established",
                             LanguageId = 1,
-                            Translate = "Мови були встановлені.\n\n<b>Можливості бота</b>\n\nНадішліть текст для автоматичного перекладу на вибрану мову.\n\nНадішліть /meaning_english, щоб показувати англійське значення та синоніми.\n\n<b>Надішліть фотографії та отримайте </ b>\n- Текст з фото\n- Всі об'єкти з фото з перекладом\n- Короткий опис фото, якщо можливо\n\n<b>Надішліть аудіо та отримайте</b>\n- аудіо транскрипцію\n\n<b>Ваші мови</b>\nОсновна мова: {0}\nМова перекладу: {1}"
+                            Translate = "Мови були встановлені.\n\n<b>Можливості бота</b>\n\nНадішліть текст для автоматичного перекладу на вибрану мову.\n\nНадішліть /meaning_english, щоб показувати англійське значення та синоніми.\nНадішліть /interface_language, щоб змінити мову інтерфейсу\n\n<b>Надішліть фотографії та отримайте </b>\n- Текст з фото\n- Всі об'єкти з фото з перекладом\n- Короткий опис фото, якщо можливо\n\n<b>Надішліть аудіо та отримайте</b>\n- Аудіо транскрипцію\n\n<b>Бот підтримує «відповіді» та «пересилання» повідомлень.</b>\n\n<b>Ваші мови</b>\nОсновна мова: {0}\nМова перекладу: {1}"
                         },
                         new
                         {
                             Id = 17,
                             Key = "app.languages.established",
                             LanguageId = 2,
-                            Translate = "Языки были установлены.\n\n<b>Возможности бота</b>\n\nОтправьте текст для автоматического перевода на выбранный язык.\n\nОтправьте /meaning_english, чтобы показывать английское значение и синоними.\n\n<b>Отправьте фотографии и получите </b>\n- Текст с фото\n- Все объекты с фото с переводом\n- Краткое описание фото, если возможно\n\n<b>Отправьте аудио и получите</b>\n- аудио транскрипцию\n\n<b>Ваши языки</b>\nОсновной язык: {0}\nЦелевой язык: {1}"
+                            Translate = "Языки были установлены.\n\n<b>Возможности бота</b>\n\nОтправьте текст для автоматического перевода на выбранный язык.\n\nОтправьте /meaning_english, чтобы показывать английское значение и синоними.\nОтправьте /interface_language, чтобы изменить язык интерфейса\n\n<b>Отправьте фотографии и получите </b>\n- Текст с фото\n- Все объекты с фото с переводом\n- Краткое описание фото, если возможно\n\n<b>Отправьте аудио и получите</b>\n- Аудио транскрипцию\n\n<b>Бот поддерживает 'ответы' и 'пересылки' сообщений.</b>\n\n<b>Ваши языки</b>\nОсновной язык: {0}\nЦелевой язык: {1}"
                         },
                         new
                         {
                             Id = 18,
                             Key = "app.languages.established",
                             LanguageId = 3,
-                            Translate = "The languages were established.\n\n<b>Bot features</b>\n\nSend text for automatic translation into the selected language.\n\nUse /meaning_english to enable show English meaning and synonyms for the words.\n\n<b>Send photos and receive</b>\n- Text from photos\n- All objects from the photo with translations\n- Short description of the photo if possible\n\n<b>Send audio and receive</b>\n- Transcription of the audio\n\n<b>Your languages</b>\nMain Language: {0}\nTarget Language: {1}"
+                            Translate = "The languages were established.\n\n<b>Bot features</b>\n\nSend text for automatic translation into the selected language.\n\nSend /meaning_english to enable show English meaning and synonyms for the words.\nSend /interface_language to change the interface language\n\n<b>Send photos and receive</b>\n- Text from photos\n- All objects from the photo with translations\n- Short description of the photo if possible\n\n<b>Send audio and receive</b>\n- Transcription of the audio\n\n<b>Bot support 'replies' and 'forwards' messages.</b>\n\n<b>Your languages</b>\nMain Language: {0}\nTarget Language: {1}"
                         },
                         new
                         {
                             Id = 19,
                             Key = "app.languages.established",
                             LanguageId = 4,
-                            Translate = "Se han establecido las lenguas.\n\n<b>Características del bot</b>\n\nEnvíe texto para traducción automática al idioma seleccionado.\n\nEnvíe /meaning_english para solicitar significado y sinónimos en inglés.\n\n<b>Envíe fotos y obtenga </b > \n- Texto con foto\n- Todos los objetos con foto con traducción\n- Breve descripción de la foto, si es posible\n\n<b>Envíe el audio y obtenga</b>\n- la transcripción del audio\n\n<b>Tus idiomas</b>\nLenguaje principal: {0}\nLengua meta: {1}"
+                            Translate = "Se han establecido las lenguas.\n\n<b>Características del bot</b>\n\nEnvíe texto para traducción automática al idioma seleccionado.\n\nEnvíe /meaning_english para solicitar significado y sinónimos en inglés.\nEnvía /interface_language para cambiar el idioma de la interfaz\n\n<b>Envíe fotos y obtenga </b>\n- Texto con foto\n- Todos los objetos con foto con traducción\n- Breve descripción de la foto, si es posible\n\n<b>Envíe el audio y obtenga</b>\n- La transcripción del audio\n\n<b>El bot admite mensajes de 'respuestas' y 'reenvíos'.</b>\n\nb>Tus idiomas</b>\nLenguaje principal: {0}\nLengua meta: {1}"
                         },
                         new
                         {
                             Id = 20,
                             Key = "app.languages.established",
                             LanguageId = 5,
-                            Translate = "Les langues ont été définies.\n\n<b>Fonctionnalités du bot</b>\n\nSoumettez le texte pour traduction automatique dans la langue sélectionnée.\n\nSoumettez /meaning_english pour demander la signification et les synonymes en anglais.\n\n<b>Soumettez des photos et obtenez </b > \n- Texte avec photo\n- Tous les objets avec photo avec traduction\n- Brève description de la photo, si possible\n\n<b>Soumettre l'audio et obtenir</b>\n- Transcription audio\n\n<b>Vos langues</b>\nLangage principal: {0}\nLangue cible: {1}"
+                            Translate = "Les langues ont été définies.\n\n<b>Fonctionnalités du bot</b>\n\nSoumettez le texte pour traduction automatique dans la langue sélectionnée.\n\nSoumettez /meaning_english pour demander la signification et les synonymes en anglais.\nEnvoyez /interface_language pour changer la langue de l'interface\n\n<b>Soumettez des photos et obtenez </b>\n- Texte avec photo\n- Tous les objets avec photo avec traduction\n- Brève description de la photo, si possible\n\n<b>Soumettre l'audio et obtenir</b>\n- Transcription audio\n\n<b>Le bot prend en charge les messages 'répondre' et 'transférer'.</b>\n\n<b>Vos langues</b>\nLangage principal: {0}\nLangue cible: {1}"
                         },
                         new
                         {
                             Id = 21,
                             Key = "app.languages.established",
                             LanguageId = 6,
-                            Translate = "言語が設定されました。\n\n<b>ボットの機能</b>\n\nテキストを送信して、選択した言語に自動翻訳します。\n\n/meaning_english を送信して、英語の意味と同義語を求めます。\n\n<b>写真を送信して </b を入手してください> \n- 写真付きテキスト\n- 写真付きのすべてのオブジェクトと翻訳\n- 可能であれば、写真の簡単な説明\n\n<b>音声を送信して取得</b>\n- 音声文字起こし\n\n<b>あなたの言語</b>\n主要言語：{0}\nターゲット言語: {1}"
+                            Translate = "言語が設定されました。\n\n<b>ボットの機能</b>\n\nテキストを送信して、選択した言語に自動翻訳します。\n\n/meaning_english を送信して、英語の意味と同義語を求めます。\nインターフェイス言語を変更するには、/interface_language を送信します\n\n<b>写真を送信して </b> を入手してください\n- 写真付きテキスト\n- 写真付きのすべてのオブジェクトと翻訳\n- 可能であれば、写真の簡単な説明\n\n<b>音声を送信して取得</b>\n- 音声文字起こし\n\n<b>ボットはメッセージの「返信」と「転送」をサポートします。</b>\n\n<b>あなたの言語</b>\n主要言語：{0}\nターゲット言語: {1}"
                         },
                         new
                         {
                             Id = 22,
                             Key = "app.languages.established",
                             LanguageId = 7,
-                            Translate = "设置了语言。\n\n<b>Bot 功能</b>\n\n提交文本以自动翻译成所选语言。\n\n提交 /meaning_english 以调用英语含义和同义词。\n\n<b>提交照片并获取 </b > \n- 带照片的文本\n- 所有带照片的对象和翻译\n- 如果可能的话，对照片进行简要描述\n\n<b>提交音频并获得</b>\n- 音频转录\n\n<b>你的语言</b>\n主要语言： {0}\n选择母语: {1}"
+                            Translate = "设置了语言。\n\n<b>Bot 功能</b>\n\n提交文本以自动翻译成所选语言。\n\n提交 /meaning_english 以调用英语含义和同义词。\n发送 /interface_language 更改界面语言\n\n<b>提交照片并获取</b>\n- 带照片的文本\n- 所有带照片的对象和翻译\n- 如果可能的话，对照片进行简要描述\n\n<b>提交音频并获得</b>\n- 音频转录\n\n<b>Bot 支持“回复”和“转发”消息。</b>\n\n<b>你的语言</b>\n主要语言： {0}\n选择母语: {1}"
                         },
                         new
                         {
                             Id = 23,
                             Key = "app.languages.established",
                             LanguageId = 8,
-                            Translate = "Jazyky byly nastaveny.\n\n<b>Funkce robota</b>\n\nOdešlete text k automatickému překladu do vybraného jazyka.\n\nOdešlete /meaning_english, chcete-li získat anglický význam a synonyma.\n\n<b>Odešlete fotografie a získejte </b > \n- Text s fotografií\n- Všechny objekty s fotografií s překladem\n- Stručný popis fotografie, pokud je to možné\n\n<b>Odešlete zvuk a získejte</b>\n- zvukový přepis\n\n<b>Vaše jazyky</b>\nHlavní jazyk: {0}\nCílový jazyk: {1}"
+                            Translate = "Jazyky byly nastaveny.\n\n<b>Funkce robota</b>\n\nOdešlete text k automatickému překladu do vybraného jazyka.\n\nOdešlete /meaning_english, chcete-li získat anglický význam a synonyma.\nPro změnu jazyka rozhraní odešlete /interface_language\n\n<b>Odešlete fotografie a získejte</b>\n- Text s fotografií\n- Všechny objekty s fotografií s překladem\n- Stručný popis fotografie, pokud je to možné\n\n<b>Odešlete zvuk a získejte</b>\n- Zvukový přepis\n\n<b>Bot podporuje „odpovědi“ a „přeposílání“ zpráv.</b>\n\n<b>Vaše jazyky</b>\nHlavní jazyk: {0}\nCílový jazyk: {1}"
                         },
                         new
                         {
                             Id = 24,
                             Key = "app.languages.established",
                             LanguageId = 9,
-                            Translate = "Sprog blev sat.\n\n<b>Bot-funktioner</b>\n\nSend tekst til automatisk oversættelse til det valgte sprog.\n\nSend /meaning_english for at kalde på engelsk betydning og synonymer.\n\n<b>Indsend billeder og få </b > \n- Tekst med foto\n- Alle objekter med foto med oversættelse\n- Kort beskrivelse af billedet, hvis det er muligt\n\n<b>Send lyd og få</b>\n- lydtransskription\n\n<b>Dine sprog</b>\nHovedsprog: {0}\nMålsprog: {1}"
+                            Translate = "Sprog blev sat.\n\n<b>Bot-funktioner</b>\n\nSend tekst til automatisk oversættelse til det valgte sprog.\n\nSend /meaning_english for at kalde på engelsk betydning og synonymer.\nSend /interface_language for at ændre grænsefladesproget\n\n<b>Indsend billeder og få </b>\n- Tekst med foto\n- Alle objekter med foto med oversættelse\n- Kort beskrivelse af billedet, hvis det er muligt\n\n<b>Send lyd og få</b>\n- Lydtransskription\n\n<b>Bot understøtter 'svar' og 'videresendelser'-meddelelser.</b>\n\n<b>Dine sprog</b>\nHovedsprog: {0}\nMålsprog: {1}"
                         },
                         new
                         {
                             Id = 25,
                             Key = "app.languages.established",
                             LanguageId = 10,
-                            Translate = "भाषाएँ निर्धारित की गईं।\n\n<b>बॉट सुविधाएँ</b>\n\nचयनित भाषा में स्वचालित अनुवाद के लिए टेक्स्ट सबमिट करें।\n\nअंग्रेज़ी अर्थ और समानार्थक शब्द के लिए कॉल करने के लिए /meaning_english सबमिट करें।\n\n<b>फ़ोटो सबमिट करें और प्राप्त करें </b > \n- फ़ोटो के साथ टेक्स्ट\n- अनुवाद के साथ फ़ोटो के साथ सभी ऑब्जेक्ट\n- फ़ोटो का संक्षिप्त विवरण, यदि संभव हो तो\n\n<b>ऑडियो सबमिट करें और प्राप्त करें</b>\n- ऑडियो ट्रांसक्रिप्शन\n\n<b>आपकी भाषाएँ</b>\nमुख्य भाषा: {0}\nलक्ष्य भाषा: {1}"
+                            Translate = "भाषाएँ निर्धारित की गईं।\n\n<b>बॉट सुविधाएँ</b>\n\nचयनित भाषा में स्वचालित अनुवाद के लिए टेक्स्ट सबमिट करें।\n\nअंग्रेज़ी अर्थ और समानार्थक शब्द के लिए कॉल करने के लिए /meaning_english सबमिट करें।\nइंटरफ़ेस भाषा बदलने के लिए /interface_language भेजें\n\n<b>फ़ोटो सबमिट करें और प्राप्त करें</b>\n- फ़ोटो के साथ टेक्स्ट\n- अनुवाद के साथ फ़ोटो के साथ सभी ऑब्जेक्ट\n- फ़ोटो का संक्षिप्त विवरण, यदि संभव हो तो\n\n<b>ऑडियो सबमिट करें और प्राप्त करें</b>\n- ऑडियो ट्रांसक्रिप्शन\n\n<b>बॉट 'जवाब' और 'फॉरवर्ड' संदेशों का समर्थन करता है।</b>\n\n<b>आपकी भाषाएँ</b>\nमुख्य भाषा: {0}\nलक्ष्य भाषा: {1}"
                         },
                         new
                         {
                             Id = 26,
                             Key = "app.languages.established",
                             LanguageId = 11,
-                            Translate = "Le lingue sono state impostate.\n\n<b>Caratteristiche del bot</b>\n\nInvia il testo per la traduzione automatica nella lingua selezionata.\n\nInvia /meaning_english per richiedere significato e sinonimi in inglese.\n\n<b>Invia foto e ottieni </b > \n- Testo con foto\n- Tutti gli oggetti con foto con traduzione\n- Breve descrizione della foto, se possibile\n\n<b>Invia audio e ottieni</b>\n- trascrizione audio\n\n<b>Le tue lingue</b>\nLingua principale: {0}\nLingua di destinazione: {1}"
+                            Translate = "Le lingue sono state impostate.\n\n<b>Caratteristiche del bot</b>\n\nInvia il testo per la traduzione automatica nella lingua selezionata.\n\nInvia /meaning_english per richiedere significato e sinonimi in inglese.\nInvia /interface_language per cambiare la lingua dell'interfaccia\n\n<b>Invia foto e ottieni </b>\n- Testo con foto\n- Tutti gli oggetti con foto con traduzione\n- Breve descrizione della foto, se possibile\n\n<b>Invia audio e ottieni</b>\n- Trascrizione audio\n\n<b>Il bot supporta i messaggi di 'risposta' e 'inoltro'.</b>\n\n<b>Le tue lingue</b>\nLingua principale: {0}\nLingua di destinazione: {1}"
                         },
                         new
                         {
                             Id = 27,
                             Key = "app.languages.established",
                             LanguageId = 12,
-                            Translate = "Språk sattes.\n\n<b>Botfunktioner</b>\n\nSkicka in text för automatisk översättning till det valda språket.\n\nSkicka in /meaning_english för att få engelska betydelser och synonymer.\n\n<b>Skicka in foton och få </b > \n- Text med foto\n- Alla objekt med foto med översättning\n- Kort beskrivning av fotot, om möjligt\n\n<b>Skicka in ljud och få</b>\n- ljudtranskription\n\n<b>Dina språk</b>\nModersmål: {0}\nMålspråk: {1}"
+                            Translate = "Språk sattes.\n\n<b>Botfunktioner</b>\n\nSkicka in text för automatisk översättning till det valda språket.\n\nSkicka in /meaning_english för att få engelska betydelser och synonymer.\nSkicka /interface_language för att ändra gränssnittsspråket\n\n<b>Skicka in foton och få </b>\n- Text med foto\n- Alla objekt med foto med översättning\n- Kort beskrivning av fotot, om möjligt\n\n<b>Skicka in ljud och få</b>\n- Ljudtranskription\n\n<b>Bot stöder 'svar' och 'vidarebefordrar' meddelanden.</b>\n\n<b>Dina språk</b>\nModersmål: {0}\nMålspråk: {1}"
                         },
                         new
                         {
                             Id = 28,
                             Key = "app.languages.established",
                             LanguageId = 13,
-                            Translate = "Sprachen wurden eingestellt.\n\n<b>Bot-Funktionen</b>\n\nSenden Sie Text zur automatischen Übersetzung in die ausgewählte Sprache.\n\nSenden Sie /meaning_english, um nach englischer Bedeutung und Synonymen zu fragen.\n\n<b>Senden Sie Fotos und erhalten Sie </b > \n- Text mit Foto\n- Alle Objekte mit Foto mit Übersetzung\n- Kurze Beschreibung des Fotos, wenn möglich\n\n<b>Audio einreichen und</b>\n- Audiotranskription erhalten\n\n<b>Ihre Sprachen</b>\nMuttersprache: {0}\nZielsprache: {1}"
+                            Translate = "Sprachen wurden eingestellt.\n\n<b>Bot-Funktionen</b>\n\nSenden Sie Text zur automatischen Übersetzung in die ausgewählte Sprache.\n\nSenden Sie /meaning_english, um nach englischer Bedeutung und Synonymen zu fragen.\nSenden Sie /interface_language, um die Sprache der Benutzeroberfläche zu ändern\n\n<b>Senden Sie Fotos und erhalten Sie</b>\n- Text mit Foto\n- Alle Objekte mit Foto mit Übersetzung\n- Kurze Beschreibung des Fotos, wenn möglich\n\n<b>Audio einreichen und</b>\n- Audiotranskription erhalten\n\n<b>Bot unterstützt 'Antworten' und 'Weiterleiten' von Nachrichten.</b>\n\n<b>Ihre Sprachen</b>\nMuttersprache: {0}\nZielsprache: {1}"
                         },
                         new
                         {
                             Id = 29,
                             Key = "app.languages.established",
                             LanguageId = 14,
-                            Translate = "Ustawiono języki.\n\n<b>Funkcje bota</b>\n\nPrześlij tekst do automatycznego tłumaczenia na wybrany język.\n\nPrześlij /meaning_english, aby uzyskać angielskie znaczenie i synonimy.\n\n<b>Prześlij zdjęcia i uzyskaj </b > \n- Tekst ze zdjęciem\n- Wszystkie obiekty ze zdjęciem z tłumaczeniem\n- Krótki opis zdjęcia, jeśli to możliwe\n\n<b>Prześlij dźwięk i pobierz</b>\n- transkrypcję dźwięku\n\n<b>Twoje języki</b>\nGłówny język: {0}\nJęzyk docelowy: {1}"
+                            Translate = "Ustawiono języki.\n\n<b>Funkcje bota</b>\n\nPrześlij tekst do automatycznego tłumaczenia na wybrany język.\n\nPrześlij /meaning_english, aby uzyskać angielskie znaczenie i synonimy.\nWyślij /interface_language, aby zmienić język interfejsu\n\n<b>Prześlij zdjęcia i uzyskaj </b>\n- Tekst ze zdjęciem\n- Wszystkie obiekty ze zdjęciem z tłumaczeniem\n- Krótki opis zdjęcia, jeśli to możliwe\n\n<b>Prześlij dźwięk i pobierz</b>\n- Transkrypcję dźwięku\n\n<b>Bot obsługuje 'odpowiedzi' i 'przekazuje dalej' wiadomości.</b>\n\n<b>Twoje języki</b>\nGłówny język: {0}\nJęzyk docelowy: {1}"
                         },
                         new
                         {
                             Id = 30,
                             Key = "app.languages.established",
                             LanguageId = 15,
-                            Translate = "Diller ayarlandı.\n\n<b>Bot özellikleri</b>\n\nSeçilen dile otomatik çeviri için metin gönderin.\n\nİngilizce anlamı ve eşanlamlıları aramak için /meaning_english gönderin.\n\n<b>Fotoğraf gönderin ve </b > \n- Fotoğraflı metin\n- Fotoğraflı tüm nesneler ve çevirisi\n- Mümkünse fotoğrafın kısa açıklaması\n\n<b>Sesi gönderin ve</b>\n- sesli transkripsiyonu alın\n\n<b>Dilleriniz</b>\nAna dil: {0}\nHedef dil: {1}"
+                            Translate = "Diller ayarlandı.\n\n<b>Bot özellikleri</b>\n\nSeçilen dile otomatik çeviri için metin gönderin.\n\nİngilizce anlamı ve eşanlamlıları aramak için /meaning_english gönderin.\nArayüz dilini değiştirmek için /interface_language gönderin\n\n<b>Fotoğraf gönderin ve </b>\n- Fotoğraflı metin\n- Fotoğraflı tüm nesneler ve çevirisi\n- Mümkünse fotoğrafın kısa açıklaması\n\n<b>Sesi gönderin ve</b>\n- Sesli transkripsiyonu alın\n\n<b>Bot desteği 'yanıtlar' ve 'iletilen' mesajlar.</b>\n\n<b>Dilleriniz</b>\nAna dil: {0}\nHedef dil: {1}"
                         },
                         new
                         {
@@ -1773,105 +1773,105 @@ namespace TB.Database.Migrations
                             Id = 181,
                             Key = "app.menu.info",
                             LanguageId = 1,
-                            Translate = "Info"
+                            Translate = "<b>Можливості бота</b>\n\nНадішліть текст для автоматичного перекладу на вибрану мову.\n\nНадішліть /meaning_english, щоб показувати англійське значення та синоніми.\nНадішліть /interface_language, щоб змінити мову інтерфейсу\n\n<b>Надішліть фотографії та отримайте </b>\n- Текст з фото\n- Всі об'єкти з фото з перекладом\n- Короткий опис фото, якщо можливо\n\n<b>Надішліть аудіо та отримайте</b>\n- Аудіо транскрипцію\n\n<b>Бот підтримує «відповіді» та «пересилання» повідомлень.</b>"
                         },
                         new
                         {
                             Id = 182,
                             Key = "app.menu.info",
                             LanguageId = 2,
-                            Translate = "Info"
+                            Translate = "<b>Возможности бота</b>\n\nОтправьте текст для автоматического перевода на выбранный язык.\n\nОтправьте /meaning_english, чтобы показывать английское значение и синоними.\nОтправьте /interface_language, чтобы изменить язык интерфейса\n\n<b>Отправьте фотографии и получите </b>\n- Текст с фото\n- Все объекты с фото с переводом\n- Краткое описание фото, если возможно\n\n<b>Отправьте аудио и получите</b>\n- Аудио транскрипцию\n\n<b>Бот поддерживает 'ответы' и 'пересылки' сообщений.</b>"
                         },
                         new
                         {
                             Id = 183,
                             Key = "app.menu.info",
                             LanguageId = 3,
-                            Translate = "Info"
+                            Translate = "<b>Bot features</b>\n\nSend text for automatic translation into the selected language.\n\nSend /meaning_english to enable show English meaning and synonyms for the words.\nSend /interface_language to change the interface language\n\n<b>Send photos and receive</b>\n- Text from photos\n- All objects from the photo with translations\n- Short description of the photo if possible\n\n<b>Send audio and receive</b>\n- Transcription of the audio\n\n<b>Bot support 'replies' and 'forwards' messages.</b>"
                         },
                         new
                         {
                             Id = 184,
                             Key = "app.menu.info",
                             LanguageId = 4,
-                            Translate = "Info"
+                            Translate = "<b>Características del bot</b>\n\nEnvíe texto para traducción automática al idioma seleccionado.\n\nEnvíe /meaning_english para solicitar significado y sinónimos en inglés.\nEnvía /interface_language para cambiar el idioma de la interfaz\n\n<b>Envíe fotos y obtenga </b>\n- Texto con foto\n- Todos los objetos con foto con traducción\n- Breve descripción de la foto, si es posible\n\n<b>Envíe el audio y obtenga</b>\n- La transcripción del audio\n\n<b>El bot admite mensajes de 'respuestas' y 'reenvíos'.</b>"
                         },
                         new
                         {
                             Id = 185,
                             Key = "app.menu.info",
                             LanguageId = 5,
-                            Translate = "Info"
+                            Translate = "<b>Fonctionnalités du bot</b>\n\nSoumettez le texte pour traduction automatique dans la langue sélectionnée.\n\nSoumettez /meaning_english pour demander la signification et les synonymes en anglais.\nEnvoyez /interface_language pour changer la langue de l'interface\n\n<b>Soumettez des photos et obtenez </b>\n- Texte avec photo\n- Tous les objets avec photo avec traduction\n- Brève description de la photo, si possible\n\n<b>Soumettre l'audio et obtenir</b>\n- Transcription audio\n\n<b>Le bot prend en charge les messages 'répondre' et 'transférer'.</b>"
                         },
                         new
                         {
                             Id = 186,
                             Key = "app.menu.info",
                             LanguageId = 6,
-                            Translate = "Info"
+                            Translate = "<b>ボットの機能</b>\n\nテキストを送信して、選択した言語に自動翻訳します。\n\n/meaning_english を送信して、英語の意味と同義語を求めます。\nインターフェイス言語を変更するには、/interface_language を送信します\n\n<b>写真を送信して </b> を入手してください\n- 写真付きテキスト\n- 写真付きのすべてのオブジェクトと翻訳\n- 可能であれば、写真の簡単な説明\n\n<b>音声を送信して取得</b>\n- 音声文字起こし\n\n<b>ボットはメッセージの「返信」と「転送」をサポートします。</b>"
                         },
                         new
                         {
                             Id = 187,
                             Key = "app.menu.info",
                             LanguageId = 7,
-                            Translate = "Info"
+                            Translate = "<b>Bot 功能</b>\n\n提交文本以自动翻译成所选语言。\n\n提交 /meaning_english 以调用英语含义和同义词。\n发送 /interface_language 更改界面语言\n\n<b>提交照片并获取</b>\n- 带照片的文本\n- 所有带照片的对象和翻译\n- 如果可能的话，对照片进行简要描述\n\n<b>提交音频并获得</b>\n- 音频转录\n\n<b>Bot 支持“回复”和“转发”消息。</b>"
                         },
                         new
                         {
                             Id = 188,
                             Key = "app.menu.info",
                             LanguageId = 8,
-                            Translate = "Info"
+                            Translate = "<b>Funkce robota</b>\n\nOdešlete text k automatickému překladu do vybraného jazyka.\n\nOdešlete /meaning_english, chcete-li získat anglický význam a synonyma.\nPro změnu jazyka rozhraní odešlete /interface_language\n\n<b>Odešlete fotografie a získejte</b>\n- Text s fotografií\n- Všechny objekty s fotografií s překladem\n- Stručný popis fotografie, pokud je to možné\n\n<b>Odešlete zvuk a získejte</b>\n- Zvukový přepis\n\n<b>Bot podporuje „odpovědi“ a „přeposílání“ zpráv.</b>"
                         },
                         new
                         {
                             Id = 189,
                             Key = "app.menu.info",
                             LanguageId = 9,
-                            Translate = "Info"
+                            Translate = "<b>Bot-funktioner</b>\n\nSend tekst til automatisk oversættelse til det valgte sprog.\n\nSend /meaning_english for at kalde på engelsk betydning og synonymer.\nSend /interface_language for at ændre grænsefladesproget\n\n<b>Indsend billeder og få </b>\n- Tekst med foto\n- Alle objekter med foto med oversættelse\n- Kort beskrivelse af billedet, hvis det er muligt\n\n<b>Send lyd og få</b>\n- Lydtransskription\n\n<b>Bot understøtter 'svar' og 'videresendelser'-meddelelser.</b>"
                         },
                         new
                         {
                             Id = 190,
                             Key = "app.menu.info",
                             LanguageId = 10,
-                            Translate = "Info"
+                            Translate = "<b>बॉट सुविधाएँ</b>\n\nचयनित भाषा में स्वचालित अनुवाद के लिए टेक्स्ट सबमिट करें।\n\nअंग्रेज़ी अर्थ और समानार्थक शब्द के लिए कॉल करने के लिए /meaning_english सबमिट करें।\nइंटरफ़ेस भाषा बदलने के लिए /interface_language भेजें\n\n<b>फ़ोटो सबमिट करें और प्राप्त करें</b>\n- फ़ोटो के साथ टेक्स्ट\n- अनुवाद के साथ फ़ोटो के साथ सभी ऑब्जेक्ट\n- फ़ोटो का संक्षिप्त विवरण, यदि संभव हो तो\n\n<b>ऑडियो सबमिट करें और प्राप्त करें</b>\n- ऑडियो ट्रांसक्रिप्शन\n\n<b>बॉट 'जवाब' और 'फॉरवर्ड' संदेशों का समर्थन करता है।</b>"
                         },
                         new
                         {
                             Id = 191,
                             Key = "app.menu.info",
                             LanguageId = 11,
-                            Translate = "Info"
+                            Translate = "<b>Caratteristiche del bot</b>\n\nInvia il testo per la traduzione automatica nella lingua selezionata.\n\nInvia /meaning_english per richiedere significato e sinonimi in inglese.\nInvia /interface_language per cambiare la lingua dell'interfaccia\n\n<b>Invia foto e ottieni </b>\n- Testo con foto\n- Tutti gli oggetti con foto con traduzione\n- Breve descrizione della foto, se possibile\n\n<b>Invia audio e ottieni</b>\n- Trascrizione audio\n\n<b>Il bot supporta i messaggi di 'risposta' e 'inoltro'.</b>"
                         },
                         new
                         {
                             Id = 192,
                             Key = "app.menu.info",
                             LanguageId = 12,
-                            Translate = "Info"
+                            Translate = "<b>Botfunktioner</b>\n\nSkicka in text för automatisk översättning till det valda språket.\n\nSkicka in /meaning_english för att få engelska betydelser och synonymer.\nSkicka /interface_language för att ändra gränssnittsspråket\n\n<b>Skicka in foton och få </b>\n- Text med foto\n- Alla objekt med foto med översättning\n- Kort beskrivning av fotot, om möjligt\n\n<b>Skicka in ljud och få</b>\n- Ljudtranskription\n\n<b>Bot stöder 'svar' och 'vidarebefordrar' meddelanden.</b>"
                         },
                         new
                         {
                             Id = 193,
                             Key = "app.menu.info",
                             LanguageId = 13,
-                            Translate = "Info"
+                            Translate = "<b>Bot-Funktionen</b>\n\nSenden Sie Text zur automatischen Übersetzung in die ausgewählte Sprache.\n\nSenden Sie /meaning_english, um nach englischer Bedeutung und Synonymen zu fragen.\nSenden Sie /interface_language, um die Sprache der Benutzeroberfläche zu ändern\n\n<b>Senden Sie Fotos und erhalten Sie</b>\n- Text mit Foto\n- Alle Objekte mit Foto mit Übersetzung\n- Kurze Beschreibung des Fotos, wenn möglich\n\n<b>Audio einreichen und</b>\n- Audiotranskription erhalten\n\n<b>Bot unterstützt 'Antworten' und 'Weiterleiten' von Nachrichten.</b>"
                         },
                         new
                         {
                             Id = 194,
                             Key = "app.menu.info",
                             LanguageId = 14,
-                            Translate = "Info"
+                            Translate = "<b>Funkcje bota</b>\n\nPrześlij tekst do automatycznego tłumaczenia na wybrany język.\n\nPrześlij /meaning_english, aby uzyskać angielskie znaczenie i synonimy.\nWyślij /interface_language, aby zmienić język interfejsu\n\n<b>Prześlij zdjęcia i uzyskaj </b>\n- Tekst ze zdjęciem\n- Wszystkie obiekty ze zdjęciem z tłumaczeniem\n- Krótki opis zdjęcia, jeśli to możliwe\n\n<b>Prześlij dźwięk i pobierz</b>\n- Transkrypcję dźwięku\n\n<b>Bot obsługuje 'odpowiedzi' i 'przekazuje dalej' wiadomości.</b>"
                         },
                         new
                         {
                             Id = 195,
                             Key = "app.menu.info",
                             LanguageId = 15,
-                            Translate = "Info"
+                            Translate = "<b>Bot özellikleri</b>\n\nSeçilen dile otomatik çeviri için metin gönderin.\n\nİngilizce anlamı ve eşanlamlıları aramak için /meaning_english gönderin.\nArayüz dilini değiştirmek için /interface_language gönderin\n\n<b>Fotoğraf gönderin ve </b>\n- Fotoğraflı metin\n- Fotoğraflı tüm nesneler ve çevirisi\n- Mümkünse fotoğrafın kısa açıklaması\n\n<b>Sesi gönderin ve</b>\n- Sesli transkripsiyonu alın\n\n<b>Bot desteği 'yanıtlar' ve 'iletilen' mesajlar.</b>"
                         },
                         new
                         {
@@ -2191,1157 +2191,1577 @@ namespace TB.Database.Migrations
                         new
                         {
                             Id = 241,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 1,
+                            Translate = "Надішліть аудіо ще раз, ви можете використати 'reply'"
+                        },
+                        new
+                        {
+                            Id = 242,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 2,
+                            Translate = "Отправьте аудио еще раз, вы можете использовать 'reply'"
+                        },
+                        new
+                        {
+                            Id = 243,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 3,
+                            Translate = "Send the audio again, you can use 'reply'"
+                        },
+                        new
+                        {
+                            Id = 244,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 4,
+                            Translate = "Envía el audio de nuevo, puedes usar 'reply'"
+                        },
+                        new
+                        {
+                            Id = 245,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 5,
+                            Translate = "Envoyez à nouveau l'audio, vous pouvez utiliser 'reply'"
+                        },
+                        new
+                        {
+                            Id = 246,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 6,
+                            Translate = "音声をもう一度送信してください。'reply' を使用できます"
+                        },
+                        new
+                        {
+                            Id = 247,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 7,
+                            Translate = "再次发送音频，您可以使用 'reply'"
+                        },
+                        new
+                        {
+                            Id = 248,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 8,
+                            Translate = "Pošlete zvuk znovu, můžete použít 'reply'"
+                        },
+                        new
+                        {
+                            Id = 249,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 9,
+                            Translate = "Send lyden igen, du kan bruge 'reply'"
+                        },
+                        new
+                        {
+                            Id = 250,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 10,
+                            Translate = "ऑडियो फिर से भेजें, आप 'reply' का उपयोग कर सकते हैं"
+                        },
+                        new
+                        {
+                            Id = 251,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 11,
+                            Translate = "Invia di nuovo l'audio, puoi usare 'reply'"
+                        },
+                        new
+                        {
+                            Id = 252,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 12,
+                            Translate = "Skicka ljudet igen, du kan använda 'svara'"
+                        },
+                        new
+                        {
+                            Id = 253,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 13,
+                            Translate = "Senden Sie das Audio erneut, Sie können 'reply' verwenden"
+                        },
+                        new
+                        {
+                            Id = 254,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 14,
+                            Translate = "Wyślij dźwięk ponownie, możesz użyć 'reply'"
+                        },
+                        new
+                        {
+                            Id = 255,
+                            Key = "app.languages.audioResendKey",
+                            LanguageId = 15,
+                            Translate = "Sesi tekrar gönderin, 'reply' kullanabilirsiniz"
+                        },
+                        new
+                        {
+                            Id = 256,
                             Key = "app.file.noSupportContent",
                             LanguageId = 1,
                             Translate = "Бот не підтримує цей тип контенту"
                         },
                         new
                         {
-                            Id = 242,
+                            Id = 257,
                             Key = "app.file.noSupportContent",
                             LanguageId = 2,
                             Translate = "Бот не поддерживает этот тип контента"
                         },
                         new
                         {
-                            Id = 243,
+                            Id = 258,
                             Key = "app.file.noSupportContent",
                             LanguageId = 3,
                             Translate = "The bot does not support this type of content"
                         },
                         new
                         {
-                            Id = 244,
+                            Id = 259,
                             Key = "app.file.noSupportContent",
                             LanguageId = 4,
                             Translate = "El bot no soporta este tipo de contenido."
                         },
                         new
                         {
-                            Id = 245,
+                            Id = 260,
                             Key = "app.file.noSupportContent",
                             LanguageId = 5,
                             Translate = "Le bot ne prend pas en charge ce type de contenu"
                         },
                         new
                         {
-                            Id = 246,
+                            Id = 261,
                             Key = "app.file.noSupportContent",
                             LanguageId = 6,
                             Translate = "ボットはこのタイプのコンテンツをサポートしていません"
                         },
                         new
                         {
-                            Id = 247,
+                            Id = 262,
                             Key = "app.file.noSupportContent",
                             LanguageId = 7,
                             Translate = "该机器人不支持此类内容"
                         },
                         new
                         {
-                            Id = 248,
+                            Id = 263,
                             Key = "app.file.noSupportContent",
                             LanguageId = 8,
                             Translate = "Robot tento typ obsahu nepodporuje"
                         },
                         new
                         {
-                            Id = 249,
+                            Id = 264,
                             Key = "app.file.noSupportContent",
                             LanguageId = 9,
                             Translate = "Botten understøtter ikke denne type indhold"
                         },
                         new
                         {
-                            Id = 250,
+                            Id = 265,
                             Key = "app.file.noSupportContent",
                             LanguageId = 10,
                             Translate = "बॉट इस प्रकार की सामग्री का समर्थन नहीं करता है"
                         },
                         new
                         {
-                            Id = 251,
+                            Id = 266,
                             Key = "app.file.noSupportContent",
                             LanguageId = 11,
                             Translate = "Il bot non supporta questo tipo di contenuto"
                         },
                         new
                         {
-                            Id = 252,
+                            Id = 267,
                             Key = "app.file.noSupportContent",
                             LanguageId = 12,
                             Translate = "Boten stöder inte den här typen av innehåll"
                         },
                         new
                         {
-                            Id = 253,
+                            Id = 268,
                             Key = "app.file.noSupportContent",
                             LanguageId = 13,
                             Translate = "Der Bot unterstützt diese Art von Inhalten nicht"
                         },
                         new
                         {
-                            Id = 254,
+                            Id = 269,
                             Key = "app.file.noSupportContent",
                             LanguageId = 14,
                             Translate = "Bot nie obsługuje tego typu treści"
                         },
                         new
                         {
-                            Id = 255,
+                            Id = 270,
                             Key = "app.file.noSupportContent",
                             LanguageId = 15,
                             Translate = "Bot bu tür içeriği desteklemiyor"
                         },
                         new
                         {
-                            Id = 256,
+                            Id = 271,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 1,
                             Translate = "Формат не підтримується. Використовуйте (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 257,
+                            Id = 272,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 2,
                             Translate = "Не поддерживаемый формат. Используйте (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 258,
+                            Id = 273,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 3,
                             Translate = "Not supported format. Use (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 259,
+                            Id = 274,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 4,
                             Translate = "Formato no compatible. Usar (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 260,
+                            Id = 275,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 5,
                             Translate = "Format non pris en charge. Utiliser (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 261,
+                            Id = 276,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 6,
                             Translate = "サポートされていない形式です。 使用 (.mp3、.ogg、.flac、.wav)"
                         },
                         new
                         {
-                            Id = 262,
+                            Id = 277,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 7,
                             Translate = "不支持的格式。 使用（.mp3、.ogg、.flac、.wav）"
                         },
                         new
                         {
-                            Id = 263,
+                            Id = 278,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 8,
                             Translate = "Nepodporovaný formát. Použít (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 264,
+                            Id = 279,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 9,
                             Translate = "Ikke understøttet format. Brug (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 265,
+                            Id = 280,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 10,
                             Translate = "समर्थित प्रारूप नहीं। उपयोग करें (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 266,
+                            Id = 281,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 11,
                             Translate = "Formato non supportato. Usa (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 267,
+                            Id = 282,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 12,
                             Translate = "Format som inte stöds. Använd (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 268,
+                            Id = 283,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 13,
                             Translate = "Nicht unterstütztes Format. Verwendung (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 269,
+                            Id = 284,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 14,
                             Translate = "Nieobsługiwany format. Użyj (.mp3, .ogg, .flac, .wav)"
                         },
                         new
                         {
-                            Id = 270,
+                            Id = 285,
                             Key = "app.audio.noSupportFormat",
                             LanguageId = 15,
                             Translate = "Desteklenmeyen biçim. (.mp3, .ogg, .flac, .wav) kullanın"
                         },
                         new
                         {
-                            Id = 271,
+                            Id = 286,
                             Key = "app.audio.cantProcess",
                             LanguageId = 1,
                             Translate = "Не вдається обробити це аудіо, спробуйте інше."
                         },
                         new
                         {
-                            Id = 272,
+                            Id = 287,
                             Key = "app.audio.cantProcess",
                             LanguageId = 2,
                             Translate = "Не удается обработать этот звук, попробуйте другой."
                         },
                         new
                         {
-                            Id = 273,
+                            Id = 288,
                             Key = "app.audio.cantProcess",
                             LanguageId = 3,
                             Translate = "Can't process this audio try another one."
                         },
                         new
                         {
-                            Id = 274,
+                            Id = 289,
                             Key = "app.audio.cantProcess",
                             LanguageId = 4,
                             Translate = "No se puede procesar este audio, prueba con otro."
                         },
                         new
                         {
-                            Id = 275,
+                            Id = 290,
                             Key = "app.audio.cantProcess",
                             LanguageId = 5,
                             Translate = "Impossible de traiter cet audio, essayez-en un autre."
                         },
                         new
                         {
-                            Id = 276,
+                            Id = 291,
                             Key = "app.audio.cantProcess",
                             LanguageId = 6,
                             Translate = "この音声を処理できません。別の音声を試してください。"
                         },
                         new
                         {
-                            Id = 277,
+                            Id = 292,
                             Key = "app.audio.cantProcess",
                             LanguageId = 7,
                             Translate = "无法处理此音频，请尝试另一个。"
                         },
                         new
                         {
-                            Id = 278,
+                            Id = 293,
                             Key = "app.audio.cantProcess",
                             LanguageId = 8,
                             Translate = "Tento zvuk nelze zpracovat, zkuste jiný."
                         },
                         new
                         {
-                            Id = 279,
+                            Id = 294,
                             Key = "app.audio.cantProcess",
                             LanguageId = 9,
                             Translate = "Kan ikke behandle denne lyd prøv en anden."
                         },
                         new
                         {
-                            Id = 280,
+                            Id = 295,
                             Key = "app.audio.cantProcess",
                             LanguageId = 10,
                             Translate = "इस ऑडियो को प्रोसेस नहीं किया जा सकता, एक और ऑडियो आज़माएं."
                         },
                         new
                         {
-                            Id = 281,
+                            Id = 296,
                             Key = "app.audio.cantProcess",
                             LanguageId = 11,
                             Translate = "Impossibile elaborare questo audio, provane un altro."
                         },
                         new
                         {
-                            Id = 282,
+                            Id = 297,
                             Key = "app.audio.cantProcess",
                             LanguageId = 12,
                             Translate = "Det går inte att bearbeta det här ljudet, försök med ett annat."
                         },
                         new
                         {
-                            Id = 283,
+                            Id = 298,
                             Key = "app.audio.cantProcess",
                             LanguageId = 13,
                             Translate = "Dieses Audio kann nicht verarbeitet werden, versuchen Sie es mit einem anderen."
                         },
                         new
                         {
-                            Id = 284,
+                            Id = 299,
                             Key = "app.audio.cantProcess",
                             LanguageId = 14,
                             Translate = "Nie można przetworzyć tego dźwięku, spróbuj innego."
                         },
                         new
                         {
-                            Id = 285,
+                            Id = 300,
                             Key = "app.audio.cantProcess",
                             LanguageId = 15,
                             Translate = "Bu ses işlenemiyor başka bir ses deneyin."
                         },
                         new
                         {
-                            Id = 286,
+                            Id = 301,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 1,
                             Translate = "Тривалість аудіо не повинна перевищувати 60 секунд"
                         },
                         new
                         {
-                            Id = 287,
+                            Id = 302,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 2,
                             Translate = "Продолжительность аудио не должна превышать 60 секунд."
                         },
                         new
                         {
-                            Id = 288,
+                            Id = 303,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 3,
                             Translate = "Audio duration must not exceed 60 seconds"
                         },
                         new
                         {
-                            Id = 289,
+                            Id = 304,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 4,
                             Translate = "La duración del audio no debe exceder los 60 segundos."
                         },
                         new
                         {
-                            Id = 290,
+                            Id = 305,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 5,
                             Translate = "La durée audio ne doit pas dépasser 60 secondes"
                         },
                         new
                         {
-                            Id = 291,
+                            Id = 306,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 6,
                             Translate = "音声の長さは 60 秒を超えてはなりません"
                         },
                         new
                         {
-                            Id = 292,
+                            Id = 307,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 7,
                             Translate = "音频时长不得超过 60 秒"
                         },
                         new
                         {
-                            Id = 293,
+                            Id = 308,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 8,
                             Translate = "Délka zvuku nesmí přesáhnout 60 sekund"
                         },
                         new
                         {
-                            Id = 294,
+                            Id = 309,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 9,
                             Translate = "Lydens varighed må ikke overstige 60 sekunder"
                         },
                         new
                         {
-                            Id = 295,
+                            Id = 310,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 10,
                             Translate = "ऑडियो की अवधि 60 सेकंड से अधिक नहीं होनी चाहिए"
                         },
                         new
                         {
-                            Id = 296,
+                            Id = 311,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 11,
                             Translate = "La durata dell'audio non deve superare i 60 secondi"
                         },
                         new
                         {
-                            Id = 297,
+                            Id = 312,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 12,
                             Translate = "Ljudlängden får inte överstiga 60 sekunder"
                         },
                         new
                         {
-                            Id = 298,
+                            Id = 313,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 13,
                             Translate = "Die Audiodauer darf 60 Sekunden nicht überschreiten"
                         },
                         new
                         {
-                            Id = 299,
+                            Id = 314,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 14,
                             Translate = "Czas trwania dźwięku nie może przekraczać 60 sekund"
                         },
                         new
                         {
-                            Id = 300,
+                            Id = 315,
                             Key = "app.audio.noExceedDuration",
                             LanguageId = 15,
                             Translate = "Ses süresi 60 saniyeyi geçmemelidir"
                         },
                         new
                         {
-                            Id = 301,
+                            Id = 316,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 1,
                             Translate = "Формат не підтримується. Використовуйте (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 302,
+                            Id = 317,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 2,
                             Translate = "Не поддерживаемый формат. Использовать (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 303,
+                            Id = 318,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 3,
                             Translate = "Not supported format. Use (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 304,
+                            Id = 319,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 4,
                             Translate = "Formato no compatible. Usar (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 305,
+                            Id = 320,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 5,
                             Translate = "Format non pris en charge. Utiliser (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 306,
+                            Id = 321,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 6,
                             Translate = "サポートされていない形式です。 使用 (.png、.jpeg、.jpg)"
                         },
                         new
                         {
-                            Id = 307,
+                            Id = 322,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 7,
                             Translate = "不支持的格式。 使用（.png、.jpeg、.jpg）"
                         },
                         new
                         {
-                            Id = 308,
+                            Id = 323,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 8,
                             Translate = "Nepodporovaný formát. Použít (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 309,
+                            Id = 324,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 9,
                             Translate = "Ikke understøttet format. Brug (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 310,
+                            Id = 325,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 10,
                             Translate = "समर्थित प्रारूप नहीं। (.पीएनजी, .जेपीईजी, .जेपीजी) का प्रयोग करें"
                         },
                         new
                         {
-                            Id = 311,
+                            Id = 326,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 11,
                             Translate = "Formato non supportato. Usa (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 312,
+                            Id = 327,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 12,
                             Translate = "Format som inte stöds. Använd (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 313,
+                            Id = 328,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 13,
                             Translate = "Nicht unterstütztes Format. Verwenden Sie (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 314,
+                            Id = 329,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 14,
                             Translate = "Nieobsługiwany format. Użyj (.png, .jpeg, .jpg)"
                         },
                         new
                         {
-                            Id = 315,
+                            Id = 330,
                             Key = "app.photo.noSupportFormat",
                             LanguageId = 15,
                             Translate = "Desteklenmeyen biçim. (.png, .jpeg, .jpg) kullanın"
                         },
                         new
                         {
-                            Id = 316,
+                            Id = 331,
                             Key = "app.photo.cantProcess",
                             LanguageId = 1,
                             Translate = "Не вдається обробити цю фотографію, спробуйте іншу."
                         },
                         new
                         {
-                            Id = 317,
+                            Id = 332,
                             Key = "app.photo.cantProcess",
                             LanguageId = 2,
                             Translate = "Не удается обработать это фото. Попробуйте другое."
                         },
                         new
                         {
-                            Id = 318,
+                            Id = 333,
                             Key = "app.photo.cantProcess",
                             LanguageId = 3,
                             Translate = "Can't process this photo try another one."
                         },
                         new
                         {
-                            Id = 319,
+                            Id = 334,
                             Key = "app.photo.cantProcess",
                             LanguageId = 4,
                             Translate = "No se puede procesar esta foto, prueba con otra."
                         },
                         new
                         {
-                            Id = 320,
+                            Id = 335,
                             Key = "app.photo.cantProcess",
                             LanguageId = 5,
                             Translate = "Impossible de traiter cette photo, essayez-en une autre."
                         },
                         new
                         {
-                            Id = 321,
+                            Id = 336,
                             Key = "app.photo.cantProcess",
                             LanguageId = 6,
                             Translate = "この写真を処理できません。別の写真を試してください。"
                         },
                         new
                         {
-                            Id = 322,
+                            Id = 337,
                             Key = "app.photo.cantProcess",
                             LanguageId = 7,
                             Translate = "无法处理这张照片，请尝试另一张。"
                         },
                         new
                         {
-                            Id = 323,
+                            Id = 338,
                             Key = "app.photo.cantProcess",
                             LanguageId = 8,
                             Translate = "Tuto fotografii nelze zpracovat, zkuste jinou."
                         },
                         new
                         {
-                            Id = 324,
+                            Id = 339,
                             Key = "app.photo.cantProcess",
                             LanguageId = 9,
                             Translate = "Kan ikke behandle dette billede prøv et andet."
                         },
                         new
                         {
-                            Id = 325,
+                            Id = 340,
                             Key = "app.photo.cantProcess",
                             LanguageId = 10,
                             Translate = "इस फ़ोटो को प्रोसेस नहीं किया जा सकता, कोई और फ़ोटो आज़माएं."
                         },
                         new
                         {
-                            Id = 326,
+                            Id = 341,
                             Key = "app.photo.cantProcess",
                             LanguageId = 11,
                             Translate = "Impossibile elaborare questa foto, provane un'altra."
                         },
                         new
                         {
-                            Id = 327,
+                            Id = 342,
                             Key = "app.photo.cantProcess",
                             LanguageId = 12,
                             Translate = "Det går inte att bearbeta det här fotot, försök med ett annat."
                         },
                         new
                         {
-                            Id = 328,
+                            Id = 343,
                             Key = "app.photo.cantProcess",
                             LanguageId = 13,
                             Translate = "Dieses Foto kann nicht verarbeitet werden, versuchen Sie es mit einem anderen."
                         },
                         new
                         {
-                            Id = 329,
+                            Id = 344,
                             Key = "app.photo.cantProcess",
                             LanguageId = 14,
                             Translate = "Nie można przetworzyć tego zdjęcia, spróbuj innego."
                         },
                         new
                         {
-                            Id = 330,
+                            Id = 345,
                             Key = "app.photo.cantProcess",
                             LanguageId = 15,
                             Translate = "Bu fotoğraf işlenemiyor başka bir fotoğraf deneyin."
                         },
                         new
                         {
-                            Id = 331,
+                            Id = 346,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 1,
                             Translate = "Занадто великий файл. Використовуйте фото до 4 Мб"
                         },
                         new
                         {
-                            Id = 332,
+                            Id = 347,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 2,
                             Translate = "Слишком большой файл. Используйте фото до 4 МБ"
                         },
                         new
                         {
-                            Id = 333,
+                            Id = 348,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 3,
                             Translate = "Too large a file. Use photo up to 4 MB"
                         },
                         new
                         {
-                            Id = 334,
+                            Id = 349,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 4,
                             Translate = "Un archivo demasiado grande. Usar foto de hasta 4 MB"
                         },
                         new
                         {
-                            Id = 335,
+                            Id = 350,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 5,
                             Translate = "Fichier trop volumineux. Utiliser une photo jusqu'à 4 Mo"
                         },
                         new
                         {
-                            Id = 336,
+                            Id = 351,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 6,
                             Translate = "ファイルが大きすぎます。 4 MB までの写真を使用"
                         },
                         new
                         {
-                            Id = 337,
+                            Id = 352,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 7,
                             Translate = "文件太大。 使用最大 4 MB 的照片"
                         },
                         new
                         {
-                            Id = 338,
+                            Id = 353,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 8,
                             Translate = "Příliš velký soubor. Použijte fotografii do velikosti 4 MB"
                         },
                         new
                         {
-                            Id = 339,
+                            Id = 354,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 9,
                             Translate = "For stor fil. Brug foto op til 4 MB"
                         },
                         new
                         {
-                            Id = 340,
+                            Id = 355,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 10,
                             Translate = "फ़ाइल बहुत बड़ी है. 4 एमबी तक फोटो का प्रयोग करें"
                         },
                         new
                         {
-                            Id = 341,
+                            Id = 356,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 11,
                             Translate = "Un file troppo grande. Usa foto fino a 4 MB"
                         },
                         new
                         {
-                            Id = 342,
+                            Id = 357,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 12,
                             Translate = "För stor fil. Använd foto upp till 4 MB"
                         },
                         new
                         {
-                            Id = 343,
+                            Id = 358,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 13,
                             Translate = "Eine zu große Datei. Verwenden Sie Fotos bis zu 4 MB"
                         },
                         new
                         {
-                            Id = 344,
+                            Id = 359,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 14,
                             Translate = "Zbyt duży plik. Użyj zdjęcia do 4 MB"
                         },
                         new
                         {
-                            Id = 345,
+                            Id = 360,
                             Key = "app.photo.tooLargeFile",
                             LanguageId = 15,
                             Translate = "Çok büyük bir dosya. 4 MB'a kadar fotoğraf kullan"
                         },
                         new
                         {
-                            Id = 346,
+                            Id = 361,
                             Key = "app.text.maxLength",
                             LanguageId = 1,
                             Translate = "Максимальна довжина тексту одного повідомлення не повинна перевищувати 40 тис. символів."
                         },
                         new
                         {
-                            Id = 347,
+                            Id = 362,
                             Key = "app.text.maxLength",
                             LanguageId = 2,
                             Translate = "Максимальная длина текста одного сообщения не должна превышать 40 тыс. символов."
                         },
                         new
                         {
-                            Id = 348,
+                            Id = 363,
                             Key = "app.text.maxLength",
                             LanguageId = 3,
                             Translate = "The maximum text length of one message must not exceed 40k characters."
                         },
                         new
                         {
-                            Id = 349,
+                            Id = 364,
                             Key = "app.text.maxLength",
                             LanguageId = 4,
                             Translate = "La longitud máxima del texto de un mensaje no debe exceder los 40k caracteres."
                         },
                         new
                         {
-                            Id = 350,
+                            Id = 365,
                             Key = "app.text.maxLength",
                             LanguageId = 5,
                             Translate = "La longueur maximale du texte d'un message ne doit pas dépasser 40 000 caractères"
                         },
                         new
                         {
-                            Id = 351,
+                            Id = 366,
                             Key = "app.text.maxLength",
                             LanguageId = 6,
                             Translate = "1 つのメッセージの最大テキスト長は 40,000 文字を超えてはなりません"
                         },
                         new
                         {
-                            Id = 352,
+                            Id = 367,
                             Key = "app.text.maxLength",
                             LanguageId = 7,
                             Translate = "一條消息的最大文本長度不得超過 40k 個字符"
                         },
                         new
                         {
-                            Id = 353,
+                            Id = 368,
                             Key = "app.text.maxLength",
                             LanguageId = 8,
                             Translate = "Maximální délka textu jedné zprávy nesmí přesáhnout 40 000 znaků"
                         },
                         new
                         {
-                            Id = 354,
+                            Id = 369,
                             Key = "app.text.maxLength",
                             LanguageId = 9,
                             Translate = "Den maksimale tekstlængde på én besked må ikke overstige 40.000 tegn"
                         },
                         new
                         {
-                            Id = 355,
+                            Id = 370,
                             Key = "app.text.maxLength",
                             LanguageId = 10,
                             Translate = "एक संदेश की अधिकतम टेक्स्ट लंबाई 40k वर्णों से अधिक नहीं होनी चाहिए"
                         },
                         new
                         {
-                            Id = 356,
+                            Id = 371,
                             Key = "app.text.maxLength",
                             LanguageId = 11,
                             Translate = "La lunghezza massima del testo di un messaggio non deve superare i 40k caratteri"
                         },
                         new
                         {
-                            Id = 357,
+                            Id = 372,
                             Key = "app.text.maxLength",
                             LanguageId = 12,
                             Translate = "Den maximala textlängden för ett meddelande får inte överstiga 40 000 tecken"
                         },
                         new
                         {
-                            Id = 358,
+                            Id = 373,
                             Key = "app.text.maxLength",
                             LanguageId = 13,
                             Translate = "Die maximale Textlänge einer Nachricht darf 40.000 Zeichen nicht überschreiten"
                         },
                         new
                         {
-                            Id = 359,
+                            Id = 374,
                             Key = "app.text.maxLength",
                             LanguageId = 14,
                             Translate = "Maksymalna długość tekstu jednej wiadomości nie może przekraczać 40 tys. znaków"
                         },
                         new
                         {
-                            Id = 360,
+                            Id = 375,
                             Key = "app.text.maxLength",
                             LanguageId = 15,
                             Translate = "Bir mesajın maksimum metin uzunluğu 40k karakteri geçmemelidir"
                         },
                         new
                         {
-                            Id = 361,
+                            Id = 376,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 1,
                             Translate = "Не вдалося транскрибувати. Спробуйте вибрати іншу мову транскрибування /audio_language або надішліть інший аудіоформат."
                         },
                         new
                         {
-                            Id = 362,
+                            Id = 377,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 2,
                             Translate = "Не удалось расшифровать. Попробуйте выбрать другой язык расшифровки /audio_language или отправьте аудио в другом формате."
                         },
                         new
                         {
-                            Id = 363,
+                            Id = 378,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 3,
                             Translate = "Failed to transcribe, please try selecting a different transcribing language /audio_language or send a different audio format."
                         },
                         new
                         {
-                            Id = 364,
+                            Id = 379,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 4,
                             Translate = "No se pudo transcribir, intente seleccionar un idioma de transcripción diferente /audio_language o envíe un formato de audio diferente."
                         },
                         new
                         {
-                            Id = 365,
+                            Id = 380,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 5,
                             Translate = "Échec de la transcription, veuillez essayer de sélectionner une autre langue de transcription /audio_language ou envoyer un format audio différent."
                         },
                         new
                         {
-                            Id = 366,
+                            Id = 381,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 6,
                             Translate = "文字起こしに失敗しました。別の文字起こし言語 /audio_language を選択するか、別の音声形式を送信してください。"
                         },
                         new
                         {
-                            Id = 367,
+                            Id = 382,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 7,
                             Translate = "转录失败，请尝试选择不同的转录语言 /audio_language 或发送不同的音频格式。"
                         },
                         new
                         {
-                            Id = 368,
+                            Id = 383,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 8,
                             Translate = "Přepis se nezdařil, zkuste prosím vybrat jiný jazyk přepisu /audio_language nebo pošlete jiný formát zvuku."
                         },
                         new
                         {
-                            Id = 369,
+                            Id = 384,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 9,
                             Translate = "Kunne ikke transskriberes. Prøv at vælge et andet transskriberingssprog /audio_language eller send et andet lydformat."
                         },
                         new
                         {
-                            Id = 370,
+                            Id = 385,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 10,
                             Translate = "लिप्यंतरण करने में विफल, कृपया एक भिन्न अनुलेखन भाषा /audio_language का चयन करने का प्रयास करें या एक भिन्न ऑडियो प्रारूप भेजें।"
                         },
                         new
                         {
-                            Id = 371,
+                            Id = 386,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 11,
                             Translate = "Impossibile trascrivere, prova a selezionare una lingua di trascrizione diversa /audio_language o invia un formato audio diverso."
                         },
                         new
                         {
-                            Id = 372,
+                            Id = 387,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 12,
                             Translate = "Det gick inte att transkribera, försök att välja ett annat transkriberingsspråk /audio_language eller skicka ett annat ljudformat."
                         },
                         new
                         {
-                            Id = 373,
+                            Id = 388,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 13,
                             Translate = "Transkription fehlgeschlagen, bitte versuchen Sie es mit der Auswahl einer anderen Transkriptionssprache /audio_language oder senden Sie ein anderes Audioformat."
                         },
                         new
                         {
-                            Id = 374,
+                            Id = 389,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 14,
                             Translate = "Transkrypcja nie powiodła się. Spróbuj wybrać inny język transkrypcji /audio_language lub wyślij inny format audio."
                         },
                         new
                         {
-                            Id = 375,
+                            Id = 390,
                             Key = "app.audio.EmptyResult",
                             LanguageId = 15,
                             Translate = "Metne dönüştürülemedi, lütfen farklı bir transkripsiyon dili /audio_language seçmeyi deneyin veya farklı bir ses formatı gönderin."
                         },
                         new
                         {
-                            Id = 376,
+                            Id = 391,
                             Key = "billing.exceedLimit",
                             LanguageId = 1,
                             Translate = "Перевищено ліміт цього місяця надішліть /stats для деталей."
                         },
                         new
                         {
-                            Id = 377,
+                            Id = 392,
                             Key = "billing.exceedLimit",
                             LanguageId = 2,
                             Translate = "Превышенный предел этого месяца отправьте /stats для деталей."
                         },
                         new
                         {
-                            Id = 378,
+                            Id = 393,
                             Key = "billing.exceedLimit",
                             LanguageId = 3,
                             Translate = "This month's limit has been exceeded, send /stats for details."
                         },
                         new
                         {
-                            Id = 379,
+                            Id = 394,
                             Key = "billing.exceedLimit",
                             LanguageId = 4,
                             Translate = "Se superó el límite de este mes, envíe /stats para obtener más detalles."
                         },
                         new
                         {
-                            Id = 380,
+                            Id = 395,
                             Key = "billing.exceedLimit",
                             LanguageId = 5,
                             Translate = "La limite de ce mois a été dépassée, envoyez /stats pour plus de détails."
                         },
                         new
                         {
-                            Id = 381,
+                            Id = 396,
                             Key = "billing.exceedLimit",
                             LanguageId = 6,
                             Translate = "今月の制限を超えました。詳細については /stats を送信してください。"
                         },
                         new
                         {
-                            Id = 382,
+                            Id = 397,
                             Key = "billing.exceedLimit",
                             LanguageId = 7,
                             Translate = "已超过本月的限制，请发送 /stats 了解详情。"
                         },
                         new
                         {
-                            Id = 383,
+                            Id = 398,
                             Key = "billing.exceedLimit",
                             LanguageId = 8,
                             Translate = "Limit pro tento měsíc byl překročen, pro podrobnosti zašlete /stats ."
                         },
                         new
                         {
-                            Id = 384,
+                            Id = 399,
                             Key = "billing.exceedLimit",
                             LanguageId = 9,
                             Translate = "Denne måneds grænse er overskredet, send /stats for detaljer."
                         },
                         new
                         {
-                            Id = 385,
+                            Id = 400,
                             Key = "billing.exceedLimit",
                             LanguageId = 10,
                             Translate = "इस माह की सीमा पार हो गई है, विवरण के लिए /stats भेजें।"
                         },
                         new
                         {
-                            Id = 386,
+                            Id = 401,
                             Key = "billing.exceedLimit",
                             LanguageId = 11,
                             Translate = "Il limite di questo mese è stato superato, invia /stats per i dettagli."
                         },
                         new
                         {
-                            Id = 387,
+                            Id = 402,
                             Key = "billing.exceedLimit",
                             LanguageId = 12,
                             Translate = "Denna månads gräns har överskridits, skicka /stats för mer information."
                         },
                         new
                         {
-                            Id = 388,
+                            Id = 403,
                             Key = "billing.exceedLimit",
                             LanguageId = 13,
                             Translate = "Das Limit dieses Monats wurde überschritten, senden Sie /stats für Details."
                         },
                         new
                         {
-                            Id = 389,
+                            Id = 404,
                             Key = "billing.exceedLimit",
                             LanguageId = 14,
                             Translate = "Limit w tym miesiącu został przekroczony, wyślij /stats, aby uzyskać szczegółowe informacje."
                         },
                         new
                         {
-                            Id = 390,
+                            Id = 405,
                             Key = "billing.exceedLimit",
                             LanguageId = 15,
                             Translate = "Bu ayın limiti aşıldı, detaylar için /stats gönderin."
                         },
                         new
                         {
-                            Id = 391,
+                            Id = 406,
                             Key = "stats.message",
                             LanguageId = 1,
-                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Зображення</b> {1} з {2} використано\n<b>Символов текста для перевода</b> использовано {3} из {4}\n<b>Аудіохвилин</b> використано {5} із {6}\n\nЗалишилося {7} днів підписки\nЗалишилося {8} хвилин підписки"
+                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Зображення</b> {1} з {2} використано\n<b>Символов текста для перевода</b> использовано {3} из {4}\n<b>Аудіохвилин</b> використано {5} із {6}\n\nЗалишилося {7} днів підписки\nЗалишилося {8} хвилин підписки\n\nПідписка автоматично оновлюється кожного місяця"
                         },
                         new
                         {
-                            Id = 392,
+                            Id = 407,
                             Key = "stats.message",
                             LanguageId = 2,
-                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Изображения</b> {1} из {2} использованных\n<b>Символів тексту для перекладу</b> використано {3} з {4}\n<b>Аудио минут</b> использовано {5} из {6}\n\nОсталось {7} дней подписки\nОсталось {8} минут подписки"
+                            Translate = "<b>Статистика</b>\n\nТариф: {0}\n\n<b>Изображения</b> {1} из {2} использованных\n<b>Символів тексту для перекладу</b> використано {3} з {4}\n<b>Аудио минут</b> использовано {5} из {6}\n\nОсталось {7} дней подписки\nОсталось {8} минут подписки\n\nПодписка автоматически обновляется каждый месяц"
                         },
                         new
                         {
-                            Id = 393,
+                            Id = 408,
                             Key = "stats.message",
                             LanguageId = 3,
-                            Translate = "<b>Statistic</b>\n\nPlan: {0}\n\n<b>Images</b> {1} of {2} used\n<b>Text characters for translation</b> {3} of {4} used\n<b>Audio minutes</b> {5} of {6} used\n\n{7} days of subscription left\n{8} minutes of subscription left"
+                            Translate = "<b>Statistic</b>\n\nPlan: {0}\n\n<b>Images</b> {1} of {2} used\n<b>Text characters for translation</b> {3} of {4} used\n<b>Audio minutes</b> {5} of {6} used\n\n{7} days of subscription left\n{8} minutes of subscription left\n\nSubscription automatically renews each month"
                         },
                         new
                         {
-                            Id = 394,
+                            Id = 409,
                             Key = "stats.message",
                             LanguageId = 4,
-                            Translate = "<b>Estadística</b>\n\nTarifa: {0}\n\n<b>Imágenes</b> {1} de {2} usadas\n<b>Caracteres de texto para traducción</b> {3} de {4} utilizados\n<b>Minutos de audio</b> {5} de {6} utilizados\n\nQuedan {7} días de suscripción\nQuedan {8} minutos de suscripción"
+                            Translate = "<b>Estadística</b>\n\nTarifa: {0}\n\n<b>Imágenes</b> {1} de {2} usadas\n<b>Caracteres de texto para traducción</b> {3} de {4} utilizados\n<b>Minutos de audio</b> {5} de {6} utilizados\n\nQuedan {7} días de suscripción\nQuedan {8} minutos de suscripción\n\nMes de skin actualizado automáticamente por suscripción"
                         },
                         new
                         {
-                            Id = 395,
+                            Id = 410,
                             Key = "stats.message",
                             LanguageId = 5,
-                            Translate = "<b>Statistique</b>\n\nTarif : {0}\n\n<b>Images</b> {1} sur {2} utilisées\n<b>Caractères de texte à traduire</b> {3} sur {4} utilisés\n<b>Minutes audio</b> {5} sur {6} utilisées\n\n{7} jours d'abonnement restants\n{8} minutes d'abonnement restantes"
+                            Translate = "<b>Statistique</b>\n\nTarif : {0}\n\n<b>Images</b> {1} sur {2} utilisées\n<b>Caractères de texte à traduire</b> {3} sur {4} utilisés\n<b>Minutes audio</b> {5} sur {6} utilisées\n\n{7} jours d'abonnement restants\n{8} minutes d'abonnement restantes\n\nAbonnement automatiquement mis à jour skin mois"
                         },
                         new
                         {
-                            Id = 396,
+                            Id = 411,
                             Key = "stats.message",
                             LanguageId = 6,
-                            Translate = "<b>統計</b>\n\n料金: {0}\n\n<b>画像</b> {1}/{2} 使用\n<b>翻訳用テキスト文字</b> {4} 個中 {3} 個使用\n<b>音声時間</b> {6} 中 {5} を使用\n\nサブスクリプションは残り {7} 日\n{8} 分のサブスクリプションが残っています"
+                            Translate = "<b>統計</b>\n\n料金: {0}\n\n<b>画像</b> {1}/{2} 使用\n<b>翻訳用テキスト文字</b> {4} 個中 {3} 個使用\n<b>音声時間</b> {6} 中 {5} を使用\n\nサブスクリプションは残り {7} 日\n{8} 分のサブスクリプションが残っています\n\nサブスクリプションは自動的にスキン月を更新します"
                         },
                         new
                         {
-                            Id = 397,
+                            Id = 412,
                             Key = "stats.message",
                             LanguageId = 7,
-                            Translate = "<b>统计</b>\n\n关税：{0}\n\n<b>Images</b> {1} of {2} 使用了\n<b>用于翻译的文本字符</b> 使用了 {3} 个，共 {4} 个\n<b>音频分钟数</b>已使用 {5} 分钟，共 {6} 分钟\n\n订阅还剩 {7} 天\n还剩 {8} 分钟的订阅时间"
+                            Translate = "<b>统计</b>\n\n关税：{0}\n\n<b>Images</b> {1} of {2} 使用了\n<b>用于翻译的文本字符</b> 使用了 {3} 个，共 {4} 个\n<b>音频分钟数</b>已使用 {5} 分钟，共 {6} 分钟\n\n订阅还剩 {7} 天\n还剩 {8} 分钟的订阅时间\n\n订阅自动更新皮肤月份"
                         },
                         new
                         {
-                            Id = 398,
+                            Id = 413,
                             Key = "stats.message",
                             LanguageId = 8,
-                            Translate = "<b>Statistika</b>\n\nTarif: {0}\n\n<b>Obrázky</b> použité {1} z {2}\n<b>Textové znaky pro překlad</b> Využito {3} z {4}\n<b>Zvukové minuty</b> Využito {5} z {6}\n\nZbývá {7} dní předplatného\nZbývá {8} minut předplatného"
+                            Translate = "<b>Statistika</b>\n\nTarif: {0}\n\n<b>Obrázky</b> použité {1} z {2}\n<b>Textové znaky pro překlad</b> Využito {3} z {4}\n<b>Zvukové minuty</b> Využito {5} z {6}\n\nZbývá {7} dní předplatného\nZbývá {8} minut předplatného\n\nPředplatné automaticky aktualizovalo měsíc vzhledu"
                         },
                         new
                         {
-                            Id = 399,
+                            Id = 414,
                             Key = "stats.message",
                             LanguageId = 9,
-                            Translate = "<b>Statistik</b>\n\nTakst: {0}\n\n<b>Billeder</b> {1} af {2} brugt\n<b>Teksttegn til oversættelse</b> {3} af {4} brugt\n<b>Lydminutter</b> {5} af {6} brugt\n\n{7} dages abonnement tilbage\n{8} minutters abonnement tilbage"
+                            Translate = "<b>Statistik</b>\n\nTakst: {0}\n\n<b>Billeder</b> {1} af {2} brugt\n<b>Teksttegn til oversættelse</b> {3} af {4} brugt\n<b>Lydminutter</b> {5} af {6} brugt\n\n{7} dages abonnement tilbage\n{8} minutters abonnement tilbage\n\nAbonnement opdateret automatisk hudmåned"
                         },
                         new
                         {
-                            Id = 400,
+                            Id = 415,
                             Key = "stats.message",
                             LanguageId = 10,
-                            Translate = "<b>आँकड़ा</b>\n\nशुल्क: {0}\n\n<b>इमेज</b> {2} में से {1} इस्तेमाल की गई\n<b>अनुवाद के लिए पाठ वर्ण</b> {4} में से {3} का उपयोग किया गया\n<b>ऑडियो मिनट</b> {6} में से {5} का उपयोग किया गया\n\n{7} दिनों की सदस्‍यता शेष\n{8} मिनट की सदस्यता बाकी है"
+                            Translate = "<b>आँकड़ा</b>\n\nशुल्क: {0}\n\n<b>इमेज</b> {2} में से {1} इस्तेमाल की गई\n<b>अनुवाद के लिए पाठ वर्ण</b> {4} में से {3} का उपयोग किया गया\n<b>ऑडियो मिनट</b> {6} में से {5} का उपयोग किया गया\n\n{7} दिनों की सदस्‍यता शेष\n{8} मिनट की सदस्यता बाकी है\n\nसदस्यता स्वचालित रूप से अद्यतन त्वचा माह"
                         },
                         new
                         {
-                            Id = 401,
+                            Id = 416,
                             Key = "stats.message",
                             LanguageId = 11,
-                            Translate = "<b>Statistica</b>\n\nTariffa: {0}\n\n<b>Immagini</b> {1} di {2} usate\n<b>Caratteri di testo per la traduzione</b> {3} di {4} utilizzati\n<b>Minuti audio</b> {5} su {6} utilizzati\n\n{7} giorni di abbonamento rimanenti\n{8} minuti di abbonamento rimanenti"
+                            Translate = "<b>Statistica</b>\n\nTariffa: {0}\n\n<b>Immagini</b> {1} di {2} usate\n<b>Caratteri di testo per la traduzione</b> {3} di {4} utilizzati\n<b>Minuti audio</b> {5} su {6} utilizzati\n\n{7} giorni di abbonamento rimanenti\n{8} minuti di abbonamento rimanenti\n\nAbbonamento aggiornato automaticamente skin mese"
                         },
                         new
                         {
-                            Id = 402,
+                            Id = 417,
                             Key = "stats.message",
                             LanguageId = 12,
-                            Translate = "<b>Statistik</b>\n\nPris: {0}\n\n<b>Bilder</b> {1} av {2} används\n<b>Textecken för översättning</b> {3} av {4} används\n<b>Ljudminuter</b> {5} av {6} används\n\n{7} dagars prenumeration kvar\n{8} minuters prenumeration kvar"
+                            Translate = "<b>Statistik</b>\n\nPris: {0}\n\n<b>Bilder</b> {1} av {2} används\n<b>Textecken för översättning</b> {3} av {4} används\n<b>Ljudminuter</b> {5} av {6} används\n\n{7} dagars prenumeration kvar\n{8} minuters prenumeration kvar\n\nAbonnemanget uppdateras automatiskt hudmånad"
                         },
                         new
                         {
-                            Id = 403,
+                            Id = 418,
                             Key = "stats.message",
                             LanguageId = 13,
-                            Translate = "<b>Statistik</b>\n\nTarif: {0}\n\n<b>Bilder</b> {1} von {2} verwendet\n<b>Textzeichen für die Übersetzung</b> {3} von {4} verwendet\n<b>Audiominuten</b> {5} von {6} verbraucht\n\n{7} Tage Abonnement verbleibend\n{8} Minuten Abonnement verbleiben"
+                            Translate = "<b>Statistik</b>\n\nTarif: {0}\n\n<b>Bilder</b> {1} von {2} verwendet\n<b>Textzeichen für die Übersetzung</b> {3} von {4} verwendet\n<b>Audiominuten</b> {5} von {6} verbraucht\n\n{7} Tage Abonnement verbleibend\n{8} Minuten Abonnement verbleiben\n\nAbonnement automatisch aktualisiert Skin Monat"
                         },
                         new
                         {
-                            Id = 404,
+                            Id = 419,
                             Key = "stats.message",
                             LanguageId = 14,
-                            Translate = "<b>Statystyki</b>\n\nTaryfa: {0}\n\n<b>Obrazy</b> użyto {1} z {2}\n<b>Znaki tekstowe do tłumaczenia</b> Użyto {3} z {4}\n<b>Wykorzystano minuty audio</b> {5} z {6}\n\nPozostało {7} dni subskrypcji\nPozostało {8} minut subskrypcji"
+                            Translate = "<b>Statystyki</b>\n\nTaryfa: {0}\n\n<b>Obrazy</b> użyto {1} z {2}\n<b>Znaki tekstowe do tłumaczenia</b> Użyto {3} z {4}\n<b>Wykorzystano minuty audio</b> {5} z {6}\n\nPozostało {7} dni subskrypcji\nPozostało {8} minut subskrypcji\n\nSubskrypcja automatycznie aktualizuje miesiąc skórki"
                         },
                         new
                         {
-                            Id = 405,
+                            Id = 420,
                             Key = "stats.message",
                             LanguageId = 15,
-                            Translate = "<b>İstatistik</b>\n\nTarife: {0}\n\n{2} resimden {1} <b>resim</b> kullanıldı\n<b>Çeviri için metin karakterleri</b> {3} / {4} kullanıldı\n<b>Ses dakikaları</b> {5} / {6} kullanıldı\n\n{7} günlük abonelik kaldı\n{8} dakikalık abonelik kaldı"
+                            Translate = "<b>İstatistik</b>\n\nTarife: {0}\n\n{2} resimden {1} <b>resim</b> kullanıldı\n<b>Çeviri için metin karakterleri</b> {3} / {4} kullanıldı\n<b>Ses dakikaları</b> {5} / {6} kullanıldı\n\n{7} günlük abonelik kaldı\n{8} dakikalık abonelik kaldı\n\nAbonelik otomatik olarak güncellenen cilt ayı"
+                        },
+                        new
+                        {
+                            Id = 421,
+                            Key = "app.content.processing",
+                            LanguageId = 1,
+                            Translate = "Взято на обробку, будь ласка, зачекайте хвилинку. 😌"
+                        },
+                        new
+                        {
+                            Id = 422,
+                            Key = "app.content.processing",
+                            LanguageId = 2,
+                            Translate = "Взято на обработку, пожалуйста, подождите немного. 😌"
+                        },
+                        new
+                        {
+                            Id = 423,
+                            Key = "app.content.processing",
+                            LanguageId = 3,
+                            Translate = "Taken for processing, please wait a moment. 😌"
+                        },
+                        new
+                        {
+                            Id = 424,
+                            Key = "app.content.processing",
+                            LanguageId = 4,
+                            Translate = "Tomado para procesar, por favor espere un momento. 😌"
+                        },
+                        new
+                        {
+                            Id = 425,
+                            Key = "app.content.processing",
+                            LanguageId = 5,
+                            Translate = "Pris pour traitement, veuillez patienter un moment. 😌"
+                        },
+                        new
+                        {
+                            Id = 426,
+                            Key = "app.content.processing",
+                            LanguageId = 6,
+                            Translate = "処理に時間がかかっています、しばらくお待ちください。😌"
+                        },
+                        new
+                        {
+                            Id = 427,
+                            Key = "app.content.processing",
+                            LanguageId = 7,
+                            Translate = "正在处理中，请稍等片刻。😌"
+                        },
+                        new
+                        {
+                            Id = 428,
+                            Key = "app.content.processing",
+                            LanguageId = 8,
+                            Translate = "Převzato ke zpracování, chvíli prosím počkejte. 😌"
+                        },
+                        new
+                        {
+                            Id = 429,
+                            Key = "app.content.processing",
+                            LanguageId = 9,
+                            Translate = "Optaget til behandling, vent venligst et øjeblik. 😌"
+                        },
+                        new
+                        {
+                            Id = 430,
+                            Key = "app.content.processing",
+                            LanguageId = 10,
+                            Translate = "प्रसंस्करण के लिए लिया गया, कृपया एक क्षण प्रतीक्षा करें। 😌"
+                        },
+                        new
+                        {
+                            Id = 431,
+                            Key = "app.content.processing",
+                            LanguageId = 11,
+                            Translate = "Assunto per l'elaborazione, si prega di attendere un momento. 😌"
+                        },
+                        new
+                        {
+                            Id = 432,
+                            Key = "app.content.processing",
+                            LanguageId = 12,
+                            Translate = "Upptaget för behandling, vänligen vänta ett ögonblick. 😌"
+                        },
+                        new
+                        {
+                            Id = 433,
+                            Key = "app.content.processing",
+                            LanguageId = 13,
+                            Translate = "Zur Bearbeitung angenommen, bitte warten Sie einen Moment. 😌"
+                        },
+                        new
+                        {
+                            Id = 434,
+                            Key = "app.content.processing",
+                            LanguageId = 14,
+                            Translate = "Pobrane do przetworzenia, proszę chwilę poczekać. 😌"
+                        },
+                        new
+                        {
+                            Id = 435,
+                            Key = "app.content.processing",
+                            LanguageId = 15,
+                            Translate = "İşlem için alındı, lütfen bir dakika bekleyin. 😌"
+                        },
+                        new
+                        {
+                            Id = 436,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 1,
+                            Translate = "Якщо аудіо транскрипція неправильна, спробуйте вибрати аудіо мову /audio_language і надіслати знову аудіо"
+                        },
+                        new
+                        {
+                            Id = 437,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 2,
+                            Translate = "Если аудио транскрипция неверна, попробуйте выбрать аудио язык /audio_language и отправить снова аудио"
+                        },
+                        new
+                        {
+                            Id = 438,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 3,
+                            Translate = "If the audio transcription is incorrect, try to select the audio language /audio_language and send the audio again"
+                        },
+                        new
+                        {
+                            Id = 439,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 4,
+                            Translate = "Si la transcripción del audio es incorrecta, intente seleccionar el idioma del audio /audio_language"
+                        },
+                        new
+                        {
+                            Id = 440,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 5,
+                            Translate = "Si la transcription audio est incorrecte, essayez de sélectionner la langue audio /audio_language"
+                        },
+                        new
+                        {
+                            Id = 441,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 6,
+                            Translate = "音声の書き起こしが正しくない場合は、音声言語 /audio_language を選択してみてください"
+                        },
+                        new
+                        {
+                            Id = 442,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 7,
+                            Translate = "如果音频转录不正确，请尝试选择音频语言 /audio_language"
+                        },
+                        new
+                        {
+                            Id = 443,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 8,
+                            Translate = "Pokud je přepis zvuku nesprávný, zkuste vybrat jazyk zvuku /audio_language"
+                        },
+                        new
+                        {
+                            Id = 444,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 9,
+                            Translate = "Hvis lydtransskriptionen er forkert, prøv at vælge lydsproget /audio_language"
+                        },
+                        new
+                        {
+                            Id = 445,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 10,
+                            Translate = "यदि ऑडियो ट्रांसक्रिप्शन गलत है, तो ऑडियो भाषा /audio_language का चयन करने का प्रयास करें"
+                        },
+                        new
+                        {
+                            Id = 446,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 11,
+                            Translate = "se la trascrizione audio non è corretta, prova a selezionare la lingua audio /audio_language"
+                        },
+                        new
+                        {
+                            Id = 447,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 12,
+                            Translate = "Om ljudtranskriptionen är felaktig, prova att välja ljudspråket /audio_language"
+                        },
+                        new
+                        {
+                            Id = 448,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 13,
+                            Translate = "Wenn die Audiotranskription nicht korrekt ist, versuchen Sie, die Audiosprache /audio_language auszuwählen"
+                        },
+                        new
+                        {
+                            Id = 449,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 14,
+                            Translate = "Jeśli transkrypcja dźwięku jest nieprawidłowa, spróbuj wybrać język dźwięku /audio_language"
+                        },
+                        new
+                        {
+                            Id = 450,
+                            Key = "app.audios.languageWarning",
+                            LanguageId = 15,
+                            Translate = "Ses dökümü yanlışsa, ses dilini /audio_language seçmeyi deneyin"
+                        },
+                        new
+                        {
+                            Id = 451,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 1,
+                            Translate = "<b>Ваші мови</b>\nОсновна мова: {0}\nМова перекладу: {1}\n\nМова аудіо транскрипції: {2}\n\nМова інтерфейсу: {3}\n\nПоказувати значення англійських слів - {4}"
+                        },
+                        new
+                        {
+                            Id = 452,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 2,
+                            Translate = "<b>Ваши языки</b>\nОсновной язык: {0}\nЦелевой язык: {1}\n\nЯзык аудио транскрипции: {2}\n\nЯзык интерфейса: {3}\n\nПоказывать значение английских слов - {4}"
+                        },
+                        new
+                        {
+                            Id = 453,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 3,
+                            Translate = "<b>Your languages</b>\nMain Language: {0}\nTarget Language: {1}\n\nAudio transcription language: {2}\n\nYour interface language: {3}\n\nShow english words meaning - {4}"
+                        },
+                        new
+                        {
+                            Id = 454,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 4,
+                            Translate = "b>Tus idiomas</b>\nLenguaje principal: {0}\nLengua meta: {1}\n\nIdioma de transcripción de audio: {2}\n\nTu idioma de interfaz: {3}\n\nMostrar el significado de las palabras en inglés - {4}"
+                        },
+                        new
+                        {
+                            Id = 455,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 5,
+                            Translate = "<b>Vos langues</b>\nLangage principal: {0}\nLangue cible: {1}\n\nLangue de transcription audio: {2}\n\nLa langue de votre interface: {3}\n\nAfficher le sens des mots anglais - {4}"
+                        },
+                        new
+                        {
+                            Id = 456,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 6,
+                            Translate = "<b>あなたの言語</b>\n主要言語：{0}\nターゲット言語: {1}\n\n音声転写言語: {2}\n\nインターフェース言語: {3}\n\n英単語の意味を表示 - {4}"
+                        },
+                        new
+                        {
+                            Id = 457,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 7,
+                            Translate = "<b>你的语言</b>\n主要语言： {0}\n选择母语: {1}\n\n音频转录语言：{2}\n\n界面语言： {3}\n\n显示英文单词的意思 - {4}"
+                        },
+                        new
+                        {
+                            Id = 458,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 8,
+                            Translate = "<b>Vaše jazyky</b>\nHlavní jazyk: {0}\nCílový jazyk: {1}\n\nJazyk zvukového přepisu: {2}\n\nVáš jazyk rozhraní: {3}\n\nZobrazit význam anglických slov - {4}"
+                        },
+                        new
+                        {
+                            Id = 459,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 9,
+                            Translate = "<b>Dine sprog</b>\nHovedsprog: {0}\nMålsprog: {1}\n\nLydtransskriptionssprog: {2}\n\nDit grænsefladesprog: {3}\n\nVis engelske ords betydning - {4}"
+                        },
+                        new
+                        {
+                            Id = 460,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 10,
+                            Translate = "<b>आपकी भाषाएँ</b>\nमुख्य भाषा: {0}\nलक्ष्य भाषा: {1}\n\nऑडियो ट्रांसक्रिप्शन भाषा: {2}\n\nअंतरफलक भाषा: {3}\n\nअंग्रेजी शब्दों का अर्थ दिखाएँ - {4}"
+                        },
+                        new
+                        {
+                            Id = 461,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 11,
+                            Translate = "<b>Le tue lingue</b>\nLingua principale: {0}\nLingua di destinazione: {1}\n\nLingua di trascrizione audio: {2}\n\nLa lingua dell'interfaccia: {3}\n\nMostra il significato delle parole inglesi - {4}"
+                        },
+                        new
+                        {
+                            Id = 462,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 12,
+                            Translate = "<b>Dina språk</b>\nModersmål: {0}\nMålspråk: {1}\n\nSpråk för ljudtranskription: {2}\n\nDitt gränssnittsspråk: {3}\n\nVisa engelska ords betydelse - {4}"
+                        },
+                        new
+                        {
+                            Id = 463,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 13,
+                            Translate = "<b>Ihre Sprachen</b>\nMuttersprache: {0}\nZielsprache: {1}\n\nSprache der Audiotranskription: {2}\n\nIhre Oberflächensprache: {3}\n\nVisa engelska ords betydelse - {4}"
+                        },
+                        new
+                        {
+                            Id = 464,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 14,
+                            Translate = "<b>Twoje języki</b>\nGłówny język: {0}\nJęzyk docelowy: {1}\n\nJęzyk transkrypcji dźwięku: {2}\n\nTwój język interfejsu: {3}\n\nPokaż znaczenie angielskich słów - {4}"
+                        },
+                        new
+                        {
+                            Id = 465,
+                            Key = "app.menu.userInfo",
+                            LanguageId = 15,
+                            Translate = "<b>Dilleriniz</b>\nAna dil: {0}\nHedef dil: {1}\n\nSes transkripsiyon dili: {2}\n\nArayüz diliniz: {3}\n\nİngilizce kelimelerin anlamını göster - {4}"
                         });
                 });
 
