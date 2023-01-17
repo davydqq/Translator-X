@@ -33,10 +33,12 @@ namespace TB.API.Middlewares
 
             _logger.LogError(exception.ToString());
 
-            return context.Response.WriteAsync(new ErrorDetails()
+            var data = new ErrorDetails()
             {
                 StatusCode = context.Response.StatusCode,
-            }.ToString());
+            }.ToString();
+
+            return context.Response.WriteAsync(data);
         }
     }
 }

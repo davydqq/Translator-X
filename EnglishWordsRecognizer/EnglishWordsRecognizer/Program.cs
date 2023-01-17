@@ -1,14 +1,11 @@
 using CQRS;
 using Microsoft.Extensions.Options;
 using TB.API.Jobs;
-using TB.API.Middlewares;
 using TB.ComputerVision;
 using TB.ComputerVision.Entities;
-using TB.Core.Configs;
 using TB.Database;
 using TB.Localization;
 using TB.Meaning;
-using TB.Menu.Entities;
 using TB.Routing;
 using TB.Translator;
 using TB.Translator.Entities.Azure;
@@ -18,6 +15,9 @@ using Polly;
 using TB.SpeechToText;
 using TB.SpeechToText.Entities;
 using TB.BillingPlans;
+using TB.Menu.Entities;
+using TB.Core.Configs;
+using TB.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
