@@ -12,15 +12,18 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, b
     private readonly IRepository<TelegramUser, int> userRepository;
     private readonly IRepository<UserSettings, int> settingsRepository;
     private readonly UserPlansRepository paymentRepository;
+    private readonly IRepository<UserRole, int> userRoleRepository;
 
     public RegisterUserCommandHandler(
         IRepository<TelegramUser, int> userRepository,
         IRepository<UserSettings, int> settingsRepository,
-        UserPlansRepository paymentRepository)
+        UserPlansRepository paymentRepository,
+        IRepository<UserRole, int> userRoleRepository)
     {
         this.userRepository = userRepository;
         this.settingsRepository = settingsRepository;
         this.paymentRepository = paymentRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     public async Task<bool> HandleAsync(RegisterUserCommand command, CancellationToken cancellation = default)
@@ -56,7 +59,17 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, b
             var userPlan = await paymentRepository.GetUserPlan(user.Id);
             if(userPlan == null)
             {
-                await paymentRepository.AddAsync(new UserPlan().InitBase(user.Id));
+                var isAdmin = await userRoleRepository
+                        .GetAnyAsync(x => x.TelegramUserId == userDb.TelegramUserId && x.RoleId == RoleENUM.Admin);
+                
+                if (isAdmin)
+                {
+                    await paymentRepository.AddAsync(new UserPlan().InitUnlimit(user.Id));
+                }
+                else
+                {
+                    await paymentRepository.AddAsync(new UserPlan().InitBase(user.Id));
+                }
             }
         }
 

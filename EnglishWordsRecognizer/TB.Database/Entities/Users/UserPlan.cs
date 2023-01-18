@@ -30,4 +30,14 @@ public class UserPlan : BaseEntity<int>
 
         return this;
     }
+
+    public UserPlan InitUnlimit(long userId)
+    {
+        StartDate = TimeProvider.Get();
+        ExpireDate = StartDate.AddDays(30);
+        PlanId = PlanENUM.Unlimit;
+        UserId = userId;
+
+        return this;
+    }
 }
