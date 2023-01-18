@@ -1,7 +1,7 @@
 ﻿using CQRS.Commands;
 using Microsoft.Extensions.Options;
 using TB.Common;
-using TB.Database.Entities;
+using TB.Database.Entities.Users;
 using TB.Database.GenericRepositories;
 using TB.Menu.Commands;
 using TB.Menu.Entities;

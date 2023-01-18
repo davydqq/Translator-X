@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TB.Database.Entities;
 using TB.Database.Entities.Requests;
+using TB.Database.Entities.Users;
 using TB.Database.Initing;
 
 namespace TB.Database;
@@ -13,6 +14,11 @@ public class TBDatabaseContext : DbContext
     }
 
     public DbSet<TelegramUser> Users { get; set; }
+
+    public DbSet<UserRole> UserRoles { set; get; }
+
+    public DbSet<Role> Roles { set; get; }
+
 
     public DbSet<Language> Languages { set; get; }
 
@@ -93,6 +99,11 @@ public class TBDatabaseContext : DbContext
             new ApiType { Id = ApiTypeENUM.Thesaurus, Name = nameof(ApiTypeENUM.Thesaurus) }
         );
 
+        modelBuilder.Entity<Role>().HasData(
+            new Role { Id = RoleENUM.User, Name = nameof(RoleENUM.User) },
+            new Role { Id = RoleENUM.Admin, Name = nameof(RoleENUM.Admin) }
+        );
+
         modelBuilder.Entity<Plan>().HasData(
             new Plan
             {
@@ -139,6 +150,17 @@ public class TBDatabaseContext : DbContext
                 Priority = 1,
             }
         );
+
+        modelBuilder.Entity<UserRole>()
+            .HasKey(bc => new { bc.RoleId, bc.TelegramUserId });
+        modelBuilder.Entity<UserRole>()
+            .HasOne(bc => bc.Role)
+            .WithMany(b => b.UserRoles)
+            .HasForeignKey(bc => bc.RoleId);
+        modelBuilder.Entity<UserRole>()
+            .HasOne(bc => bc.TelegramUser)
+            .WithMany(c => c.UserRoles)
+            .HasForeignKey(bc => bc.TelegramUserId);
 
         modelBuilder.Entity<Language>().HasData(
                 new Language { 

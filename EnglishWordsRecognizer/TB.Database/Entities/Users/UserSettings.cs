@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TB.Database.Entities;
+namespace TB.Database.Entities.Users;
 
 [Table(nameof(UserSettings), Schema = "app")]
 public class UserSettings : BaseEntity<int>

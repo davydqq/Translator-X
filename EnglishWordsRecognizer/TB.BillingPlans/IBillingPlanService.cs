@@ -1,5 +1,5 @@
 ﻿using TB.Database.Entities.Requests;
-using TB.Database.Entities;
+using TB.Database.Entities.Users;
 
 namespace TB.BillingPlans;
 

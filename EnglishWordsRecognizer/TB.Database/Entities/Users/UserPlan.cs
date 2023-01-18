@@ -2,10 +2,10 @@
 using TB.Common;
 using TB.Database.Entities.Requests;
 
-namespace TB.Database.Entities;
+namespace TB.Database.Entities.Users;
 
 [Table("UserPlans", Schema = "app")]
-public class UserPlan: BaseEntity<int>
+public class UserPlan : BaseEntity<int>
 {
     public DateTimeOffset StartDate { set; get; }
 
@@ -26,6 +26,16 @@ public class UserPlan: BaseEntity<int>
         StartDate = TimeProvider.Get();
         ExpireDate = StartDate.AddDays(30);
         PlanId = PlanENUM.Standart;
+        UserId = userId;
+
+        return this;
+    }
+
+    public UserPlan InitUnlimit(long userId)
+    {
+        StartDate = TimeProvider.Get();
+        ExpireDate = StartDate.AddDays(30);
+        PlanId = PlanENUM.Unlimit;
         UserId = userId;
 
         return this;

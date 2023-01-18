@@ -8,6 +8,7 @@ using TB.ComputerVision.Command;
 using TB.Core.Commands;
 using TB.Core.Queries;
 using TB.Database.Entities;
+using TB.Database.Entities.Users;
 using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Texts.Commands;

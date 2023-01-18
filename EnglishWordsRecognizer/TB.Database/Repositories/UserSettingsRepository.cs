@@ -1,6 +1,6 @@
-﻿using TB.Database.Entities;
-using TB.Database.GenericRepositories;
+﻿using TB.Database.GenericRepositories;
 using Microsoft.EntityFrameworkCore;
+using TB.Database.Entities.Users;
 
 namespace TB.Database.Repositories;
 
