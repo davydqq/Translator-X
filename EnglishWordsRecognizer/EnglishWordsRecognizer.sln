@@ -47,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.SpeechToText", "TB.Speec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Payments", "TB.BillingPlans\TB.Payments.csproj", "{154AD723-5AD2-4917-8930-3CEE40B05AA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TB.Function.API", "TB.Function.API\TB.Function.API.csproj", "{5A28171A-07F1-4BD5-92A3-46F1CD6D537A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TB.Function.API", "TB.Function.API\TB.Function.API.csproj", "{5A28171A-07F1-4BD5-92A3-46F1CD6D537A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,21 +4,21 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using TB.Function.API.Services;
 
-namespace TB.Function.API
+namespace TB.Function.API.Functions
 {
-    public class Config
+    public class SetWebHook
     {
         private readonly ILogger _logger;
 
         private readonly RunAppService runAppService;
 
-        public Config(ILoggerFactory loggerFactory, RunAppService runAppService)
+        public SetWebHook(ILoggerFactory loggerFactory, RunAppService runAppService)
         {
-            _logger = loggerFactory.CreateLogger<Config>();
+            _logger = loggerFactory.CreateLogger<SetWebHook>();
             this.runAppService = runAppService;
         }
 
-        [Function(nameof(Config))]
+        [Function(nameof(SetWebHook))]
         public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Admin, "get", "post")] HttpRequestData req)
         {
             await runAppService.RunAsync();

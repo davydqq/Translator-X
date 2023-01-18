@@ -8,7 +8,7 @@ using TB.Routing.Commands;
 using TB.User.Commands;
 using Telegram.Bot.Types;
 
-namespace TB.Function.API
+namespace TB.Function.API.Functions
 {
     public class App
     {
