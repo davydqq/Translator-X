@@ -1,10 +1,15 @@
-name: Deploy
+name: DB Migration & Functions Deploy
 
 on:
   push:
     branches:
       - release
-      
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './EnglishWordsRecognizer/TB.Function.API' # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '6.0.x' # set this to the dotnet version to use
+
+
 jobs:
   db-migration:
     runs-on: windows-latest 
@@ -19,3 +24,34 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Production
           Database: ${{ secrets.DATABASECONNECTION }}
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/release'
+    needs: [db-migration]
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v3
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: bash
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+        env:
+          Database: ${{ secrets.DATABASECONNECTION }}
+
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: 'telegram-bot-translator'
+          slot-name: 'telegram-bot-translator-blue'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_19CC1EB279414EE58ED30862603C617B }}
