@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using TB.Database.Entities;
+using TB.Database.Entities.Users;
 using TB.Database.GenericRepositories;
 using TB.Database.Repositories;
 using Telegram.Bot.Types;

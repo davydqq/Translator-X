@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using TB.Database.Entities.Requests;
 
-namespace TB.Database.Entities;
+namespace TB.Database.Entities.Users;
 
 [Table(nameof(TelegramUser), Schema = "app")]
-public class TelegramUser: BaseEntity<int>
+public class TelegramUser : BaseEntity<int>
 {
     [NotMapped]
     public override int Id { get => throw new Exception("Field can not be used!"); set => throw new Exception("Field can not be used!"); }
@@ -30,4 +30,6 @@ public class TelegramUser: BaseEntity<int>
     public List<BaseRequest> BaseRequests { set; get; }
 
     public List<UserPlan> UserPlans { set; get; }
+
+    public List<UserRole> UserRoles { set; get; }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using TB.Common;
+using TB.Database.Entities.Users;
 
 namespace TB.Database.Entities.Requests;
 
