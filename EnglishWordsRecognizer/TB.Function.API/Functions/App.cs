@@ -23,7 +23,7 @@ namespace TB.Function.API.Functions
         }
 
         [Function(nameof(App))]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
         {
             var request = await req.ReadAsStringAsync();
             var update = JsonConvert.DeserializeObject<Update>(request);

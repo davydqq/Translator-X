@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using TB.ComputerVision.Entities;
 using TB.Core.Configs;
 using TB.Menu.Entities;
+using TB.SpeechToText.Entities;
 using TB.Translator.Entities.Azure;
 
 namespace TB.Function.API.Functions
@@ -21,24 +22,29 @@ namespace TB.Function.API.Functions
         private readonly IOptions<AzureVisionConfig> azureVisionConfig;
         private readonly IOptions<AzureTranslatorConfig> azureTranslatorConfig;
         private readonly IOptions<BotCredentialsConfig> botCredentialsConfig;
+        private readonly IOptions<GoogleConfig> googleConfig;
 
         public Config(
             ILoggerFactory loggerFactory, 
             IConfiguration configuration,
             IOptions<AzureVisionConfig> azureVisionConfig,
             IOptions<AzureTranslatorConfig> azureTranslatorConfig,
-            IOptions<BotCredentialsConfig> botCredentialsConfig)
+            IOptions<BotCredentialsConfig> botCredentialsConfig,
+            IOptions<GoogleConfig> googleConfig)
         {
             _logger = loggerFactory.CreateLogger<Config>();
             this.configuration = configuration;
             this.azureVisionConfig = azureVisionConfig;
             this.azureTranslatorConfig = azureTranslatorConfig;
             this.botCredentialsConfig = botCredentialsConfig;
+            this.googleConfig = googleConfig;
         }
 
         [Function("Config")]
         public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Admin, "get", "post")] HttpRequestData req)
         {
+            _logger.LogInformation("Config endpoint called");
+
             var dataBaseConn = configuration.GetValue<string>("Database");
 
             var resp = new string[] 
@@ -47,6 +53,7 @@ namespace TB.Function.API.Functions
                 JsonConvert.SerializeObject(azureVisionConfig.Value),
                 JsonConvert.SerializeObject(azureTranslatorConfig.Value),
                 JsonConvert.SerializeObject(botCredentialsConfig.Value),
+                JsonConvert.SerializeObject(googleConfig.Value)
             };
 
             var response = req.CreateResponse(HttpStatusCode.OK);

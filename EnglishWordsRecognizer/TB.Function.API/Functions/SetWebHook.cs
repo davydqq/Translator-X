@@ -19,13 +19,14 @@ namespace TB.Function.API.Functions
         }
 
         [Function(nameof(SetWebHook))]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Admin, "get", "post")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Admin, "get")] HttpRequestData req)
         {
             await runAppService.RunAsync();
 
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
+            _logger.LogInformation("Webhook setted");
             response.WriteString("Setted");
 
             return response;
