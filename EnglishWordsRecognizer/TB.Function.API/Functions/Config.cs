@@ -45,6 +45,8 @@ namespace TB.Function.API.Functions
         {
             _logger.LogInformation("Config endpoint called");
 
+            string environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
+
             var dataBaseConn = configuration.GetValue<string>("Database");
 
             var resp = new string[] 
@@ -53,7 +55,8 @@ namespace TB.Function.API.Functions
                 JsonConvert.SerializeObject(azureVisionConfig.Value),
                 JsonConvert.SerializeObject(azureTranslatorConfig.Value),
                 JsonConvert.SerializeObject(botCredentialsConfig.Value),
-                JsonConvert.SerializeObject(googleConfig.Value)
+                JsonConvert.SerializeObject(googleConfig.Value),
+                environmentName
             };
 
             var response = req.CreateResponse(HttpStatusCode.OK);
