@@ -6,7 +6,7 @@ name: Build and deploy dotnet core project to Azure Function App - telegram-bot-
 on:
   push:
     branches:
-      - release
+      - main
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
@@ -15,7 +15,7 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/release'
+    # if: github.ref == 'refs/heads/release'
     needs: [db-migration]
     steps:
       - name: 'Checkout GitHub Action'
