@@ -34,9 +34,9 @@ public static class Modules
         services.RoutingModules();
 
         services.Configure<BotMenuConfig>(options => configuration.GetSection("BotMenu").Bind(options));
+
         services.Configure<AzureVisionConfig>(options => configuration.GetSection("AzureVisionConfig").Bind(options));
         services.Configure<AzureTranslatorConfig>(options => configuration.GetSection("AzureTranslatorConfig").Bind(options));
-
         services.Configure<BotCredentialsConfig>(options => configuration.GetSection("BotConfig").Bind(options));
 
         services.Configure<GoogleConfig>(options => configuration.GetSection("GoogleConfig").Bind(options));

@@ -8,7 +8,7 @@ using TB.Routing.Commands;
 using TB.User.Commands;
 using Telegram.Bot.Types;
 
-namespace TB.Function.API
+namespace TB.Function.API.Functions
 {
     public class App
     {
@@ -23,7 +23,7 @@ namespace TB.Function.API
         }
 
         [Function(nameof(App))]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
         {
             var request = await req.ReadAsStringAsync();
             var update = JsonConvert.DeserializeObject<Update>(request);
