@@ -1,5 +1,8 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using TB.Common;
 using TB.Meaning.Entities;
 
 namespace TB.Meaning;
@@ -14,10 +17,12 @@ public class CambridgeDictionaryService
 
     private readonly HttpClient _httpClient;
 
-    public CambridgeDictionaryService(HttpClient httpClient)
+    private readonly ILogger<CambridgeDictionaryService> logger;
+
+    public CambridgeDictionaryService(HttpClient httpClient, ILogger<CambridgeDictionaryService> logger)
     {
         this._httpClient = httpClient;
-
+        this.logger = logger;
         _httpClient.BaseAddress = new Uri(baseUrl);
     }
 
@@ -116,6 +121,9 @@ public class CambridgeDictionaryService
 
             return nodes.Where(x => x != null && !string.IsNullOrEmpty(x.InnerText)).Select(x => x.InnerText);
         }
+
+        var message = string.Format("Request meaning: Body: {0}, Response: {1}", phrase, resp.Serialize());
+        logger.LogError(message);
 
         return null;
     }

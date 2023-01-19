@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Data;
 using System.Text;
+using TB.Common;
 using TB.Database.Entities.Requests;
 using TB.Translator.Entities;
 using TB.Translator.Entities.Azure;
@@ -14,10 +16,16 @@ public class AzureTranslateService : ITranslateService
 
     private readonly IHttpClientFactory httpClientFactory;
 
-    public AzureTranslateService(IOptions<AzureTranslatorConfig> options, IHttpClientFactory httpClientFactory)
+    private readonly ILogger<AzureTranslateService> logger;
+
+    public AzureTranslateService(
+        IOptions<AzureTranslatorConfig> options, 
+        IHttpClientFactory httpClientFactory,
+        ILogger<AzureTranslateService> logger)
     {
         this.options = options;
         this.httpClientFactory = httpClientFactory;
+        this.logger = logger;
     }
 
     public ApiTypeENUM apiTypeENUM => ApiTypeENUM.Azure;
@@ -87,7 +95,12 @@ public class AzureTranslateService : ITranslateService
         // Send the request and get response.
         HttpResponseMessage response = await httpClient.SendAsync(request).ConfigureAwait(false);
 
-        if (!response.IsSuccessStatusCode) return default(T)!;
+        if (!response.IsSuccessStatusCode)
+        {
+            var message = string.Format("Request translate: Body: {0}, Response: {1}", requestBody, response.Serialize());
+            logger.LogError(message);
+            return default(T)!;
+        }
 
         // Read response as a string.
         string result = await response.Content.ReadAsStringAsync();
