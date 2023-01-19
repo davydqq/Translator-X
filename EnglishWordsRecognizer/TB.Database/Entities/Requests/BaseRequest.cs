@@ -24,7 +24,7 @@ public class BaseRequest : BaseEntity<int>
 
 
     [Column(TypeName = "jsonb")]
-    public string Response { set; get; }
+    public string? Response { set; get; }
 
     public bool IsSuccess { set; get; }
 
