@@ -27,7 +27,7 @@ namespace TB.Function.API.Functions
         {
             var request = await req.ReadAsStringAsync();
 
-            _logger.LogInformation("Request: ", request);
+            _logger.LogInformation("Request: {0}", request);
 
             var update = JsonConvert.DeserializeObject<Update>(request);
 

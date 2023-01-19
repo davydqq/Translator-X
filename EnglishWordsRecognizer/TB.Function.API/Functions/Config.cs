@@ -46,7 +46,8 @@ namespace TB.Function.API.Functions
             _logger.LogInformation("Config endpoint called");
 
             var dataBaseConn = configuration.GetValue<string>("Database");
-
+            var GOOGLE_APPLICATION_CREDENTIALS = configuration.GetValue<string>("GOOGLE_APPLICATION_CREDENTIALS");
+            
             var resp = new string[] 
             {
                 dataBaseConn,
@@ -54,6 +55,7 @@ namespace TB.Function.API.Functions
                 JsonConvert.SerializeObject(azureTranslatorConfig.Value),
                 JsonConvert.SerializeObject(botCredentialsConfig.Value),
                 JsonConvert.SerializeObject(googleConfig.Value),
+                GOOGLE_APPLICATION_CREDENTIALS
             };
 
             var response = req.CreateResponse(HttpStatusCode.OK);
