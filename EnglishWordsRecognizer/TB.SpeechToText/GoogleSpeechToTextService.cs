@@ -1,4 +1,5 @@
 ﻿using Google.Cloud.Speech.V1;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TB.Common;
@@ -14,8 +15,7 @@ public class GoogleSpeechToTextService : ISpeechToTextService
     private readonly IOptions<GoogleConfig> options;
 
     private readonly ILogger<GoogleSpeechToTextService> logger;
-
-
+    private readonly IConfiguration configuration;
     private readonly string[] languages = new string[]
     {
         LanguageCodes.Ukrainian.Ukraine,
@@ -37,10 +37,14 @@ public class GoogleSpeechToTextService : ISpeechToTextService
 
     public ApiTypeENUM ApiType => ApiTypeENUM.Google;
 
-    public GoogleSpeechToTextService(IOptions<GoogleConfig> options, ILogger<GoogleSpeechToTextService> logger)
+    public GoogleSpeechToTextService(
+        IOptions<GoogleConfig> options, 
+        ILogger<GoogleSpeechToTextService> logger,
+        IConfiguration configuration)
     {
         this.options = options;
         this.logger = logger;
+        this.configuration = configuration;
     }
 
     public async Task<AudioRecognizeResponse> RecognizeAsync(byte[] bytes, LanguageENUM language, string mimeType)
@@ -86,7 +90,7 @@ public class GoogleSpeechToTextService : ISpeechToTextService
     {
         try
         {
-            var builder = new SpeechClientBuilder() { CredentialsPath = options.Value.Path };
+            var builder = GetBuilder();
 
             var client = await builder.BuildAsync();
 
@@ -107,6 +111,17 @@ public class GoogleSpeechToTextService : ISpeechToTextService
             logger.LogError(e.ToString());
             return (false, null);
         }
+    }
+
+    private SpeechClientBuilder GetBuilder()
+    {
+        var envVariables = configuration["GOOGLE_APPLICATION_CREDENTIALS"];
+        if(envVariables != null)
+        {
+            return new SpeechClientBuilder() { JsonCredentials = envVariables, };
+        }
+
+        return new SpeechClientBuilder() { CredentialsPath = options.Value.Path };
     }
 
     private int GetSampleRateHertz(string mimeType)
