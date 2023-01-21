@@ -3,4 +3,4 @@ db build
 dotnet ef database update -c TBDatabaseContext -p EnglishWordsRecognizer/EnglishWordsRecognizer -s 
 EnglishWordsRecognizer/EnglishWordsRecognizer
 
-build
+build1
