@@ -11,4 +11,6 @@ public class BotMenuCommand
     public string? CallBackId { set; get; }
 
     public int Order { set; get; }
+
+    public bool DeleteMessage { set; get; }
 }
