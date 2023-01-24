@@ -339,6 +339,7 @@ public class TBDatabaseContext : DbContext
         var menuChooseLang = "app.menu.chooseLang";
         var menuInfoKey = "app.menu.info";
         var menuAudioLangKey = "app.menu.audioLang";
+        var userInfoKey = "app.menu.userInfo";
 
         // validation
         var fileNoSupportContentTypeKey = "app.file.noSupportContent";
@@ -541,7 +542,7 @@ public class TBDatabaseContext : DbContext
         var userLanguagesUA = "<b>Ваші мови</b>\n" + "Основна мова: {0}\n" + "Мова перекладу: {1}";
         var userLanguagesRU = "<b>Ваши языки</b>\n" + "Основной язык: {0}\n" + "Целевой язык: {1}";
         var userLanguagesEN = "<b>Your languages</b>\n" + "Main Language: {0}\n" + "Target Language: {1}";
-        var userLanguagesSP = "b>Tus idiomas</b>\n" + "Lenguaje principal: {0}\n" + "Lengua meta: {1}";
+        var userLanguagesSP = "<b>Tus idiomas</b>\n" + "Lenguaje principal: {0}\n" + "Lengua meta: {1}";
         var userLanguagesFR = "<b>Vos langues</b>\n" + "Langage principal: {0}\n" + "Langue cible: {1}";
         var userLanguagesJA = "<b>あなたの言語</b>\n" + "主要言語：{0}\n" + "ターゲット言語: {1}";
         var userLanguagesCHINESE = "<b>你的语言</b>\n" + "主要语言： {0}\n" + "选择母语: {1}";
@@ -554,8 +555,6 @@ public class TBDatabaseContext : DbContext
         var userLanguagesPolish = "<b>Twoje języki</b>\n" + "Główny język: {0}\n" + "Język docelowy: {1}";
         var userLanguagesTurkish = "<b>Dilleriniz</b>\n" + "Ana dil: {0}\n" + "Hedef dil: {1}";
 
-
-        var userInfoKey = "app.menu.userInfo";
 
         var userInfoUA = $"{userLanguagesUA}\n\n" +
                          "Мова аудіо транскрипції: {2}\n\n" +
