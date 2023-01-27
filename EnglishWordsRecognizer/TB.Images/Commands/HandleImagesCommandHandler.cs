@@ -2,6 +2,7 @@
 using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using TB.BillingPlans;
 using TB.Common;
 using TB.ComputerVision.Command;
@@ -13,6 +14,7 @@ using TB.Database.Repositories;
 using TB.Localization.Services;
 using TB.Texts.Commands;
 using TB.Translator.Commands;
+using TB.Translator.Entities;
 using TB.User;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -173,30 +175,31 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
                 text += captionsRes;
                 resText += text;
 
-                var languagesToTranslate = GetLanguagesToTranslate(settings);
-                var resp = await TranslateImageRecognitionResponse(languagesToTranslate, new string[] { captionsRes }, userId);
-
-                if (resp.zippedWords != null && resp.isOnlyOneLanguage)
+                var translations = await GetTranslations(settings, new string[] { captionsRes }, userId);
+                if (!translations.IsEmpty)
                 {
-                    resText += $"\n\n<b>{languagesToTranslate.First().GetCode().ToUpper()}</b>\n";
-                    foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
+                    if (translations.IsOneLanguage)
                     {
-                        resText += sentense + "\n";
-                    }
-                }
-
-                if(resp.zippedWords != null && !resp.isOnlyOneLanguage)
-                {
-                    resText += $"\n\n<b>{settings.TargetLanguage!.GetCode().ToUpper()}</b>\n";
-                    foreach (var sentense in resp.zippedWords.Select(x => x.fTarget))
-                    {
-                        resText += sentense + "\n";
+                        resText += $"\n\n<b>{translations.GetOneLanguage.GetCode().ToUpper()}</b>\n";
+                        foreach (var sentense in translations.GetOneTranslations.Select(x => x.Translate))
+                        {
+                            resText += sentense + "\n";
+                        }
                     }
 
-                    resText += $"\n<b>{settings.NativeLanguage!.GetCode().ToUpper()}</b>\n";
-                    foreach (var sentense in resp.zippedWords.Select(x => x.sNative))
+                    if (!translations.IsOneLanguage)
                     {
-                        resText += sentense + "\n";
+                        resText += $"\n\n<b>{translations.FirstLanguage!.GetCode().ToUpper()}</b>\n";
+                        foreach (var sentense in translations.FirstTranslations.Select(x => x.Translate))
+                        {
+                            resText += sentense + "\n";
+                        }
+
+                        resText += $"\n<b>{translations.SecondLanguage!.GetCode().ToUpper()}</b>\n";
+                        foreach (var sentense in translations.SecondTranslations.Select(x => x.Translate))
+                        {
+                            resText += sentense + "\n";
+                        }
                     }
                 }
             }
@@ -218,93 +221,91 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
             throw new Exception("Settings null");
         }
 
-        var languagesToTranslate = GetLanguagesToTranslate(settings);
-        var res = await TranslateImageRecognitionResponse(languagesToTranslate, en_tags.ToArray(), userId);
-
-        ConsoleTable onePhrasesTable = null; 
-        if (res.isOnlyOneLanguage)
+        var translations = await GetTranslations(settings, en_tags.ToArray(), userId);
+        if (!translations.IsEmpty)
         {
-            onePhrasesTable = new ConsoleTable("EN", languagesToTranslate.First().GetCode().ToUpper());
-        }
-        else
-        {
-            onePhrasesTable = new ConsoleTable(settings.TargetLanguage!.GetCode().ToUpper(), settings.NativeLanguage!.GetCode().ToUpper());
-        }
-
-        var separator = " ";
-        var oneWordZipped = new List<(string fTarget, string sNative)>();
-        var phrasesZipped = new List<(string fTarget, string sNative)>();
-
-        foreach (var zipWords in res.zippedWords)
-        {
-            if (zipWords.fTarget.Length + zipWords.sNative.Length < 24)
+            // HEADER
+            ConsoleTable onePhrasesTable = null;
+            if (translations.IsOneLanguage)
             {
-                oneWordZipped.Add((zipWords.fTarget, zipWords.sNative));
-                continue;
+                onePhrasesTable = new ConsoleTable("EN", translations.GetOneLanguage.GetCode().ToUpper());
+            }
+            else
+            {
+                onePhrasesTable = new ConsoleTable(translations.FirstLanguage!.GetCode().ToUpper(),
+                                                   translations.SecondLanguage!.GetCode().ToUpper());
             }
 
-            phrasesZipped.Add((zipWords.fTarget, zipWords.sNative));
+            var zippedWords = new List<(string first, string second)>();
+
+            // Zip Words
+            if (translations.IsOneLanguage)
+            {
+                zippedWords = en_tags.Zip(translations.GetOneTranslations.Select(x => x.Translate)).ToList();
+            }
+            else
+            {
+                var fTranlations = translations.FirstTranslations.Select(x => x.Translate);
+                var sTranlations = translations.SecondTranslations.Select(x => x.Translate);
+                zippedWords = fTranlations.Zip(sTranlations).ToList();
+            }
+
+            //
+            var oneWordZipped = new List<(string fTarget, string sNative)>();
+            var phrasesZipped = new List<(string fTarget, string sNative)>();
+
+            foreach (var zipWords in zippedWords)
+            {
+                if (zipWords.first.Length + zipWords.second.Length < 24)
+                {
+                    oneWordZipped.Add((zipWords.first, zipWords.second));
+                    continue;
+                }
+
+                phrasesZipped.Add((zipWords.first, zipWords.second));
+            }
+
+            var tableMessage = "";
+            if (oneWordZipped != null && oneWordZipped.Count > 0)
+            {
+                onePhrasesTable.Configure(x => x.EnableCount = false);
+                oneWordZipped.ForEach(x => onePhrasesTable.AddRow(x.fTarget, x.sNative));
+                tableMessage = "<pre>" + onePhrasesTable.ToMarkDownString() + "</pre>";
+            }
+
+            var phrasesMessage = "";
+            if (phrasesZipped != null && phrasesZipped.Count > 0)
+            {
+                phrasesMessage += "\n";
+                phrasesZipped.ForEach(x => phrasesMessage += ("<b>" + x.fTarget + "</b>" + " - " + x.sNative + "\n"));
+            }
+
+            return tableMessage + phrasesMessage;
         }
 
-        var tableMessage = "";
-        if (oneWordZipped != null && oneWordZipped.Count > 0)
-        {
-            onePhrasesTable.Configure(x => x.EnableCount = false);
-            oneWordZipped.ForEach(x => onePhrasesTable.AddRow(x.fTarget, x.sNative));
-            tableMessage = "<pre>" + onePhrasesTable.ToMarkDownString() + "</pre>";
-        }
-
-        var phrasesMessage = "";
-        if(phrasesZipped != null && phrasesZipped.Count > 0)
-        {
-            phrasesMessage += "\n";
-            phrasesZipped.ForEach(x => phrasesMessage += ("<b>" +x.fTarget + "</b>" + " - " + x.sNative + "\n"));
-        }
-
-        return tableMessage + phrasesMessage;
+        return string.Empty;
     }
 
-    private async Task<(List<(string fTarget, string sNative)> zippedWords, bool isOnlyOneLanguage)> TranslateImageRecognitionResponse(
-        List<Language> languagesToTranslate, string[] textToTranslate, long userId)
+    private async Task<TranslateTextsDifferentLanguages> GetTranslations(UserSettings settings, string[] textsToTranslate, long userId)
     {
-        var command = new TranslateTextsCommand(textToTranslate.ToList(), languagesToTranslate.Select(x => x.Code).ToList(), userId);
-        var resp = await commandDispatcher.DispatchAsync(command);
-
-        if(resp == null)
-        {
-            logger.LogWarning("resp null");
-            return (null, false);
-        }
-
-        var groupedTranslates = resp.SelectMany(x => x.Translations).GroupBy(x => x.To);
-        var l = groupedTranslates.ToList();
-
-        if (groupedTranslates.Count() == 1)
-        {
-            var otherTranslations = l[0].Select(x => x.Text);
-            return (textToTranslate.Zip(otherTranslations).ToList(), true);
-        }
-
-        var targetLanguageTranslate = l[0].Select(x => x.Text);
-        var nativeLanguageTranslate = l[1].Select(x => x.Text);
-
-        return (targetLanguageTranslate.Zip(nativeLanguageTranslate).ToList(), false);
-    }
-
-    private List<Language> GetLanguagesToTranslate(UserSettings settings)
-    {
-        var languagesToTranslate = new List<Language>();
+        TranslateTextsDifferentLanguages result = new();
 
         if (settings.TargetLanguage!.Code != "en")
         {
-            languagesToTranslate.Add(settings.TargetLanguage);
+            result.FirstLanguage = settings.TargetLanguage;
+
+            var command = new TranslateTextsCommand(textsToTranslate.ToList(), settings.TargetLanguage, userId);
+            result.FirstTranslations = await commandDispatcher.DispatchAsync(command);
         }
         if (settings.NativeLanguage!.Code != "en")
         {
-            languagesToTranslate.Add(settings.NativeLanguage);
+            result.SecondLanguage = settings.NativeLanguage;
+
+            var command = new TranslateTextsCommand(textsToTranslate.ToList(), settings.NativeLanguage, userId);
+            result.SecondTranslations = await commandDispatcher.DispatchAsync(command);
         }
 
-        return languagesToTranslate;
+        return result;
     }
 
     private async Task<bool> ProcessAndSendOCRResultsAsync(byte[] bytes, long chatId, long userId, int replyId)

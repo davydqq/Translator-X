@@ -5,6 +5,9 @@ public class TranslateResponse
     public List<Translate> Translations { set; get; }
 
     public DetectLanguage DetectedLanguage { set; get; }
+
+    public string Translate => (Translations != null && Translations.Count > 0) ?
+        string.Join("", Translations.Select(X => X.Text)) : string.Empty;
 }
 
 public class DetectLanguage
