@@ -1,4 +1,4 @@
-﻿namespace TB.SpeechToText.Entities;
+﻿namespace TB.Common;
 
 public class GoogleConfig
 {

@@ -37,6 +37,8 @@ public class GoogleSpeechToTextService : ISpeechToTextService
 
     public ApiTypeENUM ApiType => ApiTypeENUM.Google;
 
+    public double Costs => APICosts.GoogleAudioTranscriptionSecondI;
+
     public GoogleSpeechToTextService(
         IOptions<GoogleConfig> options, 
         ILogger<GoogleSpeechToTextService> logger,

@@ -18,6 +18,8 @@ public class AzureTranslateService : ITranslateService
 
     private readonly ILogger<AzureTranslateService> logger;
 
+    public double Costs => APICosts.AzureCharTranslatePriceI;
+
     public AzureTranslateService(
         IOptions<AzureTranslatorConfig> options, 
         IHttpClientFactory httpClientFactory,
@@ -51,10 +53,10 @@ public class AzureTranslateService : ITranslateService
         }).ToList();
     }
 
-    public async Task<List<TranslateResponse>> TranslateTextsAsync(string[] textToTranslate, params string[] languages)
+    public async Task<List<TranslateResponse>> TranslateTextsAsync(string[] textToTranslate, TB.Database.Entities.Language language)
     {
         // Input and output languages are defined as parameters.
-        string route = "/translate?api-version=3.0" + string.Join("", languages.Select(lang => $"&to={lang}"));
+        string route = "/translate?api-version=3.0" + $"&to={language.Code}";
 
         var texts = textToTranslate.Select(x => new AzureRequestBody { Text = x }).ToArray();
         object[] body = texts;

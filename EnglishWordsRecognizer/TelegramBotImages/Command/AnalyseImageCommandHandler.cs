@@ -39,7 +39,7 @@ public class AnalyseImageCommandHandler : ICommandHandler<AnalyzeImageCommand, V
         }
 
         var plan = await userPlansRepository.GetUserPlan(command.UserId);
-        var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId, plan.Id).InitImageAnalysis();
+        var request = new ImageRequest(computerVisionService.apiTypeENUM, computerVisionService.Costs, command.UserId, plan.Id).InitImageAnalysis();
 
         var results = await computerVisionService.AnalyzeImageAsync(command.Bytes);
 

@@ -45,7 +45,7 @@ public class AudioToTextCommandHandler : ICommandHandler<AudioToTextCommand, Aud
 
         var results = await speechToTextService.RecognizeAsync(command.Bytes, command.Language, command.MimeType);
 
-        request.InitTranscription(results.ProcessedSeconds, Costs.GoogleAudioTranscriptionSecond);
+        request.InitTranscription(results.ProcessedSeconds, speechToTextService.Costs);
         request.InitResponse(JsonConvert.SerializeObject(results), results.IsSuccess);
         await audioRequestRepository.AddAsync(request);
 
