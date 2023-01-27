@@ -232,8 +232,19 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         }
 
         var separator = " ";
-        var oneWordZipped = res.zippedWords.Where(x => x.fTarget.Split(separator).Length == 1).ToList();
-        var phrasesZipped = res.zippedWords.Where(x => x.fTarget.Split(separator).Length > 1).ToList();
+        var oneWordZipped = new List<(string fTarget, string sNative)>();
+        var phrasesZipped = new List<(string fTarget, string sNative)>();
+
+        foreach (var zipWords in res.zippedWords)
+        {
+            if (zipWords.fTarget.Length + zipWords.sNative.Length < 24)
+            {
+                oneWordZipped.Add((zipWords.fTarget, zipWords.sNative));
+                continue;
+            }
+
+            phrasesZipped.Add((zipWords.fTarget, zipWords.sNative));
+        }
 
         var tableMessage = "";
         if (oneWordZipped != null && oneWordZipped.Count > 0)

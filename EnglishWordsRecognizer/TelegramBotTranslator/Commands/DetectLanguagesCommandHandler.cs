@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TB.Database.Entities.Requests;
-using TB.Database.GenericRepositories;
 using TB.Database.Repositories;
 using TB.Translator.Entities;
 
@@ -41,7 +40,7 @@ public class DetectLanguagesCommandHandler : ICommandHandler<DetectLanguagesComm
         var plan = await userPlansRepository.GetUserPlan(command.UserId);
 
         var texts = new string[] { command.TextToDetect };
-        var request = new TextRequest(translateService.apiTypeENUM, texts, Costs.AzureCharTranslatePrice, command.UserId, plan.Id)
+        var request = new TextRequest(translateService.apiTypeENUM, texts, translateService.Costs, command.UserId, plan.Id)
                             .InitDetectLanguages();
 
         var resp = await translateService.DetectLanguagesAsync(texts);

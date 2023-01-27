@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TB.ComputerVision.Entities;
 using TB.Database.Entities.Requests;
-using TB.Database.GenericRepositories;
 using TB.Database.Repositories;
 
 namespace TB.ComputerVision.Command;
@@ -39,7 +38,7 @@ public class OCRImageCommandHandler : ICommandHandler<OCRImageCommand, OCR_Resul
 		}
 
         var plan = await userPlansRepository.GetUserPlan(command.UserId);
-        var request = new ImageRequest(ApiTypeENUM.Azure, Costs.AzureImage, command.UserId, plan.Id).InitOCR();
+        var request = new ImageRequest(computerVisionService.apiTypeENUM, computerVisionService.Costs, command.UserId, plan.Id).InitOCR();
 
         var results = await computerVisionService.OCRImageAsync(command.Bytes);
 

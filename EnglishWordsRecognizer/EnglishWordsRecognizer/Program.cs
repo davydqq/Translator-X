@@ -18,6 +18,7 @@ using TB.BillingPlans;
 using TB.Menu.Entities;
 using TB.Core.Configs;
 using TB.API.Middlewares;
+using TB.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +62,9 @@ builder.Services.AddSingleton<CambridgeDictionaryService>();
 builder.Services.AddSingleton<ThesaurusService>();
 
 // Cognitive Services
-builder.Services.AddSingleton<ITranslateService, AzureTranslateService>();
+// builder.Services.AddSingleton<ITranslateService, AzureTranslateService>();
+builder.Services.AddSingleton<ITranslateService, GoogleTranslateService>();
+
 builder.Services.AddSingleton<IComputerVisionService, AzureComputerVisionService>();
 builder.Services.AddSingleton<ISpeechToTextService, GoogleSpeechToTextService>();
 

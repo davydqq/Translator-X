@@ -5,7 +5,6 @@ using TB.Core.Commands;
 using TB.Database.Entities;
 using TB.Database.Repositories;
 using TB.Localization.Services;
-using TB.Meaning;
 using TB.Meaning.Commands;
 using TB.Meaning.Entities;
 using TB.Translator.Commands;
@@ -89,7 +88,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         {
             var languageFrom = userSettings.NativeLanguage;
 
-            var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom.Code, command.UserId);
+            var resTextFrom = await GetTranslationsAsync(command.Text, languageFrom, command.UserId);
             if (string.IsNullOrEmpty(resTextFrom)) return false;
 
             var sentMessage = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resTextFrom, replyToMessageId: command.ReplyId));
@@ -99,7 +98,7 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
             return true;
         }
 
-        var resText = await GetTranslationsAsync(command.Text, languageTo.Code, command.UserId);
+        var resText = await GetTranslationsAsync(command.Text, languageTo, command.UserId);
         if (string.IsNullOrEmpty(resText)) return false;
         
         var message = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
@@ -173,12 +172,11 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         return message;
     }
 
-    private async Task<string> GetTranslationsAsync(string text, string langCode, long userId)
+    private async Task<string> GetTranslationsAsync(string text, Language language, long userId)
     {
         var textsToTranslate = new List<string> { text };
-        var languagesToTranslate = new List<string> { langCode };
 
-        var command = new TranslateTextsCommand(textsToTranslate, languagesToTranslate, userId);
+        var command = new TranslateTextsCommand(textsToTranslate, language, userId);
   
         var res = await commandDispatcher.DispatchAsync(command);
 

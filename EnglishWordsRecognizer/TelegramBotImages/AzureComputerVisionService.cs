@@ -3,6 +3,7 @@ using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TB.ComputerVision.Entities;
+using TB.Database.Entities.Requests;
 
 namespace TB.ComputerVision;
 
@@ -18,6 +19,10 @@ public class AzureComputerVisionService : IComputerVisionService
         this.logger = logger;
         client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(this.options.Value.Key)) { Endpoint = this.options.Value.Endpoint };
     }
+
+    public ApiTypeENUM apiTypeENUM => ApiTypeENUM.Azure;
+
+    public double Costs => APICosts.AzureImageI;
 
     public async Task<VisionResult> AnalyzeImageAsync(byte[] bytes)
     {

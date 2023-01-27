@@ -19,6 +19,7 @@ using TB.BillingPlans;
 using TB.Function.API.Services;
 using TB.Menu.Entities;
 using TB.Core.Configs;
+using TB.Common;
 
 namespace TB.Function.API;
 
@@ -59,7 +60,9 @@ public static class Modules
         services.AddSingleton<ThesaurusService>();
 
         // Cognitive Services
-        services.AddSingleton<ITranslateService, AzureTranslateService>();
+        services.AddSingleton<ITranslateService, GoogleTranslateService>();
+        // services.AddSingleton<ITranslateService, AzureTranslateService>();
+        
         services.AddSingleton<IComputerVisionService, AzureComputerVisionService>();
         services.AddSingleton<ISpeechToTextService, GoogleSpeechToTextService>();
 

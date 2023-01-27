@@ -38,7 +38,7 @@ public class TranslateTextsCommandHandler : ICommandHandler<TranslateTextsComman
             return null;
         }
 
-        if (command.LanguagesToTranslate == null || command.LanguagesToTranslate.Count == 0)
+        if (command.LanguageToTranslate == null)
         {
             logger.LogError("Languages To Translate empty");
             return null;
@@ -47,12 +47,11 @@ public class TranslateTextsCommandHandler : ICommandHandler<TranslateTextsComman
         var plan = await userPlansRepository.GetUserPlan(command.UserId);
 
         var texts = command.TextsToTranslate.ToArray();
-        var languages = command.LanguagesToTranslate.ToArray();
 
-        var request = new TextRequest(translateService.apiTypeENUM, texts, Costs.AzureCharTranslatePrice, command.UserId, plan.Id)
-                            .InitTranslateTexts(languages);
+        var request = new TextRequest(translateService.apiTypeENUM, texts, translateService.Costs, command.UserId, plan.Id)
+                            .InitTranslateTexts(new string[] { command.LanguageToTranslate.Code });
 
-        var resp = await translateService.TranslateTextsAsync(texts, languages);
+        var resp = await translateService.TranslateTextsAsync(texts, command.LanguageToTranslate);
 
         var isSuccess = resp == null ? false : true;
         var resJson = isSuccess ? JsonConvert.SerializeObject(resp) : null;
