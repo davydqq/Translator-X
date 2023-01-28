@@ -317,8 +317,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
             return false;
         }
 
-        var textPhotoMessage = await localizationService.GetTranslateByInterface("app.images.text", userId);
-        var text = $"{textPhotoMessage}\n\n";
+        // var textPhotoMessage = await localizationService.GetTranslateByInterface("app.images.text", userId);
+        var text = "";
 
         var texts = string.Join("\n", results.TextResults.SelectMany(x => x.Lines).Select(x => x.Text));
 
