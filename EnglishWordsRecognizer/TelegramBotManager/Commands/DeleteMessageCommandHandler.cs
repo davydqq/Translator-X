@@ -29,7 +29,7 @@ public class DeleteMessageCommandHandler : ICommandHandler<DeleteMessageCommand,
         }
         catch (Exception ex)
         {
-            logger.LogWarning($"Message wasn`t been deleted: {ex}");
+            logger.LogError($"Message wasn`t been deleted: {ex}");
             return false;
         }
     }

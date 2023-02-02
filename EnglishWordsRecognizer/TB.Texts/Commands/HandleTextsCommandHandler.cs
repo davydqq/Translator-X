@@ -101,9 +101,15 @@ public class HandleTextsCommandHandler : ICommandHandler<HandleTextsCommand, boo
         var resText = await GetTranslationsAsync(command.Text, languageTo, command.UserId);
         if (string.IsNullOrEmpty(resText)) return false;
         
-        var message = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
-        await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, message.MessageId, message.MessageId);
-
+        var messages = await commandDispatcher.DispatchAsync(new SendMessageCommand(command.ChatId, resText, replyToMessageId: command.ReplyId));
+        if(messages != null)
+        {
+            foreach (var message in messages)
+            {
+                await HandleMeaning(languageTo, resText, command.UserId, command.ChatId, message.MessageId, message.MessageId);
+            }
+        }
+ 
         return true;      
     }
 
