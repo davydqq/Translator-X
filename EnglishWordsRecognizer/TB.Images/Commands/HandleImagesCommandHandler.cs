@@ -114,7 +114,7 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         }
 
         // DELETE PROCESSING MESSAGE
-        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, processingMessageResult.MessageId));
+        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, processingMessageResult.First().MessageId));
 
         return true;
     }

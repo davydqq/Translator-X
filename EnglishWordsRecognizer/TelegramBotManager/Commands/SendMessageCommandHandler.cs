@@ -7,7 +7,7 @@ using Telegram.Bot.Types;
 
 namespace TB.Core.Commands;
 
-public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Message>
+public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, List<Message>>
 {
     private readonly TelegramBotClient telegramBotClient;
     private readonly ILogger<SendMessageCommandHandler> logger;
@@ -21,24 +21,30 @@ public class SendMessageCommandHandler : ICommandHandler<SendMessageCommand, Mes
         this.logger = logger;
     }
 
-    public async Task<Message> HandleAsync(SendMessageCommand command, CancellationToken cancellation = default)
+    public async Task<List<Message>> HandleAsync(SendMessageCommand command, CancellationToken cancellation = default)
     {
         try
         {
+            var res = new List<Message>();
 
-            var message = await retryPolicy.ExecuteAsync(() => telegramBotClient.SendTextMessageAsync(
-                command.ChatId,
-                command.Message,
-                parseMode: command.ParseMode,
-                replyMarkup: command.ReplyMarkup,
-                replyToMessageId: command.ReplyToMessageId
-            ));
+            foreach(var chars in command.Message.Chunk(4000))
+            {
+                var message = await retryPolicy.ExecuteAsync(() => telegramBotClient.SendTextMessageAsync(
+                    command.ChatId,
+                    new string(chars),
+                    parseMode: command.ParseMode,
+                    replyMarkup: command.ReplyMarkup,
+                    replyToMessageId: command.ReplyToMessageId
+                ));
 
-            return message;
+                res.Add(message);
+            }
+
+            return res;
         }
         catch (Exception ex)
         {
-            logger.LogWarning($"Message wasn`t been sent: {ex}");
+            logger.LogError($"Message wasn`t been sent: {ex}");
         }
 
         return null;

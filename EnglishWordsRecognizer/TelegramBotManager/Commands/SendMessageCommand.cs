@@ -5,7 +5,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TB.Core.Commands;
 
-public class SendMessageCommand : ICommand<Message>
+public class SendMessageCommand : ICommand<List<Message>>
 {
 	public SendMessageCommand(
 		long chatId, 

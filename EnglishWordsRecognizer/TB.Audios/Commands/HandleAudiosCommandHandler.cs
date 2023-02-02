@@ -108,7 +108,7 @@ public class HandleAudiosCommandHandler : ICommandHandler<HandleAudiosCommand, b
         var textProcessed = await ProcessSpeechToTextResult(result, command.UserId, settings.AudioLanguage);
 
         // DELETE PROCESSING MESSAGE
-        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, processingMessageResult.MessageId));
+        await commandDispatcher.DispatchAsync(new DeleteMessageCommand(command.ChatId, processingMessageResult.First().MessageId));
 
         if (!string.IsNullOrEmpty(textProcessed))
         {
