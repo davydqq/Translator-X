@@ -325,7 +325,8 @@ public class HandleImagesCommandHandler : ICommandHandler<HandleImagesCommand, b
         if (!string.IsNullOrEmpty(texts))
         {
             text += texts;
-            await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, text, parseMode: ParseMode.Html, replyToMessageId: replyId));
+            var res = await commandDispatcher.DispatchAsync(new SendMessageCommand(chatId, text, replyToMessageId: replyId));
+            if (res == null) return false;
         }
 
         return true;
